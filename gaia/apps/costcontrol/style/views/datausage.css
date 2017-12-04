@@ -1,0 +1,161 @@
+/* DATAUSAGE VIEW */
+#datausage-tab .content {
+  padding: 0;
+  height: 100%;
+  padding-bottom: 3rem;
+  box-sizing: border-box;
+}
+
+/* DATA TOGGLE */
+#datausage-tab .toggle-data {
+  list-style: none;
+  padding: 0;
+  margin: 0 1.5rem;
+  border: solid 0.1rem #adadad;
+  border-right: none;
+  border-left: none;
+  border-bottom: none;
+}
+
+#datausage-tab .toggle-data li {
+  display: flex;
+  padding-right: 2rem;
+  padding-left: 3rem;
+  height: 3.8rem;
+  border-bottom-color: #adadad;
+}
+
+#datausage-tab .toggle-data li > span {
+  font-size: 1.9rem;
+  font-weight: normal;
+  line-height: 3.8rem;
+}
+
+#datausage-tab .toggle-data li > span:first-child {
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+#datausage-tab .toggle-data li label {
+  height: 100%;
+  pointer-events: auto;
+  left: 0;
+  border: none;
+}
+
+#datausage-tab .toggle-data li label span:after {
+  right: 0;
+  left: auto;
+}
+
+/* Color legend (square) */
+#datausage-tab .toggle-data li:before {
+  content: "";
+  width: 1.5rem;
+  height: 1.5rem;
+  position: absolute;
+  border: solid 0.1rem #979797;
+  left: 0.5rem;
+  top: 50%;
+  margin: -0.9rem 0 0;
+  transition: background 0.2s ease;
+}
+
+#datausage-tab .toggle-data li:first-child:before {
+  background: #975177 url(../images/app/ui/datausage/pattern-3g.png) repeat left top;
+}
+
+#datausage-tab .toggle-data li:last-child:before {
+  background-color: #d4e073;
+}
+
+/* Disabled state */
+#datausage-tab .toggle-data li[aria-disabled=true]:before {
+  background: #d4d2d2;
+}
+
+#datausage-tab .toggle-data li .overview {
+  color: #333;
+  font-weight: 500;
+  padding: 0 1rem;
+}
+
+#datausage-tab .toggle-data li[aria-disabled=true] .overview {
+  display: none;
+}
+
+/* GRAPHS */
+#datausage-tab section.graph {
+  position: relative;
+  height: 28.5rem;
+  flex: 1;
+}
+
+#datausage-tab section.graph canvas {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* APPS */
+#datausage-tab #app-usage-no-data {
+  font-size: 1.5rem;
+  font-weight: 500;
+  padding-left: 3rem;
+  padding-right: 3rem;
+}
+
+#datausage-tab .app-item {
+  width: 32rem;
+  padding: 1.9rem 0 0 0;
+  clear: both;
+}
+
+#datausage-tab .app-image {
+  padding: 1.1rem 1.3rem 1.1rem 1.3rem;
+  width: 3rem;
+  height: 3rem;
+  float: left;
+}
+
+#datausage-tab .app-info {
+  width: calc(100% - 11rem);
+  margin-right: 5.4rem;
+  float: right;
+}
+
+#datausage-tab .app-info-row {
+  width: 100%;
+}
+
+#datausage-tab .app-name {
+  text-indent: -0.2rem;
+  padding: 0;
+  font-size: 1.9rem;
+  line-height: 1;
+  font-weight: normal;
+}
+
+#datausage-tab .app-usage-bar {
+  height: 0.3rem;
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+  padding: 0;
+  background-color: #e7e7e7;
+}
+
+#datausage-tab .app-usage-bar-used {
+  background-color: #00caf2;
+  height: 0.3rem;
+  float: left;
+}
+
+#datausage-tab .app-usage-total {
+  font-size: 1.4rem;
+  font-weight: 500;
+  color: #5f5f5f;
+}

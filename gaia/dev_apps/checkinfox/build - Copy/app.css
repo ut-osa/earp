@@ -1,0 +1,3390 @@
+
+/* lib\onyx\css\onyx.less */
+
+/* Onyx default parameters defined here */
+/* Paths */
+/* application importing Onyx Less files will have to override this  */
+/* variable. Otherwise, Onyx image load will fail with a 404 error  */
+/* Fonts */
+/* ---------------------------------------*/
+/* Text Colors */
+/* ---------------------------------------*/
+/* Background Colors */
+/* ---------------------------------------*/
+/* Border Radius */
+/* ---------------------------------------*/
+/* Padding */
+/* ---------------------------------------*/
+/* Icon Sizes */
+/* ---------------------------------------*/
+/* Disabled Opacity */
+/* ---------------------------------------*/
+/* Gradient Overlays */
+/* ---------------------------------------*/
+/* Images */
+/* ---------------------------------------*/
+/* Onyx rules defined here */
+/* onyx-classes.less - combined CSS (less) files for all released Onyx controls
+   into single onyx.less file to avoid IE bug that allows
+   a maximum of 31 style sheets to be loaded before silently failing */
+.onyx {
+  color: #333333;
+  font-family: 'Helvetica Neue', 'Nimbus Sans L', Arial, sans-serif;
+  font-size: 20px;
+  cursor: default;
+  background-color: #eaeaea;
+  /* remove automatic tap highlight color */
+
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+/* prevent IE from inheriting line-height for these elements */
+.onyx button,
+.onyx label,
+.onyx input {
+  line-height: normal;
+}
+.onyx-selected {
+  background-color: #c4e3fe;
+}
+/* LESS pre-calculations */
+/* Individual Widget CSS */
+/* Icon.css */
+.onyx-icon,
+.onyx-icon-toggle {
+  width: 32px;
+  height: 32px;
+  background-repeat: no-repeat;
+  display: inline-block;
+  vertical-align: middle;
+}
+.onyx-icon.onyx-icon-button.active,
+.onyx-icon.onyx-icon-button.pressed,
+.onyx-icon-toggle.active {
+  background-position: 0 -32px;
+}
+.onyx-icon.disabled {
+  opacity: 0.4;
+  filter: alpha(opacity=40);
+}
+/* Button.css */
+.onyx-button {
+  outline: 0;
+  color: #292929;
+  font-size: 16px;
+  text-align: center;
+  white-space: nowrap;
+  margin: 0;
+  padding: 6px 18px;
+  overflow: hidden;
+  border-radius: 3px;
+  /* for IE8 */
+
+  border: 1px solid #707070;
+  border: 1px solid rgba(15, 15, 15, 0.2);
+  /*
+		The border and the gradient interact in a strange way that
+		causes the bottom-border (top if the gradient is aligned top)
+		to be lighter than other borders.
+		We can fix it by using the darker bottom border below, but
+		then there are a few rogue pixels that end up very dark.
+	*/
+
+  /* border-bottom: 1px solid rgba(15, 15, 15, 0.5); */
+
+  box-shadow: inset 0px 1px 0px rgba(255, 255, 255, 0.2);
+  background: #e1e1e1 url('../lib/onyx/images/gradient.png') repeat-x bottom;
+  background-size: contain;
+  /**/
+
+  text-overflow: ellipsis;
+  /* the following cause arcane problems on IE */
+
+  /*
+	min-width: 14px;
+	min-height: 20px;
+	*/
+
+}
+/*
+	IE8 can't handle these selectors in tandem:
+	.onyx-button.active, .onyx-button:active:not([disabled]) {
+
+	the effect is as if .onyx-button.active doesn't exist
+*/
+.onyx-button.active,
+.onyx-button.pressed {
+  background-image: url('../lib/onyx/images/gradient-invert.png');
+  background-position: top;
+  border-top: 1px solid rgba(15, 15, 15, 0.6);
+  box-shadow: inset 0px 1px 0px rgba(0, 0, 0, 0.1);
+}
+.onyx-button[disabled] {
+  opacity: 0.4;
+  filter: alpha(opacity=40);
+}
+.onyx-button > img {
+  padding: 0px 3px;
+}
+/* Remove the focused inner-border style in Firefox (Windows) */
+.onyx-button::-moz-focus-inner {
+  border: 0;
+}
+/* Checkbox.css */
+.onyx-checkbox {
+  cursor: pointer;
+  height: 32px;
+  width: 32px;
+  background: url('../lib/onyx/images/checkbox.png') no-repeat;
+  /* reset for ? */
+
+  margin: 0px;
+  /* these entries cause toggle-button and checkbox to line up properly*/
+
+  display: inline-block;
+  vertical-align: middle;
+}
+.onyx-checkbox[checked] {
+  background-position: 0px -32px;
+}
+.onyx-checkbox[disabled] {
+  opacity: 0.4;
+}
+/* Grabber.css */
+.onyx-grabber {
+  background: url('../lib/onyx/images/grabbutton.png') no-repeat center;
+  width: 23px;
+  height: 27px;
+}
+/* Popup.css */
+.onyx-popup {
+  font-size: 16px;
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+  padding: 6px;
+  color: #ffffff;
+  background: #4c4c4c url('../lib/onyx/images/gradient.png') repeat-x 0 bottom;
+}
+.onyx-popup-decorator {
+  position: relative;
+}
+/* Groupbox.css */
+.onyx-groupbox > * {
+  display: block;
+  /*box-shadow: inset 0px 1px 1px rgba(255,255,255,0.5);*/
+
+  border-color: #aaaaaa;
+  border-style: solid;
+  border-width: 0 1px 1px 1px;
+  /*padding: 10px;*/
+
+  /* reset styles that make 'item' look bad if they happen to be there */
+
+  border-radius: 0;
+  margin: 0;
+  font-size: 16px;
+}
+/* needed for MathJax support */
+.onyx-groupbox > script {
+  display: none;
+}
+.onyx-groupbox > *:first-child {
+  border-top-color: #aaaaaa;
+  border-width: 1px;
+  border-radius: 4px 4px 0 0;
+}
+.onyx-groupbox > *:last-child {
+  border-radius: 0 0 4px 4px;
+}
+.onyx-groupbox > *:first-child:last-child {
+  border-radius: 4px;
+}
+.onyx-groupbox-header {
+  padding: 2px 10px;
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: bold;
+  text-transform: uppercase;
+  /**/
+
+  background-color: #4c4c4c;
+  border: none;
+  background: #4c4c4c url('../lib/onyx/images/gradient.png') repeat-x 0 10px;
+}
+.onyx-groupbox .onyx-input-decorator {
+  display: block;
+}
+.onyx-groupbox > .onyx-input-decorator {
+  border-color: #aaaaaa;
+  border-width: 0 1px 1px 1px;
+  border-radius: 0;
+}
+.onyx-groupbox > .onyx-input-decorator:first-child {
+  border-width: 1px;
+  border-radius: 4px 4px 0 0;
+}
+.onyx-groupbox > .onyx-input-decorator:last-child {
+  border-radius: 0 0 4px 4px;
+}
+.onyx-groupbox > .onyx-input-decorator:first-child:last-child {
+  border-radius: 4px;
+}
+/* Input.css */
+.onyx-input-decorator {
+  padding: 6px 8px 10px 8px;
+  border-radius: 3px;
+  border: 1px solid;
+  border-color: rgba(0, 0, 0, 0.1);
+  margin: 0;
+}
+.onyx-input-decorator.onyx-focused {
+  box-shadow: inset 0px 1px 4px rgba(0, 0, 0, 0.3);
+  border-color: rgba(0, 0, 0, 0.3);
+  background-color: #ffffff;
+}
+.onyx-input-decorator.onyx-disabled {
+  /* FIXME: needed to color a disabled input placeholder. */
+
+  /*-webkit-text-fill-color: #888;*/
+
+  opacity: 0.4;
+  filter: alpha(opacity=40);
+}
+.onyx-input-decorator > input {
+  /* reset */
+
+  margin: 0;
+  padding: 0;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  background-color: transparent;
+  background-image: none;
+  font-size: 16px;
+  box-shadow: none;
+  /* FIXME: hack for styling reset on Android */
+
+  /* -webkit-appearance: caret;*/
+
+}
+.onyx-input-decorator.onyx-focused > input {
+  cursor: text;
+}
+.onyx-input-decorator.onyx-disabled > input {
+  cursor: default;
+}
+/* Menu.css */
+.onyx-menu,
+.onyx.onyx-menu {
+  min-width: 160px;
+  top: 100%;
+  left: 0;
+  margin-top: 2px;
+  padding: 3px 0;
+  border-radius: 3px;
+}
+.onyx-menu.onyx-menu-up {
+  top: auto;
+  bottom: 100%;
+  margin-top: 0;
+  margin-bottom: 2px;
+}
+.onyx-toolbar .onyx-menu {
+  margin-top: 11px;
+  border-radius: 0 0 3px 3px;
+}
+.onyx-toolbar .onyx-menu.onyx-menu-up {
+  margin-top: 0;
+  margin-bottom: 10px;
+  border-radius: 3px 3px 0 0;
+}
+.onyx-menu-item {
+  display: block;
+  padding: 10px;
+}
+.onyx-menu-item:hover {
+  background: #284152;
+}
+.onyx-menu-divider,
+.onyx-menu-divider:hover {
+  margin: 6px 0;
+  padding: 0;
+  border-bottom: 1px solid #aaa;
+}
+.onyx-menu-label {
+  cursor: default;
+  -webkit-user-select: none;
+  -moz-user-select: -moz-none;
+  user-select: none;
+  opacity: 0.4;
+  filter: alpha(opacity=40);
+}
+.onyx-menu-label:hover {
+  background: none;
+}
+/* customize a toolbar to support menus */
+.onyx-menu-toolbar,
+.onyx-toolbar.onyx-menu-toolbar {
+  position: relative;
+  z-index: 10;
+  overflow: visible;
+}
+/* Submenu.css */
+.onyx-submenu {
+  background: rgba(0, 0, 0, 0.25) url('../lib/onyx/images/gradient-invert.png') repeat-x 0 top;
+}
+/* Picker.css */
+.onyx-picker-decorator .onyx-button {
+  padding: 10px 18px;
+}
+.onyx-picker {
+  top: 0;
+  margin-top: -3px;
+  min-width: 0;
+  width: 100%;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  color: black;
+  background: #e1e1e1;
+}
+.onyx-picker.onyx-menu-up {
+  top: auto;
+  bottom: 0;
+  margin-top: 3px;
+  margin-bottom: -3px;
+}
+.onyx-picker .onyx-menu-item {
+  text-align: center;
+}
+.onyx-picker .onyx-menu-item:hover {
+  background-color: transparent;
+}
+.onyx-picker .onyx-menu-item.selected,
+.onyx-picker .onyx-menu-item.active,
+.onyx-picker .onyx-menu-item:active:hover {
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  background-color: #cde7fe;
+  box-shadow: inset 0px 0px 3px rgba(0, 0, 0, 0.2);
+}
+.onyx-picker .onyx-menu-item {
+  border-top: 1px solid rgba(255, 255, 255, 0.5);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+}
+.onyx-picker:not(.onyx-flyweight-picker) .onyx-menu-item:first-child,
+.onyx-flyweight-picker :first-child > .onyx-menu-item {
+  border-top: none;
+}
+.onyx-picker:not(.onyx-flyweight-picker) .onyx-menu-item:last-child,
+.onyx-flyweight-picker :last-child > .onyx-menu-item {
+  border-bottom: none;
+}
+/* TextArea.css */
+.onyx-input-decorator > textarea {
+  /* reset */
+
+  margin: 0;
+  padding: 0;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  background-color: transparent;
+  background-image: none;
+  font-size: 16px;
+  box-shadow: none;
+  /* Remove scrollbars and resize handle */
+
+  resize: none;
+  overflow: auto;
+  /* FIXME: hack for styling reset on Android */
+
+  /* -webkit-appearance: caret;*/
+
+}
+.onyx-input-decorator.onyx-focused > textarea {
+  cursor: text;
+}
+.onyx-input-decorator.onyx-disabled > textarea {
+  cursor: default;
+}
+.onyx-textarea {
+  /* need >=50px for scrollbar to be usable on mac */
+
+  min-height: 50px;
+}
+/* RichText.css */
+.onyx-input-decorator > .onyx-richtext {
+  /* reset */
+
+  margin: 0;
+  padding: 0;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  background-color: transparent;
+  background-image: none;
+  font-size: 16px;
+  min-height: 20px;
+  min-width: 100px;
+  box-shadow: none;
+  /* FIXME: hack for styling reset on Android */
+
+  /* -webkit-appearance: caret;*/
+
+}
+.onyx-input-decorator.onyx-focused > .onyx-richtext {
+  cursor: text;
+}
+.onyx-input-decorator.onyx-disabled > .onyx-richtext {
+  cursor: default;
+}
+/* RadioButton.css */
+.onyx-radiobutton {
+  padding: 8px 12px;
+  margin: 0;
+  outline: 0;
+  font-size: 16px;
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  /**/
+
+  background: #e7e7e7 url('../lib/onyx/images/gradient.png') repeat-x bottom;
+  /* IE8 */
+
+  border: 1px solid #333333;
+  border: 1px solid rgba(15, 15, 15, 0.2);
+  /* turn off right-border in a way IE8 ignores, because IE8 does not support :last-child */
+
+  border-right-color: rgba(0, 0, 0, 0);
+  box-shadow: inset 1px 1px 0px rgba(255, 255, 255, 0.2);
+}
+.onyx-radiobutton:first-child {
+  border-radius: 3px 0 0 3px;
+}
+.onyx-radiobutton:last-child {
+  border-radius: 0px 3px 3px 0px;
+  /* IE8 */
+
+  border-right: 1px solid #333333;
+  border-right: 1px solid rgba(15, 15, 15, 0.2);
+}
+.onyx-radiobutton.active {
+  color: #ffffff;
+  background: #0091f2 url('../lib/onyx/images/gradient-invert.png') repeat-x top;
+  border-top: 1px solid rgba(15, 15, 15, 0.6);
+  box-shadow: inset 1px 2px 2px rgba(0, 0, 0, 0.2);
+}
+/* Scrim.css */
+.onyx-scrim {
+  z-index: 1;
+  /*
+		note: by using pointer-events we allow tapping on scrim
+		while it is fading out; however, this requires any showing classes
+		to set pointer events to auto or scrim will not function as expected.
+	*/
+
+  pointer-events: none;
+}
+.onyx-scrim.onyx-scrim-translucent {
+  pointer-events: auto;
+  background-color: #000000;
+  opacity: 0.65;
+  filter: alpha(opacity=65);
+}
+.onyx-scrim.onyx-scrim-transparent {
+  pointer-events: auto;
+  background: transparent;
+}
+/* TabButton.css */
+.onyx-radiobutton.onyx-tabbutton {
+  padding: 8px 34px;
+  font-size: 20px;
+  border-radius: 0px;
+}
+/* TabBar.css */
+.onyx-tab-bar {
+  width: 100%;
+  z-index: 10;
+  background-color: #cacaca;
+  padding-top: 1px;
+}
+.onyx-tab-bar-scroller {
+  padding-top: 2px;
+}
+.onyx-tab-bar-scroller > .enyo-thumb {
+  border: 0px;
+}
+.onyx-tab-wrapper {
+  padding: 3px 0px 3px 0px;
+}
+.onyx-tab-line {
+  position: relative;
+  margin-top: -0.1em;
+  border-top: 1px solid #646464;
+  z-index: 2;
+}
+.onyx-tab-rug {
+  position: relative;
+  padding: 0.3em;
+  background-color: #cacaca;
+  z-index: 4;
+}
+/* TabBarItem.css */
+.onyx-tab-item {
+  display: inline;
+  position: relative;
+  border: 1px solid #646464;
+  margin: 0px 2px 0px 2px;
+  border-top-right-radius: 5px;
+  border-top-left-radius: 5px;
+  background-color: #b1b1b1;
+  z-index: 1;
+  padding-top: 0.2em;
+  padding-bottom: 0.7em ;
+  vertical-align: baseline;
+}
+.onyx-tab-item.active {
+  border-bottom: 1px solid #cacaca;
+  background-color: #cacaca;
+  z-index: 3;
+  padding-top: 0.3em;
+}
+.onyx-tab-item:hover {
+  background-color: #cacaca;
+}
+.onyx-tab-item button {
+  overflow: hidden;
+  margin: 3px;
+  border: 1px solid transparent;
+  background-color: transparent ;
+}
+.onyx-tab-item-dissolve {
+  display: inline-block;
+  height: 90%;
+  width: 2em;
+  top: 2px;
+  right: 19px;
+  position: absolute;
+  background: linear-gradient(to right, #b1b1b1 0%, rgba(177, 177, 177, 0) 100%);
+  /* W3C */
+
+  background: -moz-linear-gradient(right, #b1b1b1 0%, rgba(177, 177, 177, 0) 100%);
+  /* FF3.6+ */
+
+  background: -webkit-linear-gradient(left, rgba(177, 177, 177, 0), #b1b1b1);
+  /* Chrome10+,Safari5.1+ */
+
+  background: -webkit-gradient(linear, right top, left top, color-stop(0%, #b1b1b1), color-stop(100%, rgba(177, 177, 177, 0)));
+  /* Chrome,Safari4+ */
+
+  background: -o-linear-gradient(left, #b1b1b1 0%, rgba(177, 177, 177, 0) 100%);
+  /* Opera 11.10+ */
+
+  background: -ms-linear-gradient(left, rgba(177, 177, 177, 0) 0%, #b1b1b1 100%);
+  /* IE10+ */
+
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#00b1b1b1, endColorstr=#ffb1b1b1, GradientType=1);
+  /* IE6-9 */
+
+}
+.onyx-tab-item-dissolve.active {
+  background: linear-gradient(to right, #cacaca 0%, rgba(202, 202, 202, 0) 100%);
+  /* W3C */
+
+  background: -moz-linear-gradient(right, #cacaca 0%, rgba(202, 202, 202, 0) 100%);
+  /* FF3.6+ */
+
+  background: -webkit-linear-gradient(left, rgba(202, 202, 202, 0), #cacaca);
+  /* Chrome10+,Safari5.1+ */
+
+  background: -webkit-gradient(linear, right top, left top, color-stop(0%, #cacaca), color-stop(100%, rgba(202, 202, 202, 0)));
+  /* Chrome,Safari4+ */
+
+  background: -o-linear-gradient(left, #cacaca 0%, rgba(202, 202, 202, 0) 100%);
+  /* Opera 11.10+ */
+
+  background: -ms-linear-gradient(left, rgba(202, 202, 202, 0) 0%, #cacaca 100%);
+  /* IE10+ */
+
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#00cacaca, endColorstr=#ffcacaca, GradientType=1);
+  /* IE6-9 */
+
+}
+.onyx-tab-item-hovered {
+  background: linear-gradient(to right, #cacaca 0%, rgba(202, 202, 202, 0) 100%);
+  /* W3C */
+
+  background: -moz-linear-gradient(right, #cacaca 0%, rgba(202, 202, 202, 0) 100%);
+  /* FF3.6+ */
+
+  background: -webkit-linear-gradient(left, rgba(202, 202, 202, 0), #cacaca);
+  /* Chrome10+,Safari5.1+ */
+
+  background: -webkit-gradient(linear, right top, left top, color-stop(0%, #cacaca), color-stop(100%, rgba(202, 202, 202, 0)));
+  /* Chrome,Safari4+ */
+
+  background: -o-linear-gradient(left, #cacaca 0%, rgba(202, 202, 202, 0) 100%);
+  /* Opera 11.10+ */
+
+  background: -ms-linear-gradient(left, rgba(202, 202, 202, 0) 0%, #cacaca 100%);
+  /* IE10+ */
+
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#00cacaca, endColorstr=#ffcacaca, GradientType=1);
+  /* IE6-9 */
+
+}
+.onyx-tab-item-close {
+  display: inline-block;
+  margin-right: 3px;
+  width: 16px;
+  height: 16px;
+  vertical-align: middle;
+  background-repeat: no-repeat;
+  background-image: url('../lib/onyx/images/close-inactive.png');
+}
+.onyx-tab-item-close:hover {
+  background-image: url('../lib/onyx/images/close-active.png');
+}
+/* ToggleButton.css */
+.onyx-toggle-button {
+  display: inline-block;
+  height: 32px;
+  line-height: 32px;
+  min-width: 64px;
+  vertical-align: middle;
+  text-align: center;
+  /* */
+
+  border-radius: 3px;
+  box-shadow: inset 0px 1px 3px rgba(0, 0, 0, 0.4);
+  background: #8bba3d url('../lib/onyx/images/gradient-invert.png') repeat-x bottom;
+  background-size: auto 100%;
+  /* label */
+
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+.onyx-toggle-button.off {
+  background-color: #b1b1b1 !important;
+}
+.onyx-toggle-button-knob {
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  margin: 1px;
+  border-radius: 3px;
+  background: #f6f6f6 url('../lib/onyx/images/gradient.png') repeat-x;
+  background-size: auto 100%;
+}
+.onyx-toggle-button .onyx-toggle-button-knob {
+  box-shadow: -1px 0px 4px rgba(0, 0, 0, 0.35), inset 0 -1px 0 rgba(0, 0, 0, 0.4);
+  float: right;
+}
+.onyx-toggle-button.off .onyx-toggle-button-knob {
+  box-shadow: 1px 0px 4px rgba(0, 0, 0, 0.35), inset 0 -1px 0 rgba(0, 0, 0, 0.4);
+  float: left;
+}
+.onyx-toggle-button.disabled,
+.onyx-icon-button.disabled {
+  opacity: 0.4;
+  filter: alpha(opacity=40);
+}
+.onyx-toggle-content {
+  min-width: 32px;
+  padding: 0 6px;
+}
+.onyx-toggle-content.empty {
+  padding: 0;
+}
+.onyx-toggle-content.off {
+  float: right;
+}
+.onyx-toggle-content.on {
+  float: left;
+}
+/* Toolbar.css */
+.onyx-toolbar {
+  /*
+		line-height is unreliable for centering, instead
+		use vertical-align: middle to align
+		elements along a common centerline and use
+		padding to fill out the space.
+	*/
+
+  padding: 9px 8px 10px 8px;
+  border: 1px solid #3A3A3A;
+  background: #4c4c4c url('../lib/onyx/images/gradient.png') repeat-x 0 bottom;
+  background-size: contain;
+  color: #ffffff;
+  /**/
+
+  white-space: nowrap;
+  overflow-y: visible;
+  font-size: 20px;
+}
+.onyx-toolbar-inline > *,
+.enyo-fittable-columns-layout.onyx-toolbar-inline > * {
+  display: inline-block;
+  vertical-align: middle;
+  margin: 4px 6px 5px;
+  box-sizing: border-box;
+}
+/* needed for MathJax support */
+.onyx-toolbar-inline > script,
+.enyo-fittable-columns-layout.onyx-toolbar-inline > script {
+  display: none;
+}
+.onyx-toolbar .onyx-icon-button {
+  margin: 3px 2px 1px;
+}
+.onyx-toolbar .onyx-button {
+  color: #f2f2f2;
+  background-color: #555656;
+  border-color: rgba(15, 15, 15, 0.5);
+  margin-top: 0;
+  margin-bottom: 0;
+  height: 36px;
+}
+.onyx-toolbar .onyx-input-decorator {
+  margin: 1px 3px;
+  box-shadow: inset 0px 1px 4px rgba(0, 0, 0, 0.1);
+  background-color: rgba(0, 0, 0, 0.1);
+  padding: 0px 6px 5px 6px;
+}
+.onyx-toolbar .onyx-input-decorator.onyx-focused {
+  box-shadow: inset 0px 1px 4px rgba(0, 0, 0, 0.3);
+  background-color: #ffffff;
+}
+.onyx-toolbar .onyx-input-decorator .onyx-input {
+  color: #e5e5e5;
+  font-size: 14px;
+}
+.onyx-toolbar .onyx-input-decorator .onyx-input:focus {
+  color: #000000;
+}
+.onyx-toolbar .onyx-input-decorator .onyx-input:focus::-webkit-input-placeholder {
+  color: #dddddd;
+}
+/* Tooltip.css */
+.onyx-tooltip {
+  z-index: 20;
+  left: 0;
+  padding: 4px 6px;
+  margin-top: 4px;
+  margin-left: -6px;
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  color: #ffffff;
+  background: #216593 url('../lib/onyx/images/gradient.png') repeat-x 0 bottom;
+  border-radius: 3px;
+  white-space: nowrap;
+}
+/*move the tooltip over to the right when displaying the right arrow so it aligns better with the decorator*/
+.onyx-tooltip.right-arrow {
+  left: 30px;
+}
+/*prep the left & right arrows using before & after - left arrow uses before & right arrow uses after*/
+.onyx-tooltip::before {
+  content: '';
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  position: absolute;
+  top: -6px;
+  left: 16px;
+}
+.onyx-tooltip::after {
+  content: '';
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  position: absolute;
+  top: -6px;
+  margin-left: -12px;
+}
+/*The following 3 rules handle the left & right arrows when the tooltip is displayed below the activator*/
+.onyx-tooltip.below {
+  top: 100%;
+}
+.onyx-tooltip.below.right-arrow::after {
+  border-bottom: 6px solid #1D587F;
+  top: -6px;
+}
+.onyx-tooltip.below.left-arrow::before {
+  border-bottom: 6px solid #1D587F;
+  top: -6px;
+}
+/*The following 3 rules handle the left & right arrows when the tooltip is displayed above the activator*/
+.onyx-tooltip.above {
+  top: -100%;
+}
+.onyx-tooltip.above.right-arrow::after {
+  content: '';
+  border-top: 6px solid #1D587F;
+  top: 100%;
+}
+.onyx-tooltip.above.left-arrow::before {
+  content: '';
+  border-top: 6px solid #1D587F;
+  top: 100%;
+}
+/* ProgressBar.css */
+.onyx-progress-bar {
+  margin: 8px;
+  height: 8px;
+  border: 1px solid rgba(15, 15, 15, 0.2);
+  border-radius: 3px;
+  background: #b8b8b8 url('../lib/onyx/images/gradient-invert.png') repeat-x;
+  background-size: auto 100%;
+}
+.onyx-progress-bar-bar {
+  height: 100%;
+  border-radius: 3px;
+  background: #58abef url('../lib/onyx/images/gradient.png') repeat-x;
+  background-size: auto 100%;
+}
+.onyx-progress-bar-bar.striped {
+  background-image: -webkit-gradient(linear, 0 100%, 100% 0, color-stop(0.25, rgba(255, 255, 255, 0.15)), color-stop(0.25, transparent), color-stop(0.5, transparent), color-stop(0.5, rgba(255, 255, 255, 0.15)), color-stop(0.75, rgba(255, 255, 255, 0.15)), color-stop(0.75, transparent), to(transparent));
+  background-image: -webkit-linear-gradient(-45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
+  background-image: -moz-linear-gradient(-45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
+  background-image: -ms-linear-gradient(-45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
+  background-image: -o-linear-gradient(-45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
+  background-image: linear-gradient(-45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
+  background-size: 40px 40px;
+}
+.onyx-progress-bar-bar.striped.animated {
+  -webkit-animation: progress-bar-stripes 2s linear infinite;
+  -moz-animation: progress-bar-stripes 2s linear infinite;
+  -o-animation: progress-bar-stripes 2s linear infinite;
+  animation: progress-bar-stripes 2s linear infinite;
+}
+@-webkit-keyframes progress-bar-stripes {
+  from {
+    background-position: 0 0;
+  }
+  to {
+    background-position: 40px 0;
+  }
+}
+@-moz-keyframes progress-bar-stripes {
+  from {
+    background-position: 0 0;
+  }
+  to {
+    background-position: 40px 0;
+  }
+}
+@-o-keyframes progress-bar-stripes {
+  from {
+    background-position: 0 0;
+  }
+  to {
+    background-position: 40px 0;
+  }
+}
+@keyframes progress-bar-stripes {
+  from {
+    background-position: 0 0;
+  }
+  to {
+    background-position: 40px 0;
+  }
+}
+/* ProgressButton.css */
+.onyx-progress-button {
+  position: relative;
+  height: 36px;
+  line-height: 36px;
+  color: #f1f1f1;
+  font-size: 16px;
+  text-overflow: ellipsis;
+}
+.onyx-progress-button-bar {
+  height: 36px;
+}
+.onyx-progress-button-icon {
+  display: inline-block;
+  position: absolute;
+  top: 2px;
+  right: 0;
+}
+.onyx-progress-button-client {
+  display: inline-block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 36px;
+  margin-left: 8px;
+}
+.onyx-progress-button-client > * {
+  display: inline-block;
+}
+/* needed for MathJax support */
+.onyx-progress-button-client > script {
+  display: none;
+}
+/* Slider.css */
+.onyx-slider {
+  position: relative;
+  margin: 8px 20px;
+}
+.onyx-slider-taparea {
+  position: absolute;
+  top: -11px;
+  height: 28px;
+  width: 100%;
+}
+.onyx-slider-knob {
+  position: relative;
+  height: 40px;
+  width: 40px;
+  background: url('../lib/onyx/images/slider-handle.png') left top no-repeat;
+  margin: -23px -20px;
+}
+.onyx-slider-knob.active,
+.onyx-slider-knob.pressed {
+  background-position: 0 -40px;
+}
+/* RangeSlider.css */
+.onyx-range-slider-knob {
+  top: -17px;
+}
+.onyx-range-slider-label {
+  position: relative;
+  top: -18px;
+  text-align: center;
+  white-space: nowrap;
+}
+/* Item.css */
+.onyx-item {
+  padding: 14px;
+}
+.onyx-highlight,
+.onyx-highlight.onyx-swipeable-item-content {
+  background-color: #dedfdf;
+}
+.enyo-selected,
+.enyo-selected.onyx-swipeable-item-content {
+  background-color: #c4e3fe;
+}
+.onyx-item.onyx-swipeable-item {
+  overflow: hidden;
+  padding: 0;
+}
+.onyx-swipeable-item-content {
+  background-color: #eaeaea;
+  box-sizing: border-box;
+  padding: 18px 6px;
+  min-height: 40px;
+}
+/* Spinner.css */
+.onyx-spinner {
+  width: 59px;
+  height: 58px;
+  display: inline-block;
+  background: url('../lib/onyx/images/spinner-dark.gif') no-repeat 0 0;
+}
+.onyx-spinner.onyx-light {
+  background: url('../lib/onyx/images/spinner-light.gif') no-repeat 0 0;
+}
+/* MoreToolbar.css */
+.onyx-more-toolbar {
+  overflow: visible;
+  position: relative;
+  z-index: 10;
+}
+.onyx-more-toolbar.active {
+  z-index: 11;
+}
+.onyx-more-menu {
+  left: auto;
+  right: 0px;
+  min-width: 0;
+}
+.onyx-more-toolbar .onyx-more-menu > * {
+  float: right;
+  clear: both;
+  margin: 5px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+.onyx-more-button {
+  background-image: url('../lib/onyx/images/more.png');
+  width: 32px;
+  height: 32px;
+}
+/* DatePicker.css */
+.onyx-datepicker-month {
+  min-width: 75px;
+}
+.onyx-datepicker-day {
+  min-width: 60px;
+}
+.onyx-datepicker-year {
+  min-width: 70px;
+}
+/* TimePicker.css */
+.onyx-timepicker-hour {
+  min-width: 60px;
+}
+.onyx-timepicker-minute {
+  min-width: 60px;
+}
+.onyx-timepicker-ampm {
+  min-width: 60px;
+}
+/* ButtonColors.css */
+.onyx-button.onyx-blue {
+  background-color: #35A8EE;
+  color: #F2F2F2;
+}
+.onyx-button.onyx-affirmative {
+  background-color: #91BA07;
+  color: #F2F2F2;
+}
+.onyx-button.onyx-negative {
+  background-color: #C51616;
+  color: #F2F2F2;
+}
+.onyx-button.onyx-dark {
+  background-color: #555656;
+  color: #F2F2F2;
+}
+.onyx-button.onyx-light {
+  background-color: #cacaca;
+  color: #2F2F2F;
+}
+/* ContextualPopup.css */
+.onyx-contextual-popup-title {
+  font-weight: bold;
+  padding: 24px 32px 0px;
+}
+.onyx-contextual-popup-scroller {
+  padding: 24px 32px;
+}
+.onyx-contextual-popup-action-buttons {
+  display: inline-block;
+  width: 100%;
+  text-align: center;
+}
+.onyx-contextual-popup-action-button {
+  margin-left: 5px;
+  margin-right: 5px;
+}
+.onyx-contextual-popup,
+.onyx.onyx-contextual-popup {
+  font-size: 16px;
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+  padding: 6px;
+  color: #ffffff;
+  background: #4c4c4c;
+}
+/*setup the nub*/
+.onyx-contextual-popup::after {
+  content: '';
+  position: absolute;
+  top: -10px;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  border-top: 10px solid transparent;
+  border-bottom: 10px solid transparent;
+}
+/*for popups above activator*/
+.onyx-contextual-popup.vertical.above {
+  top: auto;
+  margin-top: -10px;
+  bottom: 100%;
+  margin-bottom: 10px;
+}
+/*for popups below activator*/
+.onyx-contextual-popup.vertical.below {
+  margin-top: 10px;
+}
+/*for popups on the left of the activator*/
+.onyx-contextual-popup.right.horizontal {
+  margin-left: -11px;
+}
+/*for popups on the right of the activator*/
+.onyx-contextual-popup.left.horizontal {
+  margin-left: 10px;
+}
+/*nub positioning*/
+/*horizontally centered nub*/
+.onyx-contextual-popup.vertical::after {
+  position: absolute;
+  left: 45%;
+  border-bottom: 10px solid #4c4c4c;
+  border-top: none;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+}
+/*nub near horizontal left*/
+.onyx-contextual-popup.vertical.right::after {
+  left: 0%;
+  margin-left: 20px;
+}
+/*nub near horizontal right*/
+.onyx-contextual-popup.vertical.left::after {
+  left: 100%;
+  margin-left: -55px;
+}
+/*downward facing nub*/
+.onyx-contextual-popup.vertical.above::after {
+  top: 100%;
+  border-top: 10px solid #4c4c4c;
+  border-bottom: none;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+}
+.onyx-contextual-popup.vertical.below.right::after {
+  top: 0%;
+  margin-top: -10px;
+  border-bottom: 10px solid #4c4c4c;
+  border-left: 10px solid transparent;
+}
+.onyx-contextual-popup.vertical.below.left::after {
+  top: 0%;
+  margin-top: -10px;
+  border-right: 10px solid transparent;
+}
+/*nub positioning for left/right popups*/
+/*vertically centered nub for popups on left of activator*/
+.onyx-contextual-popup.right::after {
+  left: 100%;
+  top: 47%;
+  margin-right: 20px;
+  border-left: 10px solid #4C4C4C;
+}
+/*nub near vertical top for popups on left of activator*/
+.onyx-contextual-popup.right.high::after {
+  top: 35px;
+  border-left: 10px solid #4C4C4C;
+}
+/*nub near vertical bottom for popups on left of activator*/
+.onyx-contextual-popup.right.low::after {
+  top: 100%;
+  margin-top: -55px;
+  border-left: 10px solid #4C4C4C;
+}
+/*vertically centered nub for popups on right of activator*/
+.onyx-contextual-popup.left::after {
+  left: 0%;
+  margin-left: -20px;
+  top: 45%;
+  border-right: 10px solid #4C4C4C;
+}
+/*nub near vertical top for popups on right of activator*/
+.onyx-contextual-popup.left.high::after {
+  top: 35px;
+  border-right: 10px solid #4C4C4C;
+}
+/*nub near vertical bottom for popups on right of activator*/
+.onyx-contextual-popup.left.low::after {
+  top: 100%;
+  margin-top: -55px;
+  border-right: 10px solid #4C4C4C;
+}
+/*corners*/
+/*vertical top corners*/
+/*for popups on the left of the activator*/
+.onyx-contextual-popup.vertical.right.corner {
+  margin-left: 0px;
+}
+/*for popups on the right of the activator*/
+.onyx-contextual-popup.vertical.left.corner {
+  margin-left: 0px;
+}
+.onyx-contextual-popup.vertical.below.left.corner {
+  border-top-right-radius: 0px;
+}
+.onyx-contextual-popup.vertical.below.right.corner {
+  border-top-left-radius: 0px;
+}
+.onyx-contextual-popup.vertical.below.left.corner::after {
+  top: 0%;
+  left: 100%;
+  margin-top: -10px;
+  margin-left: -19px;
+  border-right: 10px solid #4c4c4c;
+  border-top: 10px solid transparent;
+}
+.onyx-contextual-popup.vertical.below.right.corner::after {
+  top: 0%;
+  left: 0%;
+  margin-left: -1px;
+  border-left: 10px solid #4c4c4c;
+  border-top: 10px solid transparent;
+}
+/*vertical bottom corners*/
+.onyx-contextual-popup.left.above.corner {
+  border-bottom-right-radius: 0px;
+}
+.onyx-contextual-popup.right.above.corner {
+  border-bottom-left-radius: 0px;
+}
+.onyx-contextual-popup.vertical.left.above.corner::after {
+  top: 100%;
+  margin-left: -19px;
+  border-right: 10px solid #4C4C4C;
+  border-bottom: 10px solid transparent;
+  border-top: none;
+}
+.onyx-contextual-popup.vertical.right.above.corner::after {
+  top: 100%;
+  left: 0%;
+  margin-left: -1px;
+  border-left: 10px solid #4c4c4c;
+  border-bottom: 10px solid transparent;
+  border-top: none;
+}
+/*horizontal bottom corners*/
+.onyx-contextual-popup.left.low.corner {
+  border-bottom-left-radius: 0px;
+}
+.onyx-contextual-popup.right.low.corner {
+  border-bottom-right-radius: 0px;
+}
+.onyx-contextual-popup.left.low.corner::after {
+  top: 100%;
+  left: 0%;
+  margin-top: -19px;
+  margin-left: -12px;
+  border-bottom: 10px solid #4c4c4c;
+  border-right: 10px solid #4c4c4c;
+}
+.onyx-contextual-popup.right.low.corner::after {
+  top: 100%;
+  left: 100%;
+  margin-top: -19px;
+  border-bottom: 10px solid#4c4c4c;
+  border-left: none;
+}
+/*horizontal top corners*/
+.onyx-contextual-popup.left.high.corner {
+  border-top-left-radius: 0px;
+}
+.onyx-contextual-popup.right.high.corner {
+  border-top-right-radius: 0px;
+}
+.onyx-contextual-popup.left.high.corner::after {
+  top: 0%;
+  left: 0%;
+  margin-top: -1px;
+  margin-left: -12px;
+  border-top: 10px solid #4C4C4C;
+  border-bottom: none;
+}
+.onyx-contextual-popup.right.high.corner::after {
+  top: 0%;
+  left: 100%;
+  margin-top: -1px;
+  margin-left: -9px;
+  border-top: 10px solid #4C4C4C;
+  border-bottom: none;
+}
+/* some default colors */
+.onyx-dark {
+  background-color: #555656;
+}
+.onyx-light {
+  background-color: #cacaca;
+}
+.onyx-green {
+  background-color: #91BA07;
+}
+.onyx-red {
+  background-color: #C51616;
+}
+.onyx-blue {
+  background-color: #35A8EE;
+}
+
+
+/* lib\layout\contextual\source\ContextualLayout.css */
+
+/* ContextualLayout.css - popup positioning and border radius adjustments */
+
+/*for popups above activator*/
+.vertical.above {
+  top: auto;
+  margin-top:-10px;
+  bottom: 100%;
+  margin-bottom: 10px;
+}
+/*for popups below activator*/
+.vertical.below {
+  margin-top:10px;
+}
+/*for popups on the left of the activator*/
+.right.horizontal {
+  margin-left: -11px;
+}
+/*for popups on the right of the activator*/
+.left.horizontal {
+  margin-left: 10px;
+}
+/*corners*/
+/*vertical top corners*/
+/*for popups on the left of the activator*/
+.vertical.right.corner {
+  margin-left: 0px;
+}
+/*for popups on the right of the activator*/
+.vertical.left.corner {
+  margin-left: 0px;
+}
+.vertical.below.left.corner {
+  border-top-right-radius: 0px;
+}
+.vertical.below.right.corner {
+  border-top-left-radius: 0px;
+}
+/*vertical bottom corners*/
+.left.above.corner {
+  border-bottom-right-radius: 0px;
+}
+.right.above.corner {
+  border-bottom-left-radius: 0px;
+}
+/*horizontal bottom corners*/
+.left.low.corner {
+  border-bottom-left-radius: 0px;
+}
+.right.low.corner {
+  border-bottom-right-radius: 0px;
+}
+/*horizontal top corners*/
+.left.high.corner {
+  border-top-left-radius: 0px;
+}
+.right.high.corner {
+  border-top-right-radius: 0px;
+}
+
+/* lib\layout\fittable\source\FittableLayout.css */
+
+.enyo-fittable-rows-layout {
+	position: relative;
+}
+
+.enyo-fittable-rows-layout > * {
+	box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	/* float when not stretched */
+	float: left;
+	clear: both;
+}
+
+/* non-floating when stretched */
+.enyo-fittable-rows-layout.enyo-stretch > * {
+	float: none;
+	clear: none;
+}
+
+/* setting to enforce margin collapsing */
+/* NOTE: rows cannot have margin left/right */
+.enyo-fittable-rows-layout.enyo-stretch.enyo-margin-expand > * {
+	float: left;
+	clear: both;
+	width: 100%;
+	/* note: harsh resets */
+	margin-left: 0 !important;
+	margin-right: 0 !important;
+}
+
+.enyo-fittable-columns-layout {
+	position: relative;
+	text-align: left;
+	white-space: nowrap;
+}
+
+.enyo-locale-right-to-left .enyo-fittable-columns-layout {
+	text-align: right;
+}
+
+.enyo-fittable-columns-layout.enyo-center,
+.enyo-locale-right-to-left .enyo-fittable-columns-layout.enyo-center {
+	text-align: center;
+}
+
+.enyo-fittable-columns-layout > * {
+	box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	vertical-align: top;
+	display: inline-block;
+	white-space: normal;
+}
+
+.enyo-fittable-columns-layout > table {
+	display: inline-table;
+}
+
+.enyo-fittable-columns-layout.enyo-tool-decorator > * {
+	vertical-align: middle;
+}
+
+/* repair clobbered white-space setting for pre, code */
+.enyo-fittable-columns-layout > pre, .enyo-fittable-columns-layout > code {
+	white-space: pre;
+}
+
+.enyo-fittable-columns-layout > .enyo-fittable-columns-layout, .enyo-fittable-columns-layout > .onyx-toolbar-inline {
+	white-space: nowrap;
+}
+
+/* NOTE: columns cannot have margin top/bottom */
+.enyo-fittable-columns-layout.enyo-stretch > * {
+	height: 100%;
+	/* note: harsh resets */
+	margin-top: 0 !important;
+	margin-bottom: 0 !important;
+}
+
+.enyo-locale-right-to-left .enyo-fittable-columns-layout {
+	direction: rtl;
+	text-align: right;
+}
+.enyo-locale-right-to-left .enyo-fittable-columns-layout.force-left-to-right {
+	direction: ltr;
+	text-align: left;
+}
+
+
+/* lib\layout\list\source\List.css */
+
+.enyo-list {
+	position: relative;
+}
+
+.enyo-list-port {
+	overflow: hidden;
+	position: relative;
+}
+
+.enyo-list-holdingarea {
+	position: absolute;
+	left: 0;
+	right: 0;
+}
+
+.enyo-list-port.horizontal {
+	white-space: nowrap;
+	width:  1000000px;
+	height: 1000000px;
+}
+
+.enyo-list-port.vertical {
+	height: 1000000px;
+}
+
+.enyo-list-page {
+	position: absolute;
+	left: 0;
+}
+
+.enyo-locale-right-to-left .enyo-list-page {
+	left: auto;
+	right: 0;
+}
+
+.enyo-list-page.vertical {
+	left: 0;
+	right: 0;
+}
+
+.enyo-list-holdingarea {
+	top: -10000px;
+}
+
+.enyo-pinned-list-placeholder {
+	border: 1px solid red;
+	position: absolute;
+	top: 0; left: 0;
+	z-index: 1000;
+	background: transparent;
+	overflow: hidden;
+}
+
+.enyo-pinned-list-placeholder button {
+	width: 100px; height: 100%;
+	position: absolute;
+	top: 0; right: 0;
+}
+
+.enyo-list-reorder-container {
+	position: absolute;
+	top: 0; left: 0;
+	z-index: 1000;
+	background: transparent;
+	overflow: hidden;
+}
+
+.enyo-animatedTopAndLeft {
+	-webkit-transition: top 0.1s linear, left 0.1s linear;
+	-moz-transition: top 0.1s linear, left 0.1s linear;
+	-o-transition: top 0.1s linear, left 0.1s linear;
+	transition: top 0.1s linear, left 0.1s linear;
+}
+
+/* lib\layout\list\source\PulldownList.css */
+
+.enyo-list-pulldown {
+	position: absolute;
+	bottom: 100%;
+	left: 0;
+	right: 0;
+}
+
+.enyo-puller {
+	position: relative;
+	height: 50px;
+	font-size: 22px;
+	color: #444;
+	padding: 20px 0 0px 34px;
+}
+
+.enyo-puller-text {
+	position: absolute;
+	left: 80px;
+	top: 22px;
+}
+
+.enyo-puller-arrow {
+	position: relative;
+	background: #444;
+	width: 7px;
+	height: 28px;
+	transition: transform 0.3s;
+	-webkit-transition: -webkit-transform 0.3s;
+	-moz-transition: -moz-transform 0.3s;
+	-o-transition: -o-transform 0.3s;
+	-ms-transition: -ms-transform 0.3s;
+}
+
+.enyo-puller-arrow:after {
+	content: " ";
+	height: 0;
+	width: 0;
+	position: absolute;
+	border: 10px solid transparent;
+	border-bottom-color: #444;
+	bottom: 100%;
+	left: 50%;
+	margin-left: -10px;
+}
+
+.enyo-puller-arrow-up {
+	transform: rotate(0deg);
+	-webkit-transform: rotate(0deg);
+	-moz-transform: rotate(0deg);
+	-o-transform: rotate(0deg);
+	-ms-transform: rotate(0deg);
+}
+
+.enyo-puller-arrow-down {
+	transform: rotate(180deg);
+	-webkit-transform: rotate(180deg);
+	-moz-transform: rotate(180deg);
+	-o-transform: rotate(180deg);
+	-ms-transform: rotate(180deg);
+}
+
+/* lib\layout\list\source\GridList.css */
+
+/*
+	Put anything you reference with "url()" in ../assets/
+	This way, you can minify your application, and just remove the "source" folder for production
+*/
+.enyo-gridlist {
+	height: 100%;
+	/*activate the GPU for compositing each page */
+  	-webkit-transform: translate3d(0, 0, 0);
+  	z-index: 1;
+}
+.enyo-gridlist-row {
+	display: inline-block;
+	background-color: #000;
+	width: auto;
+	height: auto;
+	overflow: hidden;
+	vertical-align: top;
+	border: 0;
+	padding: 0;
+	margin: 0 auto;
+  	/* TODO: Investigate if these properties cause scrolling performance issues */
+  	/*
+  	-webkit-border-radius: 5px;
+	border-radius: 5px;
+	box-shadow: 0 2px 3px rgba(0, 0, 0, 0.5);
+	-moz-box-shadow: 0 2px 3px rgba(0,0,0,0.5);
+	-ms-box-shadow: 0 2px 3px rgba(0,0,0,0.5);
+	-webkit-box-shadow: 0 2px 3px rgba(0, 0, 0, 0.5);
+	*/
+}
+.enyo-gridlist-dummy {
+	display:inline-block;
+	width:auto;
+	height:auto;
+	z-index: -1;
+}
+
+/* lib\layout\list\source\GridListImageItem.css */
+
+/*
+	Put anything you reference with "url()" in ../assets/
+	This way, you can minify your application, and just remove the "source" folder for production
+*/
+.enyo-gridlist-imageitem {
+	width: 100%;
+	height: 100%;
+	color: #fff;
+}
+.enyo-gridlist-imageitem img {
+	display: block;
+	width: 100%;
+}
+.enyo-gridlist-imageitem .caption, .enyo-gridlist-imageitem .sub-caption {
+	text-align: center;
+	font-size: 10pt;
+	z-index: 10;
+	padding-top: 10px;
+	width: 100%;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	overflow: hidden;
+	color: #fff;
+}
+.enyo-gridlist-imageitem.disabled {
+	opacity: 0.4;
+	filter: alpha(opacity=40);
+}
+
+
+/* lib\layout\panels\source\arrangers\Arranger.css */
+
+.enyo-arranger {
+	position: relative;
+	overflow: hidden;
+}
+
+.enyo-arranger.enyo-fit {
+	position: absolute;
+}
+
+.enyo-arranger > * {
+	position: absolute;
+	left: 0;
+	top: 0;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+
+.enyo-arranger-fit > * {
+	/* override any width/height set on panels */
+	width: 100% !important;
+	height: 100% !important;
+	min-width: 0 !important;
+	min-height: 0 !important;
+}
+
+
+/* lib\layout\panels\source\Panels.css */
+
+.enyo-panels {
+}
+
+.enyo-panels-fit-narrow {
+}
+
+.enyo-panels-fit-narrow > * {
+	min-width: 100%;
+	max-width: 100%;
+}
+
+
+/* lib\layout\tree\source\Node.css */
+
+.enyo-node {
+	cursor: default;
+	padding: 4px;
+}
+
+.enyo-node img {
+	vertical-align: middle;
+	padding-right: 6px;
+}
+
+.enyo-node-box {
+	overflow: hidden;
+}
+
+.enyo-node-client {
+	position: relative;
+}
+
+.enyo-animate .enyo-node-box, .enyo-animate .enyo-node-client {
+	-ms-transition-property: height, top;
+	-ms-transition-duration: 0.2s, 0.2s;
+	-moz-transition-property: height, top;
+	-moz-transition-duration: 0.2s, 0.2s;
+	-o-transition-property: height, top;
+	-o-transition-duration: 0.2s, 0.2s;
+	-webkit-transition-property: height, top;
+	-webkit-transition-duration: 0.2s, 0.2s;
+	transition-property: height, top;
+	transition-duration: 0.2s, 0.2s;
+}
+
+
+/* lib\layout\imageview\source\ImageViewPin.css */
+
+
+.pinDebug {
+	background:yellow;
+	border:1px solid yellow;
+}
+
+/* source\androidcontrols\smoothpanels.css */
+
+.smoothpanels {
+    position: relative;
+    -webkit-perspective: 1000px;
+    -moz-perspective: 1000px;
+    -ms-perspective: 1000px;
+    -o-perspective: 1000px;
+    perspective : 1000px;
+}
+
+.smoothpanels > * {
+    position: absolute;
+    left: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    overflow: hidden;
+    -webkit-transform: translate3d(0, 0, 0);
+    -moz-transform: translate3d(0, 0, 0);
+    -ms-transform: translate3d(0, 0, 0);
+    -o-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+    -webkit-backface-visibility: hidden;
+    -moz-backface-visibility: hidden;
+    -ms-backface-visibility: hidden;
+    -o-backface-visibility: hidden;
+    backface-visibility: hidden;
+}
+
+/* slide in from right */
+@-webkit-keyframes slideInFromRight {
+    from { -webkit-transform: translate3d(100%, 0, 0); }
+}
+@keyframes slideInFromRight {
+    from { transform: translate3d(100%, 0, 0); }
+}
+
+/* slide out to left */
+@-webkit-keyframes slideOutToLeft {
+    to { -webkit-transform: translate3d(-100%, 0, 0); }
+}
+@keyframes slideOutToLeft {
+    to { transform: translate3d(-100%, 0, 0); }
+}
+
+/* slide in from top */
+@-webkit-keyframes slideInFromTop {
+    from { -webkit-transform: translate3d(0, -100%, 0); }
+}
+@keyframes slideInFromTop {
+    from { transform: translate3d(0, -100%, 0); }
+}
+
+/* slide out to bottom */
+@-webkit-keyframes slideOutToBottom {
+    to { -webkit-transform: translate3d(0, 100%, 0); }
+}
+@keyframes slideOutToBottom {
+    to { transform: translate3d(0, 100%, 0); }
+}
+
+/* slide in from left */
+@-webkit-keyframes slideInFromLeft {
+    from { -webkit-transform: translate3d(-100%, 0, 0); }
+}
+@keyframes slideInFromLeft {
+    from { transform: translate3d(-100%, 0, 0); }
+}
+
+/* slide out to right */
+@-webkit-keyframes slideOutToRight {
+    to { -webkit-transform: translate3d(100%, 0, 0); }
+}
+@keyframes slideOutToRight {
+    to { transform: translate3d(100%, 0, 0); }
+}
+
+/* slide in from bottom */
+@-webkit-keyframes slideInFromBottom {
+    from { -webkit-transform: translate3d(0, 100%, 0); }
+}
+@keyframes slideInFromBottom {
+    from { transform: translate3d(0, 100%, 0); }
+}
+
+/* slide out to top */
+@-webkit-keyframes slideOutToTop {
+    to { -webkit-transform: translate3d(0, -100%, 0); }
+}
+@keyframes slideOutToTop {
+    to { transform: translate3d(0, -100%, 0); }
+}
+
+/* fade in */
+@-webkit-keyframes fadeIn {
+    from { opacity: 0; }
+}
+@keyframes fadeIn {
+    from { opacity: 0; }
+}
+
+/* fade out */
+@-webkit-keyframes fadeOut {
+    to { opacity: 0; }
+}
+@keyframes fadeOut {
+    to { opacity: 0; }
+}
+
+/* source\controls\slideablemenu\slideable3d.css */
+
+.fill-forwards {
+	-webkit-animation-fill-mode: forwards;
+}
+
+
+
+/* source\views\dropinview.css */
+
+.slideable-absolute {
+	position: absolute;
+	top:0;
+	left:0;
+}
+
+/* source\controls\slideablesnapscroller\slideablesnapscroller.css */
+
+.slideable-snapscroller {
+ 	white-space: nowrap;
+ 	position:relative;
+ 	vertical-align:top;
+}
+
+.scroller-slide {
+  display: inline-block;
+  vertical-align:top;
+  position: absolute;
+  top:0;
+}
+
+
+
+/* source\controls\extrainputs\extrainputs.css */
+
+.item {
+    font-size:smaller;
+    margin:3px 3px 0px 0px;
+    padding:1px 3px 2px 3px;
+    border-radius:3px;
+    background:#bbb;
+    display: inline-block;
+}
+
+.item:hover {
+    text-decoration:line-through;
+}
+
+.extras-menu .extras-menu-item:hover {
+    background-color:transparent;
+}
+
+.extras-menu .extras-menu-item.highlight {
+    background: #284152;
+}
+
+.extras-typeahead-input {
+    position:relative;
+}
+
+.extras-typeahead-input > .primary {
+    position:absolute;
+    z-index:10;
+    width:100%;
+    top:0;
+    left:0;
+}
+
+.extras-typeahead-input > .shadow {
+    color:silver;
+    z-index:1;
+    width:100%;
+}
+
+.onyx-input-decorator > .extras-typeahead-input > input {
+    margin: 0;
+    padding: 0;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    background-color: transparent;
+    font-size: 16px;
+    box-shadow: none;
+}
+
+/* source\controls\pulluplist\pulluplist.css */
+
+.custom-puller {
+	position: relative;
+	height: 50px;
+	font-size: 22px;
+	color: #444;
+	padding: 0px 0 0px 34px;
+}
+
+.custom-puller-text {
+	display:inline-block;
+	margin-top: 20px;
+	margin-left: 20px;
+}
+
+.custom-puller-arrow {
+	position: relative;
+	display:inline-block;
+	background: #444;
+	width: 7px;
+	height: 28px;
+	margin-top: 20px;
+	transition: transform 0.3s;
+	-webkit-transition: -webkit-transform 0.3s;
+	-moz-transition: -moz-transform 0.3s;
+	-o-transition: -o-transform 0.3s;
+	-ms-transition: -ms-transform 0.3s;
+}
+
+.custom-puller-arrow:after {
+	content: " ";
+	height: 0;
+	width: 0;
+	position: absolute;
+	border: 10px solid transparent;
+	border-top-color: #444;
+	bottom: 0;
+	left: 50%;
+	margin-left: -10px;
+}
+
+.custom-list-pulldown {
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	min-height: 100px;
+}
+
+/* source\controls\bufferedimages\bufferedimages.css */
+
+.buffer-image-class {
+	background: #ffffff; /* Old browsers */
+	background: -moz-radial-gradient(center, ellipse cover,  #ffffff 0%, #f6f6f6 47%, #ededed 100%); /* FF3.6+ */
+	background: -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(0%,#ffffff), color-stop(47%,#f6f6f6), color-stop(100%,#ededed)); /* Chrome,Safari4+ */
+	background: -webkit-radial-gradient(center, ellipse cover,  #ffffff 0%,#f6f6f6 47%,#ededed 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-radial-gradient(center, ellipse cover,  #ffffff 0%,#f6f6f6 47%,#ededed 100%); /* Opera 12+ */
+	background: -ms-radial-gradient(center, ellipse cover,  #ffffff 0%,#f6f6f6 47%,#ededed 100%); /* IE10+ */
+	background: radial-gradient(ellipse at center,  #ffffff 0%,#f6f6f6 47%,#ededed 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#ededed',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
+
+	margin-right: 5px;
+}
+
+.unselectable {
+    /* For Opera and <= IE9, we need to add unselectable="on" attribute onto each element */
+    /* Check this site for more details: http://help.dottoro.com/lhwdpnva.php */
+    -moz-user-select: none; /* These user-select properties are inheritable, used to prevent text selection */
+    -webkit-user-select: none;
+    -ms-user-select: none; /* From IE10 only */
+    user-select: none; /* Not valid CSS yet, as of July 2012 */
+
+    -webkit-user-drag: none; /* Prevents dragging of images/divs etc */
+    user-drag: none;
+}
+
+.gif-scrim {
+	background-color: black;
+	opacity: .5;
+	border: 2px solid black;
+	border-radius: 10px;
+	-webkit-transform: translate3d(0,0,0);
+	margin-right: 5px;
+}
+
+.gif-button {
+	background-image: url('../assets/playgif.png');
+	background-position: center center;
+	background-repeat: no-repeat;
+	-webkit-transform: translate3d(0,0,0);
+}
+
+/* source\controls\toolbars\toolbar.css */
+
+.onyx-toolbar {
+	/*
+		line-height is unreliable for centering, instead
+		use vertical-align: middle to align
+		elements along a common centerline and use
+		padding to fill out the space.
+	*/
+	padding: 0px 0px 0px 0px;
+	/**/
+	border: 1px solid #003366;
+	background: #4682B4 url('../assets/gradient.png') repeat-x 0 bottom;
+	color: white;
+	/**/
+	white-space: nowrap;
+	overflow: hidden;
+}
+
+.toolbar-round-left {
+	border-top-left-radius: 60px;
+	border-bottom-left-radius: 60px;		
+}
+
+
+.toolbar-round-right {
+	border-top-right-radius: 60px;	
+	border-bottom-right-radius: 60px;	
+}
+
+.toolbar-toggle-button-position {
+	position:absolute;
+	
+	margin-top:30px !important;
+	top: 5px;
+}
+
+.menu-titles {
+	text-shadow: 0px 0px 8px rgba(0,0,0,0.6);
+}
+
+
+.button-shadow {
+	-webkit-box-shadow: 0px 0px 8px rgba(50, 50, 50, 0.93);
+	-moz-box-shadow:    0px 0px 8px rgba(50, 50, 50, 0.93);
+	box-shadow:         0px 0px 8px rgba(50, 50, 50, 0.93);
+}
+
+.posting-shadow {
+	-webkit-box-shadow: -0px 9px 10px rgba(50, 50, 50, 0.93);
+	-moz-box-shadow:    -0px 9px 10px rgba(50, 50, 50, 0.93);
+	box-shadow:         -0px 9px 10px rgba(50, 50, 50, 0.93);
+}
+
+.menu-shadow {
+	-webkit-box-shadow: -0px -9px 10px rgba(50, 50, 50, 0.93);
+	-moz-box-shadow:    -0px -9px 10px rgba(50, 50, 50, 0.93);
+	box-shadow:         -0px -9px 10px rgba(50, 50, 50, 0.93);
+}
+
+.handle-shadow {
+	/*-webkit-box-shadow: -7px 0px 8px rgba(50, 50, 50, 0.63);
+	-moz-box-shadow:    -7px 0px 8px rgba(50, 50, 50, 0.63);
+	box-shadow:         -7px 0px 8px rgba(50, 50, 50, 0.63);*/
+}
+
+.toolbar-toggle-button-position.top-tool-bar {
+	top: 7px;
+}
+
+.toolbar-toggle-button-position.bottom-right-tool-bar {
+	right: auto;
+	left: -7px;
+}
+
+.headerImage {
+	width:80px;
+	height:80px;
+	margin-left: 5px;
+}
+.headerTitle {
+	font-size: 150%;
+	color: #00BFFF;
+	text-decoration:underline;
+}
+.headerDate {
+	font-size: 120%;
+}
+
+
+.mode-display-top {
+	border-top-left-radius:20px;
+	border-bottom-left-radius:20px;
+	background:#E6E6FA;
+	opacity:.6;
+	padding:0px 0px 2px 0px;
+	border:1px solid #003366;
+	color:black;
+}
+
+@media all and (max-height: 699px) and (min-height: 0px) {
+	.headerImage {
+		width:48px;
+		height:48px;
+		margin-left: 5px;
+		margin-bottom: 2px;
+	}
+	.headerTitle {
+		font-size: 100%;
+		color: #00BFFF;
+		text-decoration:underline;
+	}
+	.headerDate {
+		font-size: 80%;
+	}
+
+	.toolbar-round-left {
+		border-top-left-radius: 30px;
+		border-bottom-left-radius: 30px;		
+	}
+
+
+	.toolbar-round-right {
+		border-top-right-radius: 30px;	
+		border-bottom-right-radius: 30px;	
+	}
+	.toolbar-toggle-button-position {
+		position:absolute;
+		right:-10px;
+		margin-top:7px !important;
+	}
+	.toolbar-toggle-button-position.top-tool-bar {
+		top: 5px;
+		right: auto;
+		left: -7px;
+	}
+}
+
+/* source\controls\iconbuttons\iconbuttons.css */
+
+
+@-webkit-keyframes like-animation /* Safari and Chrome */
+{
+0%   {-webkit-transform: translate3d(0,0,0) scale(1);}
+50%  {-webkit-transform: translate3d(0,-15px,0) scale(1.5);}
+100% {-webkit-transform: translate3d(0px,0px,0) scale(1);}
+}
+
+@-webkit-keyframes unlike-animation /* Safari and Chrome */
+{
+0%   {-webkit-transform:scale(1);}
+50%  {-webkit-transform:scale(.5);}
+100% {-webkit-transform:scale(1);}
+}
+
+
+.onyx-icon-large {
+	width: 45px;
+	height: 45px;
+	background-repeat: no-repeat;
+	display: inline-block;
+	vertical-align: middle;
+}
+
+.onyx-65px-icon {
+	width: 65px;
+	height: 65px;
+	background-repeat: no-repeat;
+	display: inline-block;
+	vertical-align: middle;
+}
+
+.onyx-text-icon-button {
+	background: #7d7e7d;
+	background: -moz-linear-gradient(top,  #7d7e7d 0%, #5b5b5b 48%, #0e0e0e 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#7d7e7d), color-stop(48%,#5b5b5b), color-stop(100%,#0e0e0e));
+	background: -webkit-linear-gradient(top,  #7d7e7d 0%,#5b5b5b 48%,#0e0e0e 100%);
+	background: -o-linear-gradient(top,  #7d7e7d 0%,#5b5b5b 48%,#0e0e0e 100%);
+	background: -ms-linear-gradient(top,  #7d7e7d 0%,#5b5b5b 48%,#0e0e0e 100%);
+	background: linear-gradient(to bottom,  #7d7e7d 0%,#5b5b5b 48%,#0e0e0e 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#7d7e7d', endColorstr='#0e0e0e',GradientType=0 );
+
+	color: #E3FBFC;
+	border-radius: 3px;
+	padding: 3px;
+	border: 1px solid #333000;
+	height:60px;
+	width:50px;
+	display:inline-block;
+	font-size:9pt;
+}
+
+.onyx-text-icon-button.selected {
+	background: #0e0e0e;
+	background: -moz-linear-gradient(top,  #0e0e0e 0%, #5b5b5b 52%, #7d7e7d 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#0e0e0e), color-stop(52%,#5b5b5b), color-stop(100%,#7d7e7d));
+	background: -webkit-linear-gradient(top,  #0e0e0e 0%,#5b5b5b 52%,#7d7e7d 100%);
+	background: -o-linear-gradient(top,  #0e0e0e 0%,#5b5b5b 52%,#7d7e7d 100%);
+	background: -ms-linear-gradient(top,  #0e0e0e 0%,#5b5b5b 52%,#7d7e7d 100%);
+	background: linear-gradient(to bottom,  #0e0e0e 0%,#5b5b5b 52%,#7d7e7d 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#0e0e0e', endColorstr='#7d7e7d',GradientType=0 );
+
+}
+
+.onyx-icon-large.active, .onyx-icon-large:active:hover {
+	background-position: 0 -45px;
+}
+
+.onyx-icon-x-large {
+	width: 90px;
+	height: 90px;
+	background-repeat: no-repeat;
+	display: inline-block;
+	vertical-align: middle;
+}
+
+.onyx-icon-x-large.active, .onyx-icon-x-large:active:hover {
+	background-position: 0 -90px;
+}
+
+.like-icon-large {
+	cursor: pointer;
+	height: 45px;
+	width: 45px;
+	background: url('../assets/likeicon.png') no-repeat;
+	/* reset for ? */
+	margin: 0px;
+	/* these entries cause toggle-button and checkbox to line up properly*/
+	display: inline-block;
+
+	vertical-align: middle;
+}
+
+.like-icon-large[checked] {
+	background-position: 0px -45px;
+}
+
+.like-icon-large[disabled] {
+	opacity: 0.4;
+}
+
+.like-icon-x-large {
+	cursor: pointer;
+	height: 90px;
+	width: 90px;
+	background: url('../assets/likeiconlarge.png') no-repeat;
+	/* reset for ? */
+	margin: 0px;
+	/* these entries cause toggle-button and checkbox to line up properly*/
+	display: inline-block;
+	vertical-align: middle;
+}
+
+.like-icon-x-large[checked] {
+	background-position: 0px -90px;
+}
+
+.like-icon-x-large[disabled] {
+	opacity: 0.4;
+}
+
+.nav-icon-large {
+	cursor: pointer;
+	height: 45px;
+	width: 45px;
+	background: url('../assets/navbuttonicon.png') no-repeat;
+	/* reset for ? */
+	margin: 0px;
+	/* these entries cause toggle-button and checkbox to line up properly*/
+	display: inline-block;
+	vertical-align: middle;
+}
+
+.nav-icon-large[checked] {
+	background-position: 0px -45px;
+}
+
+.nav-icon-large[disabled] {
+	opacity: 0.4;
+}
+
+
+.nav-icon-x-large {
+	cursor: pointer;
+	height: 90px;
+	width: 90px;
+	background: url('../assets/navbuttoniconlarge.png') no-repeat;
+	/* reset for ? */
+	margin: 0px;
+	/* these entries cause toggle-button and checkbox to line up properly*/
+	display: inline-block;
+	vertical-align: middle;
+}
+
+.nav-icon-x-large[checked] {
+	background-position: 0px -90px;
+}
+
+.nav-icon-x-large[disabled] {
+	opacity: 0.4;
+}
+
+
+/* source\controls\toaster\toaster.css */
+
+.toaster {
+	position: absolute;
+	min-width: 50px;
+	min-height: 50px;
+	font-size: 16px;
+	/*box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);*/
+	box-sizing:border-box;
+	-moz-box-sizing:border-box; /* Firefox */
+	border: 1px solid rgba(0, 0, 0, 0.2);
+	border-radius: 8px;
+	padding: 6px;
+	color: #ffffff;
+  	background: #4c4c4c url('../assets/gradient.png') repeat-x 0 bottom;
+}
+
+.toaster.top {
+	top:0;
+	border-radius: 5px;
+}
+
+.toaster.right {
+	right: 0;
+	left: auto;
+	border-top-left-radius: 5px;
+	border-bottom-left-radius: 5px;
+}
+
+.toaster.bottom {
+	top: auto;
+	bottom: 0;
+	border-radius: 5px;
+}
+
+.toaster.left {
+	left: 0;
+	border-top-right-radius: 5px;
+	border-bottom-right-radius: 5px;
+}
+
+.toaster.full-radius {
+	border-radius: 5px;
+}
+
+/* source\controls\menus\menus.css */
+
+.image-stacker-contain {
+	display:inline-block;
+	margin-right:6px;
+	width: 40px;
+	white-space: nowrap;
+	position: relative;
+	top: -16px;
+}
+
+.horizontal-slide {
+  display: inline-block;
+  vertical-align:top;
+  top:0;
+}
+
+.reblog-back-shadow {
+	box-shadow: -5px 0px 15px #000000;
+	webkit-box-shadow: -5px 0px 15px #000000;
+	border-top-right-radius: 0px !important;
+	border-bottom-right-radius: 0px !important;
+}
+
+.menu-image-stacker-center {
+	display:inline-block;
+	padding-top:10px;
+}
+
+.menuBackground {
+	padding: 5px;
+	font-weight: bold;
+
+
+	color: black;
+	background: white url('../assets/gradient.png') repeat-x 0 bottom;
+	border: 5px solid black;
+	border-radius: 10px;
+	font-size: 60%;
+}
+
+.item-highlight, .onyx-highlight {
+	padding: 5px !important;
+	color:white !important;
+	font-weight: bolder !important;
+	border: 2px solid black !important;
+	border-radius: 5px !important;
+	background-color: #5077BE !important; /* Old browsers */
+
+	background-image: url('../assets/gradient.png') !important;
+	background-repeat: repeat-x !important;
+	background-position: 0 bottom !important;
+}
+
+.normal-item-faded-blue:not(.drawer-highlight) {
+	/**/
+	padding: 5px !important;
+	font-weight: bold;
+	border: 2px solid black;
+	border-radius: 5px;
+	/*background: #FFF5EE;*/
+	color: white;
+	background: rgb(46,140,234);
+	background: -moz-linear-gradient(top,  rgba(46,140,234,1) 0%, rgba(117,189,234,1) 32%, rgba(117,189,234,1) 50%, rgba(117,189,234,1) 67%, rgba(46,140,234,1) 100%, rgba(102,167,232,1) 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(46,140,234,1)), color-stop(32%,rgba(117,189,234,1)), color-stop(50%,rgba(117,189,234,1)), color-stop(67%,rgba(117,189,234,1)), color-stop(100%,rgba(46,140,234,1)), color-stop(100%,rgba(102,167,232,1)));
+	background: -webkit-linear-gradient(top,  rgba(46,140,234,1) 0%,rgba(117,189,234,1) 32%,rgba(117,189,234,1) 50%,rgba(117,189,234,1) 67%,rgba(46,140,234,1) 100%,rgba(102,167,232,1) 100%);
+	background: -o-linear-gradient(top,  rgba(46,140,234,1) 0%,rgba(117,189,234,1) 32%,rgba(117,189,234,1) 50%,rgba(117,189,234,1) 67%,rgba(46,140,234,1) 100%,rgba(102,167,232,1) 100%);
+	background: -ms-linear-gradient(top,  rgba(46,140,234,1) 0%,rgba(117,189,234,1) 32%,rgba(117,189,234,1) 50%,rgba(117,189,234,1) 67%,rgba(46,140,234,1) 100%,rgba(102,167,232,1) 100%);
+	background: linear-gradient(to bottom,  rgba(46,140,234,1) 0%,rgba(117,189,234,1) 32%,rgba(117,189,234,1) 50%,rgba(117,189,234,1) 67%,rgba(46,140,234,1) 100%,rgba(102,167,232,1) 100%);
+
+
+
+
+
+
+	background-repeat: repeat-x;
+	background-position: 0 bottom;
+
+}
+
+.normal-item-faded-red:not(.drawer-highlight) {
+	/**/
+	padding: 5px !important;
+	font-weight: bold;
+	border: 2px solid black;
+	border-radius: 5px;
+	color: white;
+	background: rgb(46,140,234);
+	background: -moz-linear-gradient(top,  rgba(46,140,234,1) 0%, rgba(234,127,117,1) 32%, rgba(234,127,117,1) 50%, rgba(234,127,117,1) 67%, rgba(46,140,234,1) 100%, rgba(102,167,232,1) 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(46,140,234,1)), color-stop(32%,rgba(234,127,117,1)), color-stop(50%,rgba(234,127,117,1)), color-stop(67%,rgba(234,127,117,1)), color-stop(100%,rgba(46,140,234,1)), color-stop(100%,rgba(102,167,232,1)));
+	background: -webkit-linear-gradient(top,  rgba(46,140,234,1) 0%,rgba(234,127,117,1) 32%,rgba(234,127,117,1) 50%,rgba(234,127,117,1) 67%,rgba(46,140,234,1) 100%,rgba(102,167,232,1) 100%);
+	background: -o-linear-gradient(top,  rgba(46,140,234,1) 0%,rgba(234,127,117,1) 32%,rgba(234,127,117,1) 50%,rgba(234,127,117,1) 67%,rgba(46,140,234,1) 100%,rgba(102,167,232,1) 100%);
+	background: -ms-linear-gradient(top,  rgba(46,140,234,1) 0%,rgba(234,127,117,1) 32%,rgba(234,127,117,1) 50%,rgba(234,127,117,1) 67%,rgba(46,140,234,1) 100%,rgba(102,167,232,1) 100%);
+	background: linear-gradient(to bottom,  rgba(46,140,234,1) 0%,rgba(234,127,117,1) 32%,rgba(234,127,117,1) 50%,rgba(234,127,117,1) 67%,rgba(46,140,234,1) 100%,rgba(102,167,232,1) 100%);
+
+
+
+	background-repeat: repeat-x;
+	background-position: 0 bottom;
+
+}
+
+.normal-item-faded-green:not(.drawer-highlight) {
+	/**/
+	padding: 5px !important;
+	font-weight: bold;
+	border: 2px solid black;
+	border-radius: 5px;
+	/*background: #FFF5EE;*/
+	color: white;
+	background: rgb(46,140,234);
+	background: -moz-linear-gradient(top,  rgba(46,140,234,1) 0%, rgba(105,178,89,1) 32%, rgba(105,178,89,1) 50%, rgba(105,178,89,1) 67%, rgba(46,140,234,1) 100%, rgba(102,167,232,1) 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(46,140,234,1)), color-stop(32%,rgba(105,178,89,1)), color-stop(50%,rgba(105,178,89,1)), color-stop(67%,rgba(105,178,89,1)), color-stop(100%,rgba(46,140,234,1)), color-stop(100%,rgba(102,167,232,1)));
+	background: -webkit-linear-gradient(top,  rgba(46,140,234,1) 0%,rgba(105,178,89,1) 32%,rgba(105,178,89,1) 50%,rgba(105,178,89,1) 67%,rgba(46,140,234,1) 100%,rgba(102,167,232,1) 100%);
+	background: -o-linear-gradient(top,  rgba(46,140,234,1) 0%,rgba(105,178,89,1) 32%,rgba(105,178,89,1) 50%,rgba(105,178,89,1) 67%,rgba(46,140,234,1) 100%,rgba(102,167,232,1) 100%);
+	background: -ms-linear-gradient(top,  rgba(46,140,234,1) 0%,rgba(105,178,89,1) 32%,rgba(105,178,89,1) 50%,rgba(105,178,89,1) 67%,rgba(46,140,234,1) 100%,rgba(102,167,232,1) 100%);
+	background: linear-gradient(to bottom,  rgba(46,140,234,1) 0%,rgba(105,178,89,1) 32%,rgba(105,178,89,1) 50%,rgba(105,178,89,1) 67%,rgba(46,140,234,1) 100%,rgba(102,167,232,1) 100%);
+
+
+	background-repeat: repeat-x;
+	background-position: 0 bottom;
+
+}
+
+
+.normal-item-green:not(.drawer-highlight) {
+	/**/
+	padding: 5px !important;
+	font-weight: bold;
+	border: 2px solid black;
+	border-radius: 5px;
+	/*background: #FFF5EE;*/
+	color: white;
+	background: #92c908 url('../assets/gradient.png') repeat-x 0 bottom; /* Old browsers */
+	background-image: url('../assets/gradient.png'), -moz-linear-gradient(-45deg,  #92c908 0%, #91ba07 100%); /* FF3.6+ */
+	background-image: url('../assets/gradient.png'), -webkit-gradient(linear, left top, right bottom, color-stop(0%,#92c908), color-stop(100%,#91ba07)); /* Chrome,Safari4+ */
+	background-image: url('../assets/gradient.png'), -webkit-linear-gradient(-45deg,  #92c908 0%,#91ba07 100%); /* Chrome10+,Safari5.1+ */
+	background-image: url('../assets/gradient.png'), -o-linear-gradient(-45deg,  #92c908 0%,#91ba07 100%); /* Opera 11.10+ */
+	background-image: url('../assets/gradient.png'), -ms-linear-gradient(-45deg,  #92c908 0%,#91ba07 100%); /* IE10+ */
+	background-image: url('../assets/gradient.png'), linear-gradient(135deg,  #92c908 0%,#91ba07 100%); /* W3C */
+	background-repeat: repeat-x;
+	background-position: 0 bottom;
+
+}
+
+.normal-item:not(.drawer-highlight) {
+	/**/
+	padding: 5px !important;
+	font-weight: bold;
+	border: 2px solid black;
+	border-radius: 5px;
+	color: white;
+	background: rgb(64,150,238) url('../assets/gradient.png') repeat-x 0 bottom; /* Old browsers */
+	background-image: url('../assets/gradient.png'), -moz-radial-gradient(center, ellipse cover,  rgba(64,150,238,1) 0%, rgba(14,125,237,1) 100%); /* FF3.6+ */
+	background-image: url('../assets/gradient.png'), -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(0%,rgba(64,150,238,1)), color-stop(100%,rgba(14,125,237,1))); /* Chrome,Safari4+ */
+	background-image: url('../assets/gradient.png'), -webkit-radial-gradient(center, ellipse cover,  rgba(64,150,238,1) 0%,rgba(14,125,237,1) 100%); /* Chrome10+,Safari5.1+ */
+	background-image: url('../assets/gradient.png'), -o-radial-gradient(center, ellipse cover,  rgba(64,150,238,1) 0%,rgba(14,125,237,1) 100%); /* Opera 12+ */
+	background-image: url('../assets/gradient.png'), -ms-radial-gradient(center, ellipse cover,  rgba(64,150,238,1) 0%,rgba(14,125,237,1) 100%); /* IE10+ */
+	background-image: url('../assets/gradient.png'), radial-gradient(ellipse at center,  rgba(64,150,238,1) 0%,rgba(14,125,237,1) 100%); /* W3C */
+
+	background-repeat: repeat-x;
+	background-position: 0 bottom;
+
+}
+
+.dark-item:not(.drawer-highlight) {
+	/**/
+	/*-webkit-box-sizing: border-box;
+	border-width: 5px;
+	-webkit-border-image: url('../assets/menuback.png') 5 5 5 5 stretch stretch;
+	color:black;*/
+	padding: 5px !important;
+	font-weight: bold;
+	border: 2px solid black;
+	border-radius: 5px;
+	/*background: #FFF5EE;*/
+	color: white;
+	background: rgb(60,150,238) url('../assets/gradient.png') repeat-x 0 bottom;;
+	background-image: url('../assets/gradient.png'), -moz-radial-gradient(center, ellipse cover,  rgba(60,150,238,1) 0%, rgba(0,84,219,1) 100%);
+	background-image: url('../assets/gradient.png'), -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(0%,rgba(60,150,238,1)), color-stop(100%,rgba(0,84,219,1)));
+	background-image: url('../assets/gradient.png'), -webkit-radial-gradient(center, ellipse cover,  rgba(60,150,238,1) 0%,rgba(0,84,219,1) 100%);
+	background-image: url('../assets/gradient.png'), -o-radial-gradient(center, ellipse cover,  rgba(60,150,238,1) 0%,rgba(0,84,219,1) 100%);
+	background-image: url('../assets/gradient.png'), -ms-radial-gradient(center, ellipse cover,  rgba(60,150,238,1) 0%,rgba(0,84,219,1) 100%);
+	background-image: url('../assets/gradient.png'), radial-gradient(ellipse at center,  rgba(60,150,238,1) 0%,rgba(0,84,219,1) 100%);
+
+	background-repeat: repeat-x;
+	background-position: 0 bottom;
+}
+
+.very-dark-item:not(.drawer-highlight) {
+	/**/
+	padding: 5px !important;
+	font-weight: bold;
+	border: 2px solid black;
+	border-radius: 5px;
+	/*background: #FFF5EE;*/
+	color: black;
+	background: #c6c6c6 url('../assets/gradient.png') repeat-x 0 bottom; /* Old browsers */
+	background-image: url('../assets/gradient.png'), -moz-linear-gradient(left, #c6c6c6 0%, #969696 100%); /* FF3.6+ */
+	background-image: url('../assets/gradient.png'), -webkit-gradient(linear, left top, right top, color-stop(0%,#c6c6c6), color-stop(100%,#969696)); /* Chrome,Safari4+ */
+	background-image: url('../assets/gradient.png'), -webkit-linear-gradient(left, #c6c6c6 0%,#969696 100%); /* Chrome10+,Safari5.1+ */
+	background-image: url('../assets/gradient.png'), -o-linear-gradient(left, #c6c6c6 0%,#969696 100%); /* Opera 11.10+ */
+	background-image: url('../assets/gradient.png'), -ms-linear-gradient(left, #c6c6c6 0%,#969696 100%); /* IE10+ */
+	background-image: url('../assets/gradient.png'), linear-gradient(to right, #c6c6c6 0%,#969696 100%); /* W3C */
+	background-repeat: repeat-x;
+	background-position: 0 bottom;
+}
+
+/* source\controls\expandableradiogroup\expandableradiogroup.css */
+
+/* RadioButton.css */
+.expand-radiobutton {
+	padding: 8px 12px;
+	margin: 0;
+	outline: 0;
+	/**/
+	font-size: 75%;
+	text-shadow: 0 1px 1px rgba(0,0,0,0.2);
+	text-align: center;
+	/**/
+	background: #E7E7E7 url('../assets/gradient.png') repeat-x bottom;
+	/* IE8 */
+	border: 1px solid #333;
+	border: 1px solid rgba(15, 15, 15, 0.2);
+	/* turn off right-border in a way IE8 ignores, because IE8 does not support :last-child */
+	border-right-color: rgba(0,0,0,0);
+	box-shadow: inset 1px 1px 0px rgba(255, 255, 255, 0.2);
+}
+
+
+
+
+.expand-radiobutton-top-left {
+	border-top-left-radius: 3px;	
+}
+
+.expand-radiobutton-bottom-left {
+	border-bottom-left-radius: 3px;	
+}
+
+.expand-radiobutton-top-right {
+	border-top-right-radius: 3px;	
+}
+
+.expand-radiobutton-bottom-right {
+	border-bottom-right-radius: 3px;	
+}
+
+.expand-radiobutton-right-border {
+	border-right: 1px solid #333;
+	border-right: 1px solid rgba(15, 15, 15, 0.2);
+}
+
+.expand-radiobutton.active {
+	color: White;
+	background: #0091F2 url('../assets/gradient-invert.png') repeat-x top;
+	border-top: 1px solid rgba(15, 15, 15, 0.6);
+	box-shadow: inset 1px 2px 2px rgba(0, 0, 0, 0.2);
+}
+
+/* source\controls\custombutton\custombutton.css */
+
+.playVideoButton {
+	width: 120px;
+	height: 120px;
+	background: url('../assets/playvideo.png') 0 0 no-repeat;
+	background-size: 100% 100%;
+}
+
+.playVideoButtonClick {
+	width: 120px;
+	height: 120px;
+	background: url('../assets/playvideoclick.png') 0 0 no-repeat;
+	background-size: 100% 100%;
+}
+
+.playAudioButton {
+	width: 120px;
+	height: 120px;
+	background: url('../assets/playaudio.png') 0 0 no-repeat;
+	background-size: 100% 100%;
+}
+
+.playAudioButtonClick {
+	width: 120px;
+	height: 120px;
+	background: url('../assets/playaudioclick.png') 0 0 no-repeat;
+	background-size: 100% 100%;
+}
+
+/* source\controls\expandablemenu\expandablemenu.css */
+
+.drawer-highlight {
+	padding: 5px !important;
+	color:white !important;
+	font-weight: bolder !important;
+	border: 2px solid black !important;
+	border-radius: 5px !important;
+	background-color: #5077BE !important; /* Old browsers */
+	
+
+	background-image: url('../assets/gradient.png') !important;
+	background-repeat: repeat-x !important;
+	background-position: 0 bottom !important;
+
+}
+
+.highlight-14px {
+	padding: 14px !important;
+	color:white !important;
+	font-weight: bolder !important;
+	-webkit-box-sizing: border-box;
+	font-size: 85% !important;
+	border: 5px solid black !important;
+	border-radius: 5px !important;
+	background: #5077BE !important; /* Old browsers */
+
+	background-image: url('../assets/gradient.png') !important;
+	background-repeat: repeat-x !important;
+	background-position: 0 bottom !important;
+}
+
+/* source\views\login\login.css */
+
+.view-mode-active {
+	background: rgb(0,183,234); /* Old browsers */
+	border-radius: 4px;
+	padding:3px;
+	color:black;
+	border: 2px solid black;
+	box-sizing:border-box;
+	-moz-box-sizing:border-box; /* Firefox */
+	-webkit-box-sizing:border-box; /* Safari */
+	box-shadow: 0 0 10px rgba(0, 0, 255, .8);
+    -webkit-box-shadow: 0 0 10px rgba(0, 0, 255, .8); 
+    -moz-box-shadow: 0 0 10px rgba(0, 0, 255, .8); 
+}
+
+.view-mode-not {
+	background: rgb(64,150,238); /* Old browsers */
+
+	border-radius: 4px;
+	padding:3px;
+	color:white;
+	border: 2px solid black;
+	box-sizing:border-box;
+	-moz-box-sizing:border-box; /* Firefox */
+	-webkit-box-sizing:border-box; /* Safari */
+}
+
+.view-mode-text {
+	text-align: center;
+	font-size:70%;
+}
+
+.view-mode-inline {
+	display: inline-block;
+	margin-right: 5px;
+	text-align: center;
+}
+
+.view-mode-random {
+	border-left:2px solid black;
+	border-right:2px solid black;
+	border-bottom: 2px solid black;
+	border-radius: 5px;
+	width:55px;
+	display:inline-block;
+	padding-left:5px;
+	padding-right:5px;
+	margin-right: 5px;
+}
+
+.scroller {
+ 	white-space: nowrap;
+ 	position:relative;
+ 	vertical-align:top;
+	overflow-x:auto;
+	overflow-y:hidden;
+}
+
+.combo-input {
+	background: white;
+	border:1px solid black;
+}
+
+.light-back {
+	-webkit-box-sizing: border-box;
+	border-width: 5px;
+	-webkit-border-image: url('../assets/menuback.png') 5 5 5 5 stretch stretch;
+	color:black;
+	font-weight: bold;
+	font-size: 85%;
+}
+
+.med-back {
+	-webkit-box-sizing: border-box;
+	border-width: 5px;
+	-webkit-border-image: url('../assets/darkitem.png') 5 5 5 5 stretch stretch;
+	color:black;
+	font-weight: bold;
+	font-size: 85%;
+}
+
+.dark-back:not(.highlight-14px) {
+	-webkit-box-sizing: border-box;
+	border-width: 5px;
+	-webkit-border-image: url('../assets/verydarkitem.png') 5 5 5 5 stretch stretch;
+	color:black;
+	font-weight: bold;
+	font-size: 85%;
+}
+
+
+
+.login-font-size {
+	font-size: 120% !important;
+}
+.login-toolbar-height {
+	height: 110px;
+}
+.login-toolbar-header {
+	font-size: 150%;
+}
+
+
+
+.help-section:not(.help-header){
+	font-size:80%;
+	line-height:130%
+}
+
+.help-sub:not(.help-header){
+	font-size:80%;
+	line-height:130%
+}
+
+.help-header {
+	font-size: 120%;
+	border-bottom: 1px solid #333;
+}
+
+.help-section p:last-of-type {
+	border-bottom: 1px solid #333;
+}
+
+
+@media all and (max-height: 699px) and (min-height: 0px) {
+	
+	.login-font-size {
+		font-size: 85% !important;
+	}
+	.login-toolbar-height {
+		height: 55px;
+	}
+	.login-toolbar-header {
+		font-size: 100%;
+	}
+}
+
+/* source\views\items\items.css */
+
+.notesBack {
+	background: #efeff9; /* Old browsers */
+	background: -moz-linear-gradient(top,  #efeff9 0%, #e6e6fa 47%, #cfcff9 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#efeff9), color-stop(47%,#e6e6fa), color-stop(100%,#cfcff9)); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top,  #efeff9 0%,#e6e6fa 47%,#cfcff9 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top,  #efeff9 0%,#e6e6fa 47%,#cfcff9 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top,  #efeff9 0%,#e6e6fa 47%,#cfcff9 100%); /* IE10+ */
+	background: linear-gradient(to bottom,  #efeff9 0%,#e6e6fa 47%,#cfcff9 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#efeff9', endColorstr='#cfcff9',GradientType=0 ); /* IE6-9 */
+	
+}
+
+.notes-display {
+	border:2px solid #003366;
+	color:black;
+	padding:5px 5px 5px 5px;
+}
+.notes-display.bottom-display {
+	border-top-left-radius:0px;
+	border-bottom-left-radius:0px;
+	border-top-right-radius:10px;
+	border-bottom-right-radius:10px;
+}
+
+.notes-display.top-display {
+	border-top-left-radius:10px;
+	right: 0;
+}
+
+
+
+.mode-display-bottom {
+	border-top-left-radius:10px;
+	border-bottom-left-radius:10px;
+}
+
+.note-item {
+	text-shadow: 1px 2px 1px rgba(0,0,0,0.4);
+	color: white;
+	font-weight: bolder;
+}
+
+.red-color {
+	color:#FF7A9F;
+}
+
+.green-color {
+	color:#66C465;
+}
+
+.yellow-color {
+	color: #FFD881;
+}
+
+
+
+/* source\views\posting.css */
+
+
+.post-view {
+	right: 0;
+	left: auto;
+	position: absolute;
+	width: 100%;
+	
+}
+
+.header-bg {
+	/**/
+	
+	font-weight: bold;
+	color: black;
+	background: white url('../assets/gradient.png') repeat-x 0 bottom; /* Old browsers */
+
+}
+
+.slideable-handle {
+	position:absolute;
+	bottom:-5px;
+	left:-35px;
+	background:white url('../source/assets/gradient.png') repeat-x 0 bottom;;
+	height:75px;
+	width:30px;
+	
+	text-align: center;
+	line-height: 80%;
+	font-weight: bold;
+
+}
+
+.post-picker-text {
+	text-align: center;
+	margin-top: 20px;
+	margin-left: 8px;
+	font-weight: bold;
+	font-size: 120%;
+}
+
+.post-picker-header {
+	font-size: 115%;
+	text-align: center;
+	height: 70px;
+	margin-bottom: 5px;
+	
+	border-bottom: 3px ridge #333333;
+	text-shadow: 0px 0px 8px rgba(0,0,0,0.6);
+}
+
+.post-picker-image {
+	height: 65px;
+	width: 65px;
+}
+
+.post-picker-item {
+	padding: 3px;
+	text-align: center;
+	border: 3px solid #333333;
+}
+
+.photo-background {
+	background: url('../assets/photobackground.png') no-repeat;
+	background-size: 100% 100%;
+}
+
+.text-preview-title {
+	font-size: 110%;
+	text-shadow: 0px 0px 8px rgba(0,0,0,0.6);
+	font-weight: bold;
+	text-align: center;
+	width:100%;
+	margin-bottom: 15px;
+}
+.text-preview-body {
+	font-size: 90%;
+	margin-bottom: 15px;
+}
+
+.preview-tags {
+	font-size: 70%;
+	margin-bottom: 20px;
+}
+
+.preview-post-info {
+	font-size: 90%;
+}
+
+.filter-item {
+	margin-left: 2px;
+	margin-right: 2px;
+	margin-top: 5px;
+	margin-bottom: 5px;
+	border: 1px solid black;
+	border-radius: 3px;
+	background-color: black;
+}
+
+.filter-item-select {
+	border: 1px solid #4371a5;
+	background-color: #4371a5;
+	box-shadow: 0px 0px 8px #4371a5;
+	webkit-box-shadow: 0px 0px 8px #4371a5;
+}
+
+.posting-header {
+	font-size: 110%;
+	text-shadow: 0px 0px 8px rgba(0,0,0,0.6);
+	text-align: center;
+	height: 70px;
+	border-bottom: 3px ridge #333333;
+	padding-top: 10px;
+	padding-left: 30px !important;
+	padding-right: 30px !important;
+}
+
+.posting-post-option {
+	font-size: 110%;
+	font-weight: bold;
+	text-shadow: 0px 0px 8px rgba(0,0,0,0.6);
+	color:white;
+	text-align: center;
+	padding-top: 10px;
+}
+
+.captionBack.photo-list {
+	background: #333;
+	color: white;
+	
+}
+
+/* source\views\categories\categories.css */
+
+.tree-side {
+	background-image:url('../assets/treeside.png');
+	background-repeat:no-repeat;
+	margin-left: 10px;
+	font-weight: normal;
+}
+
+.tree-bottom {
+	background-image:url('../assets/treebottom.png');
+	background-repeat:no-repeat;
+	margin-left: 10px;
+	font-weight: normal;
+}
+
+.tree-icon {
+	width: 32px;
+	height: 32px;
+	border-radius: 3px;
+}
+
+.tree-selected {
+	background-color: #5077be;
+	border-radius: 5px;
+}
+
+@-webkit-keyframes cat-open {
+    0% {height:65px;}
+    100% {height:500px;}
+}
+
+@-webkit-keyframes cat-close-anim {
+    0% {-webkit-transform: translate3d(0,0px,0);opacity:1;}
+    100% {-webkit-transform: translate3d(0,500px,0);opacity:0;}
+}
+
+.tree-header {
+	font-weight: bolder;
+}
+
+.tree-background {
+	color: black;
+	background: white url('../assets/gradient.png') repeat-x 0 bottom;
+	/*border: 5px solid black;*/
+	border-radius: 15px;
+}
+
+.edit-cats-top-toolbar {
+	color: white;
+	height: 75px;
+	font-size: 70%;
+	padding-left: 15px;
+	padding-right: 15px;
+	margin-bottom: 5px;
+}
+
+.cat-list-item-text {
+	font-weight: bold;
+	color: #333000;
+	/*text-shadow: 0px 0px 1px rgba(0,0,0,0.6);*/
+}
+
+.cat-list-item-count {
+	color: #333000;
+	font-size: 70%;
+}
+
+.cat-list-backer {
+	/**/
+	padding: 5px !important;
+	font-weight: bold;
+	margin-left: 3px;
+	margin-right: 3px;
+	color: black;
+	background: white url('../assets/gradient.png') repeat-x 0 bottom; /* Old browsers */
+
+	
+	border-top: 1px solid #333000;
+	border-bottom: 1px solid white;
+
+}
+
+.cat-list-item {
+	/**/
+	padding: 5px !important;
+	font-weight: bold;
+	margin-left: 3px;
+	margin-right: 3px;
+	color: black;
+	background: white url('../assets/gradient.png') repeat-x 0 bottom; /* Old browsers */
+
+	background-image: url('../assets/gradient.png'), rgb(167,207,223);
+	background-image: url('../assets/gradient.png'), -moz-linear-gradient(left,  rgba(167,207,223,1) 0%, rgba(77,136,188,1) 38%, rgba(67,113,165,1) 100%);
+	background-image: url('../assets/gradient.png'), -webkit-gradient(linear, left top, right top, color-stop(0%,rgba(167,207,223,1)), color-stop(38%,rgba(77,136,188,1)), color-stop(100%,rgba(67,113,165,1)));
+	background-image: url('../assets/gradient.png'), -webkit-linear-gradient(left,  rgba(167,207,223,1) 0%,rgba(77,136,188,1) 38%,rgba(67,113,165,1) 100%);
+	background-image: url('../assets/gradient.png'), -o-linear-gradient(left,  rgba(167,207,223,1) 0%,rgba(77,136,188,1) 38%,rgba(67,113,165,1) 100%);
+	background-image: url('../assets/gradient.png'), -ms-linear-gradient(left,  rgba(167,207,223,1) 0%,rgba(77,136,188,1) 38%,rgba(67,113,165,1) 100%);
+	background-image: url('../assets/gradient.png'), linear-gradient(to right,  rgba(167,207,223,1) 0%,rgba(77,136,188,1) 38%,rgba(67,113,165,1) 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#a7cfdf', endColorstr='#4371a5',GradientType=1 );
+
+	background-repeat: repeat-x;
+	background-position: 0 bottom;
+
+	border-top: 1px solid #333000;
+	border-bottom: 1px solid #4F4F4F;
+
+}
+
+.cat-list-item-swipe {
+	/**/
+	padding: 5px !important;
+	font-weight: bold;
+	margin-left: 3px;
+	margin-right: 3px;
+	color: black;
+	background: #B8B8B8 url('../assets/gradient.png') repeat-x 0 bottom; /* Old browsers */
+	
+	background-repeat: repeat-x;
+	background-position: 0 bottom;
+	
+
+}
+
+/* source\views\firsttime\firsttime.css */
+
+.first-time-window {
+	background-color: rgba(51,51,51,0.5);
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	overflow: hidden;
+	
+}
+
+/* source\app.css */
+
+@-webkit-keyframes fade-in /* Safari and Chrome */
+{
+0%   {opacity: 0;}
+100% {opacity: 1;}
+}
+
+@-webkit-keyframes fade-out /* Safari and Chrome */
+{
+0%   {opacity: 1;}
+100% {opacity: 0;}
+}
+
+
+body {
+	font-size: 150%;
+	-webkit-tap-highlight-color: rgba(0,0,0,0);
+  	-webkit-tap-highlight-color: transparent; /* For some Androids */
+}
+
+a:link {
+	color: #00BFFF;
+}
+
+.transform-3d {
+	-moz-transform: translate3d(0, 0, 0);
+    -ms-transform: translate3d(0, 0, 0);
+    -o-transform: translate3d(0, 0, 0);
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+}
+
+.main-popup-style {
+	width: 280px;
+	font-size:65%;
+}
+
+.slideable-sample {
+	position: absolute;
+}
+
+.enyo-touch-scroller {
+	overflow: hidden;
+	-moz-transform: translate3d(0, 0, 0);
+    -ms-transform: translate3d(0, 0, 0);
+    -o-transform: translate3d(0, 0, 0);
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0)
+}
+
+.popup-backer {
+	background-image: url('../assets/popupbacker.png');
+	background-size: 100% 100%;
+}
+
+.post-background {
+
+	background: #4371a5; /* Old browsers */
+	background: -moz-radial-gradient(center, ellipse cover,  #a7cfdf 0%, #4371a5 100%); /* FF3.6+ */
+	background: -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(0%,#a7cfdf), color-stop(100%,#4371a5)); /* Chrome,Safari4+ */
+	background: -webkit-radial-gradient(center, ellipse cover,  #a7cfdf 0%,#4371a5 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-radial-gradient(center, ellipse cover,  #a7cfdf 0%,#4371a5 100%); /* Opera 12+ */
+	background: -ms-radial-gradient(center, ellipse cover,  #a7cfdf 0%,#4371a5 100%); /* IE10+ */
+	background: radial-gradient(ellipse at center,  #a7cfdf 0%,#4371a5 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#a7cfdf', endColorstr='#4371a5',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
+
+}
+
+.main-back {
+   	background-image: url('../assets/companylogo150.png'), -webkit-radial-gradient(center, ellipse cover,  #a7cfdf 0%,#4371a5 100%);
+   	background-image: url('../assets/companylogo150.png'), -moz-radial-gradient(center, ellipse cover,  #a7cfdf 0%, #4371a5 100%); /* FF3.6+ */
+	background-image: url('../assets/companylogo150.png'), -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(0%,#a7cfdf), color-stop(100%,#4371a5)); /* Chrome,Safari4+ */
+	background-image: url('../assets/companylogo150.png'), -webkit-radial-gradient(center, ellipse cover,  #a7cfdf 0%,#4371a5 100%); /* Chrome10+,Safari5.1+ */
+	background-image: url('../assets/companylogo150.png'), -o-radial-gradient(center, ellipse cover,  #a7cfdf 0%,#4371a5 100%); /* Opera 12+ */
+	background-image: url('../assets/companylogo150.png'), -ms-radial-gradient(center, ellipse cover,  #a7cfdf 0%,#4371a5 100%); /* IE10+ */
+	background-image: url('../assets/companylogo150.png'), radial-gradient(ellipse at center,  #a7cfdf 0%,#4371a5 100%); /* W3C */
+	background-position: center bottom, left top; /*Positioning*/
+	background-repeat: no-repeat, repeat;
+}
+
+
+
+.break-word-white-space {
+	word-wrap:break-word !important;
+	white-space: normal !important;
+}
+
+.captionBack {
+	color: black;
+	background: white url('../assets/gradient.png') repeat-x 0 bottom;
+	/*border: 5px solid black;*/
+	border-radius: 15px !important;
+	/*margin: 4px 4px 10px 4px;*/
+	padding: 10px 5px 10px 5px;
+	word-wrap:break-word !important;
+}
+
+/*.captionBack.break-word-white-space {
+	border: 5px solid #003366;
+}*/
+
+.loginBack {
+	color: black;
+	background: white;
+	border: 0px solid black;
+	border-radius: 15px;
+	/*margin: 4px 4px 10px 4px;*/
+	padding: 0px 0px 0px 0px;
+	word-wrap:break-word !important;
+}
+
+.smallText {
+	font-size: 60%;
+}
+
+.back-shadow {
+	box-shadow: -7px 1px 20px #888888;
+	webkit-box-shadow: -7px 1px 20px #888888;
+}
+
+.shadow {
+	box-shadow: 7px 7px 20px #888888;
+	webkit-box-shadow: 7px 7px 20px #888888;
+}
+
+.margin-spacing {
+	margin-top: 2px;
+	margin-bottom: 2px;
+}
+
+.min-height-55 {
+	min-height: 55px;
+}
+
+.animateClass {
+	-webkit-transition: all 120ms ease-in;
+}
+
+.border-top-light {
+	border-top: 1px solid #C0C0C0;
+}
+
+.border-bottom-dark {
+	border-bottom: 1px solid #333;
+}
+
+.no-limits {
+
+}
+
+.banner-message {
+	font-weight:bolder;
+	height:40px;
+	border-radius:5px;
+	background: rgba(0,0,0,0.7);
+	color:white;
+	font-size:55%;
+	min-width:200px;
+}
+
+/*img:not(.no-limits) {
+		max-width: 500px !important;
+		border: 2px solid black;
+		border-radius: 15px;
+
+		margin-right: 5px;
+	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@media all and (max-width: 600px) and (min-width: 350px) {
+	img:not(.no-limits) {
+		max-width: 305px !important;
+		border: 2px solid black;
+		border-radius: 15px;
+		margin-right: 5px;
+	}
+
+}
+@media all and (max-width: 349px) and (min-width: 0px) {
+	img:not(.no-limits) {
+		max-width: 260px !important;
+		border: 2px solid black;
+		border-radius: 15px;
+		margin-right: 5px;
+	}
+}*/
+
+p {word-wrap:break-word;}
+
+
+
+
+
+
+
+
+
+
+
+
+

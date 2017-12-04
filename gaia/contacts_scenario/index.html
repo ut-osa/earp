@@ -1,0 +1,3175 @@
+<!DOCTYPE html>
+<html>
+  
+  <head>
+    <title>
+      ScoreGeek
+    </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="utf-8">
+    
+    <!-- start jquery mobile -->
+    <link rel="stylesheet" href="themes/YellowRedGreen.min.css" />
+    <link rel="stylesheet" href="themes/jquery.mobile.icons.min.css" />
+    
+    <link rel="stylesheet" href="lib/jqm/jquery.mobile.structure-1.4.4.min.css" />
+    <script type="text/javascript" src="lib/jq/jquery-2.1.1.min.js">
+    </script>
+    <script type="text/javascript" src="lib/jqm/jquery.mobile-1.4.4.min.js"></script>
+    <!-- start phonegap  -->
+    <script type="text/javascript" src="phonegap.js">
+    </script>
+    <!-- end phonegap  -->
+    
+    
+    <style type="text/css" media="screen">
+
+      input[type="hidden"] {
+        visibility: hidden; 
+      }
+      
+      .rect-thumb {
+          width: 320px;
+          height: 240px;
+      }
+      
+      .ui-simpledialog-controls {
+        padding-left: 15px;
+        padding-right: 15px;
+      }
+      .ui-simpledialog-subtitle {
+        padding-left: 15px;
+        padding-right: 15px;
+      }
+      .ui-simpledialog-withpadding {
+        padding-left: 15px;
+        padding-right: 15px;
+      }
+      .ui-li .ui-btn-text a.ui-link-inherit {
+        /* This are the added classes from jQuery mobile */
+        
+        white-space: normal;
+        /* And this enables more than one line */
+      }
+      .ui-title {
+        margin: 0.6em 10% 0.8em !important;
+      }
+      .ui-block-a2 {
+        width: 50% !important;
+      }
+      .ui-block-b2 {
+        width: 50% !important;
+      }
+      .ui-block-c2 {
+        width: 70% !important;
+      }
+      .ui-icon-myapp-half:after {
+        background-image: url("img/ui/app-icon-half.png");
+      }
+      .ui-icon-myapp-5:after {
+        background-image: url("img/ui/app-icon-5.png");
+      }
+      .ui-icon-myapp-10:after {
+        background-image: url("img/ui/app-icon-10.png");
+      }
+      .ui-icon-myapp-50:after {
+        background-image: url("img/ui/app-icon-50.png");
+      }
+      .ui-icon-myapp-100:after {
+        background-image: url("img/ui/app-icon-100.png");
+      }
+      .ui-icon-myapp-500:after {
+        background-image: url("img/ui/app-icon-500.png");
+      }
+      .ui-icon-myapp-1000:after {
+        background-image: url("img/ui/app-icon-1000.png");
+      }
+      .ui-icon-myapp-5000:after {
+        background-image: url("img/ui/app-icon-5000.png");
+      }
+      .ui-icon-myapp-10000:after {
+        background-image: url("img/ui/app-icon-10000.png");
+      }
+      @media only screen and (-webkit-min-device-pixel-ratio: 2) {
+        .ui-icon-myapp-half:after {
+          background-image: url("img/ui/app-icon-half_at_2x.png");
+          background-size: 18px 18px;
+        }
+        .ui-icon-myapp-5:after {
+          background-image: url("img/ui/app-icon-5_at_2x.png");
+          background-size: 18px 18px;
+        }
+        .ui-icon-myapp-10:after {
+          background-image: url("img/ui/app-icon-10_at_2x.png");
+          background-size: 18px 18px;
+        }
+        .ui-icon-myapp-50:after {
+          background-image: url("img/ui/app-icon-50_at_2x.png");
+          background-size: 18px 18px;
+        }
+        .ui-icon-myapp-100:after {
+          background-image: url("img/ui/app-icon-100_at_2x.png");
+          background-size: 18px 18px;
+        }
+        .ui-icon-myapp-500:after {
+          background-image: url("img/ui/app-icon-500_at_2x.png");
+          background-size: 18px 18px;
+        }
+        .ui-icon-myapp-1000:after {
+          background-image: url("img/ui/app-icon-1000_at_2x.png");
+          background-size: 18px 18px;
+        }
+        .ui-icon-myapp-5000:after {
+          background-image: url("img/ui/app-icon-5000_at_2x.png");
+        }
+        .ui-icon-myapp-10000:after {
+          background-image: url("img/ui/app-icon-10000_at_2x.png");
+        }
+      }
+      .desc {
+        font-size: 75%;
+        white-space: normal;
+      }
+      .ui-li .ui-btn-text a.ui-link-inherit {
+        /* This are the added classes from jQuery mobile */
+        
+        white-space: normal;
+        /* And this enables more than one line */
+      }
+      .awardDiv {
+        position: relative;
+      }
+      .teamDiv {
+        position: relative;
+      }
+      .awardMain {
+        width: 50px;
+      }
+      .awardOverlay {
+        position: absolute;
+        height: 25px;
+        width: 25px;
+        top: 0px;
+        left: 0px;
+      }
+      .teamMain {
+        width: 80px;
+      }
+      .colorMain {
+        width: 80px;
+      }
+      .colorOverlay {
+        position: absolute;
+        height: 40px;
+        width: 40px;
+        top: 20px;
+        left: 20px;
+      }
+      .teamOverlay1 {
+        position: absolute;
+        height: 40px;
+        width: 40px;
+        top: 0%;
+        left: 0%;
+      }
+      .teamOverlay2 {
+        position: absolute;
+        height: 40px;
+        width: 40px;
+        top: 0px;
+        left: 40px;
+      }
+      .teamOverlay3 {
+        position: absolute;
+        height: 40px;
+        width: 40px;
+        top: 40px;
+        left: 0px;
+      }
+      .teamOverlay4 {
+        position: absolute;
+        height: 40px;
+        width: 40px;
+        top: 40px;
+        left: 40px;
+      }
+      .square-thumb {
+        width: 100px;
+        height: 100px;
+      }
+      .square-thumb-small {
+        width: 50px;
+        height: 50px;
+      }
+      @media (min-width: 40em) {
+        /* Show the table header rows and set all cells to display: table-cell */
+        
+        .my-custom-breakpoint td,
+        .my-custom-breakpoint th,
+        .my-custom-breakpoint tbody th,
+        .my-custom-breakpoint tbody td,
+        .my-custom-breakpoint thead td,
+        .my-custom-breakpoint thead th {
+          display: table-cell;
+          margin: 0;
+        }
+        /* Hide the labels in each cell */
+        
+        .my-custom-breakpoint td .ui-table-cell-label,
+        .my-custom-breakpoint th .ui-table-cell-label {
+          display: none;
+        }
+      }
+      .ui-btn-pressed {
+        background: black;
+        font-weight: bold;
+        color: #111;
+        text-shadow: 0 1px 0 white;
+        background-image: -webkit-gradient(linear, left top, left bottom, from(#FFF5BA), to(#FBDD52));
+        background-image: -webkit-linear-gradient(#FFF5BA, #FBDD52);
+        background-image: -moz-linear-gradient(#FFF5BA, #FBDD52);
+        background-image: -ms-linear-gradient(#FFF5BA, #FBDD52);
+        background-image: -o-linear-gradient(#FFF5BA, #FBDD52);
+        background-image: linear-gradient(#FFF5BA, #FBDD52);
+      }
+
+    </style>
+    
+  </head>
+  
+  <body>
+    
+    <!-- Home -->
+    <div data-role="page" id="home">
+      <div data-theme="a" data-role="header">
+        <a data-role="button" id="popupSocial" data-theme="a" href="#" data-icon="comment" data-inline="true" data-iconpos="left" class="ui-btn-left">
+          Social
+        </a>
+        <h3>
+          ScoreGeek   
+        </h3>
+        <a data-role="button" data-theme="a" href="#edit" data-icon="gear" data-iconpos="left" class="ui-btn-right">
+          Settings
+        </a>
+        
+      </div>
+      <div class="ui-content">
+        <a data-role="button" data-theme="d" href="#games" data-icon="action" data-iconpos="left" data-transition="pop">
+          Score Game
+        </a>
+        <a data-role="button" href="#" id="btnHistory" data-icon="calendar" data-iconpos="left">
+          History
+        </a>
+        <a data-role="button" href="#" id="btnAwards" data-icon="tag" data-iconpos="left">
+          Achievements
+        </a>
+        <a data-role="button" href="#" id="btnStats" data-icon="grid" data-iconpos="left">
+          Statistics
+        </a>
+        <a data-role="button" href="#" id="btnGallery" data-icon="camera" data-iconpos="left">
+          Gallery
+        </a>
+        <div id="freeWebVersion">
+          <a data-role="button" data-theme="c" href="http://www.rebrandsoftware.com/app.asp?id=34" id="btnBuy" target="_blank" data-icon="check" data-iconpos="left">
+            Buy Mobile App
+          </a>
+          <a data-role="button" data-theme="c" href="#" id="btnShareWithFriends" target="_blank" data-icon="user" data-iconpos="left">
+            Share With Friends
+          </a>
+          <a data-role="button" data-theme="c" href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&amp;hosted_button_id=JQWGR3QF8VPYC" id="btnDonate" target="_blank" data-icon="shop" data-iconpos="left">
+            Donate
+          </a>
+        </div>
+        <!--
+        <div class="ui-field-contain" id="testImageContainer">
+            <a id="aTestImage" href="img/photos/Photo1.jpg" class="test-swipebox" title="Test Image" rel="test-image"><img id="imgTestImage" src="img/photos/Photo1.jpg" height="240" width="320"></a>
+        </div>
+        <!--
+<a data-role="button" href="#" id="mini" data-icon="arrow-r" data-iconpos="left">
+Convert
+</a>
+<img src="" id="testImage" height="120" width="160">
+<img src="" id="testImage2" height="120" width="160">
+
+     
+<a data-role="button" href="#" id="test" data-icon="grid" data-iconpos="left">
+Test
+</a>
+-->
+      </div>
+      
+      
+      
+      <div data-role="popup" id="popupMenu">
+        <ul data-role="listview" class="social-list" id="social-list" data-inset="true" style="min-width:210px;" data-theme="a">
+          <li data-role="list-divider" data-theme="b">
+            Social Options
+          </li>
+          <li id="socialRate" data-icon="heart">
+            <a href="#">
+              Send Love
+            </a>
+          </li>
+          <li id="socialFeedback" data-icon="comment">
+            <a href="#">
+              Send Feedback
+            </a>
+          </li>
+          <li id="socialTweet" data-icon="forward">
+            <a href="#">
+              Share
+            </a>
+          </li>
+          <li id="socialFollow" data-icon="user">
+            <a href="#">
+              Follow
+            </a>
+          </li>
+          <li id="socialFriend" data-icon="user">
+            <a href="#">
+              Friend
+            </a>
+          </li>
+          <li id="socialLike" data-icon="check">
+            <a href="#">
+              Like on Facebook
+            </a>
+          </li>
+          <li id="socialSupport" data-icon="info">
+            <a href="#">
+              Support
+            </a>
+          </li>
+        </ul>
+      </div>
+      <div id="FixedFooter11" data-role="footer" class="ui-bar" data-position="fixed" data-tap-toggle="false">
+          <a data-role="button" id="popupTools1" data-icon="bullets" data-theme="a"  data-iconpos="left">
+          Tools
+        </a>
+        <a data-role="button" href="#" id="creditsButton" data-icon="info" data-iconpos="left">
+          Credits
+        </a>
+      </div>
+    </div>
+    
+    <!-- Credits -->
+    <div data-role="page" id="credits">
+      <div data-theme="a" data-role="header" data-position="fixed">
+        <a data-role="button" data-theme="a" href="#home" data-icon="home" data-iconpos="left" class="ui-btn-left">
+          Home
+        </a>
+        <h3 id="creditsTitle">
+          ScoreGeek
+        </h3>
+      </div>
+      <div class="ui-content">
+        <ul data-role="listview" data-divider-theme="b">
+          <li data-role="list-divider">
+            Concept and Programming
+          </li>
+          <li>
+            <a href="#" id="creditsMikeGibson">
+              <img src="img/players/Mike.jpg" alt="Mike" />
+              <h3>
+                Mike Gibson
+              </h3>
+              <p>
+                <strong>
+                  Rebrand Software, LLC
+                </strong>
+              </p>
+              <p>
+                http://www.RebrandSoftware.com
+              </p>
+              <p>
+                Twitter: @MikeKGibson
+              </p>
+              <p>
+                BGG: rebrandsoftware
+              </p>
+              <p>
+                Favorite games: 7 Wonders, Puerto Rico, El Grande, Terra Mystica
+              </p>
+              <p>
+                <strong>
+                  Please help me make ScoreGeek even better!  When you show the app to your friends, tweet, and rate the app 5 stars it really does help!
+                </strong>
+              </p>
+              
+              
+            </a>
+          </li>
+          
+          <li data-role="list-divider">
+            Graphic Design
+          </li>
+          <li>
+            <a href="#" id="creditsBenDevens">
+              <img src="img/players/Ben.jpg" alt="Ben" />
+              <h3>
+                Ben Devens
+              </h3>
+              <p>
+                <strong>
+                  Studio Zobot
+                </strong>
+              </p>
+              <p>
+                Favorite games: Terra Mystica, 7 Wonders, Cities and Knights of Catan,
+              </p>
+            </a>
+          </li>
+          
+          <li data-role="list-divider">
+            Character Icons
+          </li>
+          <li>
+            <a href="#" id="creditsIconka">
+              <img src="img/players/Player19.png" alt="Iconka" />
+              <h3>
+                Iconka Buddy Set
+              </h3>
+              <p>
+                <strong>
+                  Iconka.com
+                </strong>
+              </p>
+            </a>
+          </li>
+          
+          <li data-role="list-divider">
+            Game Icons
+          </li>
+          <li>
+            <img src="img/games/Game2.png" alt="Sirea's Gallery" />
+            <h3>
+              Sireas's Gallery
+            </h3>
+          </li>
+          
+          <li data-role="list-divider">
+            Many Thanks To:
+          </li>
+          <li>
+            <p>
+              <strong>
+                Jennifer Lee Gibson
+              </strong>
+            </p>
+            <p>
+              <strong>
+                Sara Scorza Devens
+              </strong>
+            </p>
+            <p>
+              <strong>
+                Jesse Elliot (BGG: jElliot)
+              </strong>
+            </p>
+            <p>
+              <strong>
+                Jeremiah Jourdan (BGG: jEric)
+              </strong>
+            </p>
+            <p>
+              <strong>
+                BoardGameGeek.com
+              </strong>
+            </p>
+          </li>
+        </ul>
+      </div>
+    </div>
+    
+    
+    <!-- Edit -->
+    <div data-role="page" id="edit">
+      <div data-theme="a" data-role="header">
+        <a data-role="button" data-theme="a" href="#home" data-icon="home" data-iconpos="left" class="ui-btn-left">
+          Home
+        </a>
+        <h3>
+          Settings
+        </h3>
+      </div>
+      <div class="ui-content">
+        <a data-role="button" href="#prefs" data-icon="bullets" data-iconpos="left">
+          Preferences
+        </a>
+        <a data-role="button" href="#cloud" data-icon="cloud" data-iconpos="left">
+          Cloud
+        </a>
+        <a data-role="button" href="#editbgg" data-icon="forward" data-iconpos="left">
+          BoardGameGeek
+        </a>
+        <a data-role="button" href="#editplayers" data-icon="user" data-iconpos="left">
+          Edit Players
+        </a>
+        <a data-role="button" href="#editgames" data-icon="edit" data-iconpos="left">
+          Edit Games
+        </a>
+        <!--
+<a data-role="button" href="#" id="btnImportData" data-icon="gear" data-iconpos="left" data-theme="b">
+Import Old Database
+</a>
+-->
+        <a data-role="button" data-theme="e" href="#delete" id="deleteButton" data-icon="alert" data-iconpos="left">
+          Delete Stuff
+        </a>
+        
+      </div>
+    </div>
+    
+    <!-- Settings -->
+    <div data-role="page" id="prefs">
+      <div data-theme="a" data-role="header" data-position="fixed">
+        <a data-role="button" data-theme="a" href="#edit" data-icon="back" data-iconpos="left" class="ui-btn-left">
+          Back
+        </a>
+        <h3>
+          Preferences
+        </h3>
+        
+      </div>
+      <div class="ui-content">
+        
+        <div class="ui-field-contain">
+          <fieldset data-role="controlgroup" data-type="vertical" data-mini="false">
+            <legend>
+              Notify Me When:
+            </legend>
+            
+            <input id="chkCloudActivity" name="chkCloudActivity" type="checkbox">
+            <label for="chkCloudActivity" id="lblCloudActivity">
+              There is cloud activity
+            </label>
+            <!--
+<input id="chkCloudInactive" name="chkCloudInactive" type="checkbox">
+<label for="chkCloudInactive" id="lblCloudInactive">
+The cloud is disabled
+</label>
+-->
+            <input id="chkSessionTimer" name="chkSessionTimer" type="checkbox">
+            <label for="chkSessionTimer" id="lblSessionTimer">
+              The session timer starts
+            </label>
+            
+            <input id="chkBGG" name="chkBGG" type="checkbox">
+            <label for="chkBGG" id="lblBGG">
+              A game is posted to BoardGameGeek
+            </label>
+            
+            <input id="chkGameOverMan" name="chkGameOverMan" type="checkbox">
+            <label for="chkGameOverMan" id="lblGameOverMan">
+              Everyone scores zero points
+            </label>
+            
+            <input id="chkHiddenPlayers" name="chkHiddenPlayers" type="checkbox">
+            <label for="chkHiddenPlayers" id="lblHiddenPlayers">
+              Hidden players are filtered
+            </label>
+            
+            <!--
+            <input id="chkOfflineGames" name="chkOfflineGames" type="checkbox">
+            <label for="chkOfflineGames" id="lblOfflineGames">
+              I attempt to add games from the offline database
+            </label>
+            -->
+            <!--
+<input id="chk" name="chk" type="checkbox">
+<label for="chk" id="lbl">
+
+</label>
+-->
+          </fieldset>
+        </div>
+        
+        <div class="ui-field-contain">
+          <fieldset data-role="controlgroup" data-type="horizontal">
+            <legend>
+              Filter Key:
+            </legend>
+            <ul>
+              <li>
+                <b>
+                  Off
+                </b>
+                : No players or sessions are filtered
+              </li>
+              <li>
+                <b>
+                  Individuals
+                </b>
+                : Hidden players and their scores are filtered
+              </li>
+              <li>
+                <b>
+                  Sessions
+                </b>
+                : Any session that includes a hidden player is filtered
+              </li>
+            </ul>
+            <p>
+              To hide a player use Settings >
+              Edit Players >
+              [Choose Player] >
+              Hide on this device
+            </p>
+          </fieldset>
+        </div>
+        <div class="ui-field-contain">
+          <fieldset data-role="controlgroup" data-type="horizontal">
+            <legend>
+              Player Selection Filter:
+            </legend>
+            
+            <input type="radio" name="radioSelection" id="radioSelection-1" value="none" />
+            <label for="radioSelection-1">
+              Off
+            </label>
+            <input type="radio" name="radioSelection" id="radioSelection-2" value="soft" />
+            <label for="radioSelection-2">
+              Individuals
+            </label>
+          </fieldset>
+        </div>
+        <div class="ui-field-contain">
+          <fieldset data-role="controlgroup" data-type="horizontal">
+            <legend>
+              History Filter:
+            </legend>
+            
+            <input type="radio" name="radioHistory" id="radioHistory-1" value="none" />
+            <label for="radioHistory-1">
+              Off
+            </label>
+            <input type="radio" name="radioHistory" id="radioHistory-2" value="hard" />
+            <label for="radioHistory-2">
+              Sessions
+            </label>
+          </fieldset>
+        </div>
+        <div class="ui-field-contain">
+          <fieldset data-role="controlgroup" data-type="horizontal">
+            <legend>
+              Achievements Filter:
+            </legend>
+            
+            <input type="radio" name="radioAwards" id="radioAwards-1" value="none" />
+            <label for="radioAwards-1">
+              Off
+            </label>
+            <input type="radio" name="radioAwards" id="radioAwards-2" value="soft" />
+            <label for="radioAwards-2">
+              Individuals
+            </label>
+          </fieldset>
+        </div>
+        <div class="ui-field-contain">
+          <fieldset data-role="controlgroup" data-type="horizontal">
+            <legend>
+              Statistics Filter:
+            </legend>
+            
+            <input type="radio" name="radioStats" id="radioStats-1" value="none" />
+            <label for="radioStats-1">
+              Off
+            </label>
+            <input type="radio" name="radioStats" id="radioStats-2" value="soft" />
+            <label for="radioStats-2">
+              Individuals
+            </label>
+            <input type="radio" name="radioStats" id="radioStats-3" value="hard" />
+            <label for="radioStats-3">
+              Sessions
+            </label>
+          </fieldset>
+        </div>
+        <div class="ui-field-contain">
+          <fieldset data-role="controlgroup" data-type="horizontal">
+            <legend>
+              Gallery Filter:
+            </legend>
+            
+            <input type="radio" name="radioGallery" id="radioGallery-1" value="none" />
+            <label for="radioGallery-1">
+              None
+            </label>
+            <input type="radio" name="radioGallery" id="radioGallery-2" value="hard" />
+            <label for="radioGallery-2">
+              Sessions
+            </label>
+          </fieldset>
+        </div>
+        
+        <div class="ui-field-contain">
+            <fieldset data-role="controlgroup" data-type="horizontal">
+            <legend>Score Button Size:</legend>
+        
+          <select name="flip-buttons" id="flip-buttons" data-role="flipswitch" data-mini="false">
+            <option value="small">
+              Mini
+            </option>
+            <option value="big">
+              Big
+            </option>
+          </select>
+          </fieldset>
+          </div>
+      
+        
+        <div class="ui-field-contain">
+            <fieldset data-role="controlgroup" data-type="horizontal">
+        <legend>Online Game Search:</legend>
+        
+          <select name="flip-online" id="flip-online" data-role="flipswitch" data-mini="false">
+            <option value="true">
+              On
+            </option>
+            <option value="false">
+              Off
+            </option>
+          </select>
+          
+          </fieldset>
+          </div>
+      </div>
+    </div>
+    
+    <!-- Edit Players -->
+    <div data-role="page" id="editplayers">
+      <div data-theme="a" data-role="header" data-position="fixed">
+        <a data-role="button" data-theme="a" href="#edit" data-icon="back" data-iconpos="left" class="ui-btn-left">
+          Back
+        </a>
+        <a data-role="button" data-theme="d" id="addPlayerFromSettings" data-icon="plus" data-iconpos="left" class="ui-btn-right">
+          Add
+        </a>
+        <h3>
+          Players
+        </h3>
+      </div>
+      <div class="ui-content">
+        <ul data-role="listview" class="edit-player-list" id="edit-player-list" data-divider-theme="b" data-inset="true">
+          <li data-role="list-divider">
+            Select a player to edit
+          </li>
+        </ul>
+      </div>
+    </div>
+    
+    <!-- Edit BGG -->
+    <div data-role="page" id="editbgg">
+      <div data-theme="a" data-role="header" data-position="fixed">
+        <a data-role="button" id="btnBackFromBGG" data-theme="a" href="#edit" data-icon="back" data-iconpos="left" class="ui-btn-left">
+          Back
+        </a>
+        <h3>
+          BoardGameGeek
+        </h3>
+      </div>
+      
+      
+      <div class="ui-content">
+        <div class="ui-field-contain">
+          <p>
+            <strong>
+              Enter your account details to automatically post your plays to The Geek!
+            </strong>
+          </p>
+          <label for="textBGGUsername">
+            Username:
+          </label>
+          <input name="textBGGUsername" id="textBGGUsername" placeholder="BoardGameGeek.com Username" value="" type="text">
+          <label for="textBGGPassword">
+            Password:
+          </label>
+          <input name="textBGGPassword" id="textBGGPassword" placeholder="" value="" type="password">
+        </div>
+        <div class="ui-field-contain">
+          <a data-role="button" data-theme="a" href="#" id="saveBGGLogin" data-icon="user" data-iconpos="left">
+            Sign In
+          </a>
+          
+          <a data-role="button" data-theme="a" href="#" id="bggSignup" data-icon="forward" data-iconpos="left">
+            Register
+          </a>
+        </div>
+        <p>
+        </p>
+        <h3>
+          FAQ
+        </h3>
+        <div data-role="collapsible-set">
+          <div data-role="collapsible">
+            <h3>
+              Q: What plays will be posted?
+            </h3>
+            <p>
+              A: All games scored on this device are posted automatically.
+            </p>
+            
+            <p>
+              A: Any games in your History are posted when you click the Post to BGG button.
+            </p>
+          </div>
+          <div data-role="collapsible">
+            <h3>
+              Q: Can someone else post for me?
+            </h3>
+            <p>
+              A: Only the account entered above will have the game posted. You can change the login and repost from the History section. Alternatively, if you share a cloud account you can post from an account on a different device from the history section once the session has synced.
+            </p>
+          </div>
+          <div data-role="collapsible">
+            <h3>
+              Q: Is my password secure?
+            </h3>
+            <p>
+              A: Yes. First it is sent encrypted over HTTPS to our secure server, which posts it to BoardGameGeek.com just like if you were signing in on their website. BGG authenticates your login and sends our server back a temporary login token. From that point the app uses the token instead of your password for all subsequent non-secure interactions over standard HTTP with BGG.
+            </p>
+          </div>
+          <div data-role="collapsible">
+            <h3>
+              Q: Is my password saved in the cloud?
+            </h3>
+            <p>
+              A: No, your password is only saved on this device.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Edit Games -->
+    <div data-role="page" id="editgames">
+      <div data-theme="a" data-role="header" data-position="fixed">
+        <a data-role="button" data-theme="a" href="#edit" data-icon="back" data-iconpos="left" class="ui-btn-left">
+          Back
+        </a>
+        <a data-role="button" data-theme="d" id="addGameFromSettings" data-icon="plus" data-iconpos="left" class="ui-btn-right">
+          Add
+        </a>
+        <h3>
+          Edit Games
+        </h3>
+      </div>
+      <div class="ui-content">
+        <ul data-role="listview" class="edit-game-list" id="edit-game-list" data-divider-theme="b" data-inset="true">
+          <li data-role="list-divider">
+            Select a game to edit
+          </li>
+        </ul>
+      </div>
+    </div>
+    
+    <!-- Delete -->
+    <div data-role="page" id="delete">
+      <div data-theme="e" data-role="header" data-position="fixed">
+        <a data-role="button" data-theme="d" href="#edit" data-icon="back" data-iconpos="left" class="ui-btn-left">
+          Back
+        </a>
+        <h3>
+          Danger Zone
+        </h3>
+      </div>
+      <div class="ui-content">
+        <a data-role="button" data-theme="e" href="#deleteplayer" data-icon="alert" data-iconpos="left">
+          Delete Player
+        </a>
+        <a data-role="button" data-theme="e" href="#deletegame" data-icon="alert" data-iconpos="left">
+          Delete Game
+        </a>
+        <a data-role="button" data-theme="e" href="#deletephoto" data-icon="alert" data-iconpos="left">
+          Delete Photo
+        </a>
+        <a data-role="button" data-theme="e" href="#" id="btnDeleteHist" data-icon="alert" data-iconpos="left">
+          Delete History Item
+        </a>
+      </div>
+    </div>
+    
+    <!-- Delete Players -->
+    <div data-role="page" id="deleteplayer">
+      <div data-theme="e" data-role="header" data-position="fixed">
+        <a data-role="button" data-theme="d" href="#delete" data-icon="back" data-iconpos="left" class="ui-btn-left">
+          Back
+        </a>
+        <h3>
+          Delete Player
+        </h3>
+      </div>
+      <div class="ui-content">
+        <ul data-role="listview" class="delete-player-list" id="delete-player-list" data-divider-theme="b" data-inset="true">
+          <li data-role="list-divider">
+            Select a player to delete
+          </li>
+        </ul>
+      </div>
+    </div>
+    
+    <!-- Delete Games -->
+    <div data-role="page" id="deletegame" >
+      <div data-theme="e" data-role="header" data-position="fixed">
+        <a data-role="button" data-theme="d" href="#delete" data-icon="back" data-iconpos="left" class="ui-btn-left">
+          Back
+        </a>
+        <h3>
+          Delete Game
+        </h3>
+      </div>
+      <div class="ui-content">
+        <ul data-role="listview" class="delete-game-list" id="delete-game-list" data-divider-theme="b" data-inset="true">
+          <li data-role="list-divider">
+            Select a game to delete
+          </li>
+        </ul>
+      </div>
+    </div>
+    
+    <div data-role="page" id="deletephoto">
+      <div data-theme="e" data-role="header" data-position="fixed">
+        <a data-role="button" data-theme="d" href="#delete" data-icon="back" data-iconpos="left" class="ui-btn-left">
+          Back
+        </a>
+        <h3>
+          Delete Photo
+        </h3>
+      </div>
+      <div class="ui-content">
+        <div class="ui-field-contain" id="galleryDeleteContainer">
+          
+        </div>
+      </div>
+    </div>
+    
+    <!-- Delete History -->
+    <div data-role="page" id="deletehist">
+      <div data-theme="e" data-role="header" data-position="fixed">
+        <a data-role="button" data-theme="d" href="#delete" data-icon="back" data-iconpos="left" class="ui-btn-left">
+          Back
+        </a>
+        <h3>
+          Delete History
+        </h3>
+      </div>
+      <div class="ui-content">
+        <div class="ui-field-contain">
+          <label for="histChooseGameDel">
+            Game:
+          </label>
+          <select id="histChooseGameDel" name="">
+            <option value="-1,0">
+              All
+            </option>
+          </select>
+          <label for="histChoosePlayerDel">
+            Player:
+          </label>
+          <select id="histChoosePlayerDel" name="">
+            <option value="-1,0">
+              All
+            </option>
+          </select>
+          <label for="histChooseWinnerDel">
+            Winner:
+          </label>
+          <select id="histChooseWinnerDel" name="">
+            <option value="-1,0">
+              All
+            </option>
+          </select>
+        </div>
+        <div class="ui-field-contain">
+          <a data-role="button" href="#" id="btnShowHistDel" data-icon="calendar" data-iconpos="right">
+            Show History
+          </a>
+        </div>
+        <div class="ui-field-contain">
+          <!-- insert scores for each player here. -->
+          <ul data-role="listview" class="delete-history-list" id="delete-history-list" data-divider-theme="b" data-inset="true">
+            <li data-role="list-divider">
+              Select a history item to delete
+            </li>
+            <li>
+              Choose filter items above
+            </li>
+          </ul>
+        </div>
+        <div id="divNextHistoryDel" class="ui-field-contain">
+          <a data-role="button" data-theme="e" href="#" id="btnNextHistDel" data-icon="arrow-r" data-iconpos="right">
+            Next Page
+          </a>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Games -->
+    <div data-role="page" id="games">
+      <div data-theme="a" data-role="header">
+        <a data-role="button" data-theme="a" href="#home" data-icon="home" data-iconpos="left" class="ui-btn-left">
+          Home
+        </a>
+        <a data-role="button" id="popupAddGame" data-theme="d" href="#" data-icon="plus" data-inline="true" data-iconpos="left" class="ui-btn-right">
+          Add
+        </a>
+        <h3>
+          My Games
+        </h3>
+      </div>
+      <div class="ui-content">
+        <div data-role="fieldcontain">
+          <form id="frmGameSearch" data-ajax="false">
+            <label for="search-key">
+              Search Games:
+            </label>
+            <input type="search" name="search-key" id="search-key" value="" />
+          </form>
+        
+          <label for="flip-fav">
+            Favorites Only:
+          </label>
+          <select id="flip-fav" data-role="flipswitch" data-mini="false">
+            <option value="off">
+              Off
+            </option>
+            <option value="on">
+              On
+            </option>
+          </select>
+          
+        </div>
+        <div data-role="fieldcontain">
+          
+          
+          <ul data-role="listview" class="paused-game-list" id="paused-game-list" data-divider-theme="b" data-inset="true" data-split-theme="a" data-split-icon="gear">
+            <li data-role="list-divider">
+              Paused Games
+            </li>
+          </ul>
+          <div>
+            <p id="writepausedgames">
+            </p>
+          </div>
+        
+          <ul data-role="listview" id="game-list" data-divider-theme="b" data-inset="true" data-split-theme="a" data-split-icon="star">
+            <li data-role="list-divider">
+              Installed Games
+            </li>
+          </ul>
+          <div>
+            <p id="writegames">
+            </p>
+          </div>
+        </div>
+      </div>
+      
+      <div data-role="popup" id="popupAddGame">
+        <ul data-role="listview" class="addgame-list" id="addgame-list" data-inset="true" style="min-width:210px;" data-theme="a">
+          <li data-role="list-divider" data-theme="b">
+            Game Type:
+          </li>
+          <li id="addGameOnline" data-icon="check">
+            <a href="#gamesDatabase">
+              ScoreGeek Game Database
+            </a>
+          </li>
+          <li id="addGameCustom" data-icon="edit">
+            <a href="#addgame">
+              Custom Game
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+    
+    <!-- Games -->
+    <div data-role="page" id="gamesDatabase">
+      <div data-theme="a" data-role="header">
+        <a data-role="button" href="#games" data-icon="back" data-iconpos="left" class="ui-btn-left" id="addGameBackButton2">
+          Back
+        </a>
+        <h3>
+          Game Database
+        </h3>
+      </div>
+      <div class="ui-content">
+        
+        <div class="ui-field-contain">
+          <form id="frmOnlineGameSearch" data-ajax="false">
+            <label for="search-key2">
+              Search Database:
+            </label>
+            <input type="search" name="search-key2" id="search-key2" value="" />
+          </form>
+        </div>
+        
+        <ul data-role="listview" class="game-list" id="onlinegame-list" data-divider-theme="b" data-inset="true">
+          <li data-role="list-divider">
+            Games
+          </li>
+        </ul>
+        
+        <div id="divNextOnline" class="ui-field-contain">
+          <a data-role="button" data-theme="d" href="#" id="btnNextOnline" data-icon="arrow-r" data-iconpos="right">
+            Next Page
+          </a>
+        </div>
+        <div id="divPrevOnline" class="ui-field-contain">
+          <a data-role="button" data-theme="b" href="#" id="btnPrevOnline" data-icon="carat-l" data-iconpos="right">
+            Previous Page
+          </a>
+        </div>
+        <div id="divSearchBGG" class="ui-field-contain">
+          <a data-role="button" data-theme="c" href="#" id="findBGGID2" data-icon="search" data-iconpos="right">
+            Not found? Search BoardGameGeek.
+          </a>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Add Game -->
+    <div data-role="page" id="addgame">
+      <div data-theme="a" data-role="header" data-position="fixed">
+        <a data-role="button" href="#" data-icon="back" data-iconpos="left" class="ui-btn-left" id="addGameBackButton" data-theme="e">
+          Back
+        </a>
+        <h3>
+          Edit Game
+        </h3>
+        <a data-role="button" href="#" data-icon="forward" data-iconpos="left" class="ui-btn-right" id="launchDocs">
+          Help
+        </a>
+      </div>
+      <div class="ui-content">
+        <div class="ui-field-contain" id="BGGSearch">
+            <label for="txtBGGSearch">
+                    BGG Lookup:
+                </label>
+            <fieldset data-role="controlgroup" data-type="vertical">
+                
+                <input name="txtBGGSearch" id="txtBGGSearch" placeholder="Search BoardGameGeek to prefill values" value="" type="text">
+          
+                <a href="#" data-role="button" data-icon="search" id="findBGGID" data-theme="d">
+                    Search
+                </a>
+            </fieldset>
+        </div>
+        
+        <div class="ui-field-contain" id="txtNewGameName">
+          <label for="textNewGameName">
+            Name:
+          </label>
+          <input id="textNewGameName" placeholder="" value="" type="text">
+        </div>
+        <div class="ui-field-contain">
+          
+          <label for="textBGGID">
+            BGG Game ID:
+          </label>
+          <input id="textBGGID" placeholder="Optional BoardGameGeek.com ID number" value="" type="text">
+          
+          
+          
+        </div>
+        <div class="ui-field-contain" id="selectNewGameScoringDiv">
+          <label for="selectNewGameScoring">
+            Scoring:
+          </label>
+          <select id="selectNewGameScoring" name="selectNewGameScoring">
+            <option value="points">
+              Points
+            </option>
+            <option value="advanced">
+              Advanced
+            </option>
+            <option value="areasControlled">
+              Areas Controlled
+            </option>
+            <option value="tally">
+              Tally
+            </option>
+            <option value="hiddentally">
+              Tally (Hidden Total)
+            </option>
+            <option value="winLose">
+              Win / Lose
+            </option>
+          </select>
+        </div>
+        
+        <div class="ui-field-contain" id="advancedTextField">
+          <label for="advancedText" id="advancedTextLabel">
+            Advanced:
+          </label>
+          <textarea name="advancedText" id="advancedText" placeholder="Name=Coins|Type=Counter|Divideby=3|Value=1|Default=0; Click the Help button above for API documentation">
+          </textarea>
+        </div>
+        <div class="ui-field-contain">
+          <label for="flip-rounds">
+            Winning Score:
+          </label>
+          <select name="flip-score" id="flip-score" data-role="flipswitch" data-mini="false">
+            <option value="high">
+              High
+            </option>
+            <option value="low">
+              Low
+            </option>
+          </select>
+        </div>
+        <div class="ui-field-contain">
+          <label for="flip-rounds">
+            Multiple Rounds:
+          </label>
+          <select name="flip-rounds" id="flip-rounds" data-role="flipswitch" data-mini="false">
+            <option value="off">
+              Off
+            </option>
+            <option value="on">
+              On
+            </option>
+          </select>
+        </div>
+        
+        <div class="ui-field-contain">
+          <fieldset data-role="controlgroup" data-type="vertical">
+            <legend>
+              Picture:
+            </legend>
+            
+            <img id="imgGameImage" src="img/games/Game1.png" alt="Game Image" height="80" width="80">
+            
+          </fieldset>
+        </div>
+        <div class="ui-field-contain">
+          <fieldset data-role="controlgroup" data-type="vertical">
+            <legend>
+              &nbsp;
+            </legend>
+            <!--
+<a data-role="button" href="#" id="buttonChangeGamePicture2">
+Next Icon
+</a>
+<a data-role="button" href="#" id="buttonChangeGamePicture3">
+Previous Icon
+</a>
+-->
+            <a href="#" id="buttonPromptGameURL" data-role="button" data-icon="location">
+              URL
+            </a>
+            <a href="#" id="buttonPromptGameIcon" data-role="button" data-icon="user">
+              Icon
+            </a>
+            <a href='#' id="popupCameraGame" class="popupCamera" data-icon="camera" data-role="button">
+              Photo
+            </a>
+            
+            <!--
+<a data-role="button" href="#" id="buttonTestB64Game">
+Test B64
+</a>
+-->
+          </fieldset>
+        </div>
+        <div class="ui-field-contain">
+          <fieldset data-role="controlgroup">
+            <legend>
+              Sharing:
+            </legend>
+            <label>
+              <input type="checkbox" name="gameShare" id="gameShare" />
+              Share this game in the online database
+            </label>
+            <textarea id="taNotes" name="taNotes" placeholder="Optional credits and changes made"></textarea>
+          </fieldset>
+        </div>
+      </div>
+      
+      <div data-role="popup" id="cameraPopupMenu">
+        <ul data-role="listview" class="camera-list" id="camera-list" data-inset="true" style="min-width:210px;" data-theme="a">
+          <li data-role="list-divider" data-theme="b">
+            Source
+          </li>
+          <li id="cameraNewGame" data-icon="camera">
+            <a href="#">
+              Camera
+            </a>
+          </li>
+          <li id="cameraExistingGame" data-icon="grid">
+            <a href="#">
+              Camera Roll
+            </a>
+          </li>
+        </ul>
+      </div>
+      
+      <div id="FixedFooter1" data-role="footer" class="ui-bar" data-position="fixed" data-tap-toggle="false">
+        <a href="#promptImportGame">
+          Import
+        </a>
+        <a href="#promptExportGame">
+          Export
+        </a>
+        <a href="#" id="testNewGame" data-role="button" data-theme="b">
+          Test
+        </a>
+        <a href="#" id="saveNewGame" data-role="button" data-icon="plus" data-theme="d" style="float: right; margin-right: 27px;">
+          Save
+        </a>
+      </div>
+    </div>
+    
+    <!-- Players -->
+    <div data-role="page" id="players">
+      <div data-theme="a" data-role="header">
+        <a id="buttonBackFromPlayers" data-role="button" data-theme="a" href="#" data-icon="back" data-iconpos="left" class="ui-btn-left">
+          Back
+        </a>
+        <a data-role="button" data-theme="d" href="#addplayer" data-icon="plus" data-iconpos="left" class="ui-btn-right">
+          Add
+        </a>
+        <h3>
+          Players
+        </h3>
+      </div>
+      <div class="ui-content" style="width:90%">
+        <fieldset data-role="controlgroup" data-type="vertical" id="player-list" class="player-list">
+          <h3 id="selPlayersHeader">
+            Select which players will play this game:
+          </h3>
+        </fieldset>
+      </div>
+      <div id="FixedFooter2" data-role="footer" class="ui-bar" data-position="fixed" data-tap-toggle="false">
+        <a href="#" id="btnSelAll" data-icon="check" data-theme="b">
+          All
+        </a>
+        <a href="#" id="btnSelNone" data-icon="forbidden" data-theme="b">
+          None
+        </a>
+        <a href="#" id="saveSelectedPlayers" data-role="button" data-icon="arrow-r" data-theme="d" style="float: right; margin-right: 27px;">
+          Next
+        </a>
+      </div>
+    </div>
+    
+    <!-- Add Player -->
+    <div data-role="page" id="addplayer">
+      <div data-theme="a" data-role="header" data-position="fixed">
+        <a data-role="button" href="#players" data-icon="back" data-iconpos="left" class="ui-btn-left" id="addPlayerBackButton">
+          Back
+        </a>
+        <h3>
+          Edit
+        </h3>
+        <a data-role="button" href="#" data-icon="user" data-iconpos="left" class="ui-btn-right" id="addPlayerContact" data-theme="b">
+          Contacts
+        </a>
+      </div>
+      <div class="ui-content">
+        <div class="ui-field-contain">
+          <label for="textNewPlayerName">
+            Display Name:
+          </label>
+          <input name="" id="textNewPlayerName" placeholder="John" value="" type="text">
+          <label for="textNewPlayerId">
+            Player ID:
+          </label>
+          <input name="" id="textNewPlayerId" placeholder="Unique ID e.g. JohnKDoe" value="" type="text">
+          <label for="textNewPlayerTwitter">
+            Twitter:
+          </label>
+          <input name="" id="textNewPlayerTwitter" placeholder="Optional Twitter handle" value="" type="text">
+          <label for="textBGGUsername2">
+            BGG Username:
+          </label>
+          <input name="" id="textBGGUsername2" placeholder="Optional BoardGameGeek.com username" value="" type="text">
+          
+        </div>
+        
+        <div class="ui-field-contain">
+          <fieldset data-role="controlgroup" data-type="vertical">
+            <legend>
+              Picture:
+            </legend>
+            <img id="imgPlayerImage" src="img/players/Player1.png" alt="Player Image" height="80" width="80" />
+          </fieldset>
+          <fieldset data-role="controlgroup" data-type="vertical">
+            <legend>
+              &nbsp;
+            </legend>
+            <!--
+<a data-role="button" href="#" id="buttonChangePlayerPicture2">
+Next Avatar
+</a>
+
+<a data-role="button" href="#" id="buttonChangePlayerPicture3">
+Previous Avatar
+</a>
+-->
+            <a href="#promptPlayerIcon" data-role="button" data-icon="user" id="buttonChoosePlayerIcon">
+              Avatar
+            </a>
+            <a data-role="button" id="popupCameraPlayer" class="popupCamera" href='#' data-icon="camera">
+              Photo
+            </a>
+            <a href="#promptPlayerURL" data-role="button" data-icon="location" id="buttonPlayerURL">
+              URL
+            </a>
+            <!--
+<a data-role="button" href="#" id="buttonTestB64Player">
+Test B64
+</a>
+-->
+          </fieldset>
+          <div class="ui-field-contain" id="playerHiddenDiv">
+            <fieldset data-role="controlgroup">
+              <legend>
+                Visibility:
+              </legend>
+              <label>
+                <input type="checkbox" name="playerHidden" id="playerHidden" />
+                Hide on this device (player selection, stats, history)
+              </label>
+            </fieldset>
+          </div>
+          
+          <div data-role="popup" id="cameraPlayerPopupMenu">
+            <ul data-role="listview" class="camera-player-list" id="camera-player-list" data-inset="true" style="min-width:210px;" data-theme="a">
+              <li data-role="list-divider" data-theme="b">
+                Source
+              </li>
+              <li id="cameraNewPlayer">
+                <a href="#">
+                  Camera
+                </a>
+              </li>
+              <li id="cameraExistingPlayer" data-icon="grid">
+                <a href="#">
+                  Camera Roll
+                </a>
+              </li>
+            </ul>
+          </div>
+          
+        </div>
+      </div>
+      <div id="FixedFooter3" data-role="footer" class="ui-bar" data-position="fixed" data-tap-toggle="false">
+        <a href="#" id="saveNewPlayer" data-role="button" data-icon="check" data-theme="d" style="float: right; margin-right: 27px;">
+          Save
+        </a>
+      </div>
+    </div>
+    
+    <!-- Cloud Settings -->
+    <div data-role="page" id="cloud">
+      <div data-theme="a" data-role="header" data-position="fixed">
+        <a data-role="button" href="#edit" data-icon="back" data-iconpos="left" class="ui-btn-left" id="cloudBackButton">
+          Back
+        </a>
+        <h3>
+          Cloud
+        </h3>
+      </div>
+      <div class="ui-content">
+        <div class="ui-field-contain">
+          <p>
+            Enter your cloud username and password to sync data over the Cloud. Share your login with friends to sync data with your gaming group.
+          </p>
+          <label for="textCloudUsername">
+            Username:
+          </label>
+          <input name="" id="textCloudUsername" placeholder="Cloud Username" value="" type="text">
+          <label for="textCloudPassword">
+            Password:
+          </label>
+          <input name="" id="textCloudPassword" placeholder="" value="" type="password">
+        </div>
+        <div class="ui-field-contain">
+          <a data-role="button" data-theme="a" href="#" id="saveCloudLogin" data-icon="user" data-iconpos="left">
+            Sign In
+          </a>
+          
+          <a data-role="button" data-theme="a" href="#" id="cloudSignup" data-icon="forward" data-iconpos="left">
+            Register
+          </a>
+        </div>
+        <h3>
+          FAQ
+        </h3>
+        <div data-role="collapsible-set">
+          <div data-role="collapsible">
+            <H3>
+              Q: What data is pushed to the cloud?
+            </H3>
+            <p>
+              A: Players, Games, Sessions, Scores, and Achievements. Sensitive data like your BGG password, and large files like photos, are never pushed to the cloud.
+            </p>
+          </div>
+          <div data-role="collapsible">
+            <H3>
+              Q: Can I share my login?
+            </H3>
+            <p>
+              A: Yes, it is designed to be shared between multiple users to sync all your data between many devices.
+            </p>
+          </div>
+          <div data-role="collapsible">
+            <H3>
+              Q: How many accounts can I create?
+            </H3>
+            <p>
+              A: As many as you like, but data will only be posted to the account you are currently logged into.  Any time you log into an account it is synced with this device.
+            </p>
+          </div>
+          <div data-role="collapsible">
+            <H3>
+              Q: Do I have to pay for storage?
+            </H3>
+            <p>
+              A: No, it's 100% free.
+            </p>
+          </div>
+          <div data-role="collapsible">
+            <H3>
+              Q: Do you require personal information?
+            </H3>
+            <p>
+              A: No, but you might want to provide your email address for password retrieval, we won't spam or divulge it.
+            </p>
+          </div>
+          <div data-role="collapsible">
+            <H3>
+              Q: Whose data will be pushed to my device?
+            </H3>
+            <p>
+              A: Only other players logging in to the cloud with the same username and password.
+            </p>
+          </div>
+          <div data-role="collapsible">
+            <H3>
+              Q: Can I remove players someone else added?
+            </H3>
+            <p>
+              A: Deleting them will remove them from all devices. You can prevent a player from being displayed on a specific device from the Edit Players section.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- choose player order -->
+    <div data-role="page" id="playerorder">
+      <div data-theme="a" data-role="header" data-position="fixed">
+        <a data-role="button" data-theme="a" href="#players" data-icon="back" data-iconpos="left" class="ui-btn-left">
+          Players
+        </a>
+        <a data-role="button" data-theme="b" href="#" data-icon="recycle" data-iconpos="left" class="ui-btn-right" id="player-rand">
+          Randomize
+        </a>
+        <h3>
+          Options
+        </h3>
+      </div>
+      <div class="ui-content">
+        <div style="width:90%">
+          <h3>
+            Player Position / Color / Team / Faction:
+          </h3>
+          <ul data-role="listview" data-inset="true" data-theme="a" id="listHeader" data-divider-theme="b">
+            <li data-role="list-divider">
+              Drag to select player order
+            </li>
+          </ul>
+          <ul data-role="listview" data-inset="true" data-theme="a" id="sortable" class="player-sort" data-divider-theme="b" data-split-theme="a" data-split-icon="gear">
+            
+          </ul>
+        </div>
+        <div style="width:10%">
+          &nbsp;
+        </div>
+        <div class="ui-field-contain" id="gameOptionsTeamScoring">
+          <fieldset data-role="controlgroup" data-type="vertical" class="">
+            <legend>
+              Team Scoring:
+            </legend>
+            <select id="selectTeamScoring" name="">
+              <option value="byPlayer">
+                Score individuals, sum scores for team
+              </option>
+              <option value="byTeam">
+                Score by team
+              </option>
+            </select>
+          </fieldset>
+        </div>
+        <div class="ui-field-contain" id="gameOptionsScoringOrder">
+          <fieldset data-role="controlgroup" data-type="vertical" class="">
+            <legend>
+              Scoring Order:
+            </legend>
+            <select id="selectWidgetDisplay" name="">
+              <option value="byPlayer">
+                Score one player at a time
+              </option>
+              <option value="byItem">
+                Score one item at a time
+              </option>
+            </select>
+          </fieldset>
+        </div>
+        <div class="ui-field-contain" id="gameOptionsPickRounds">
+          <fieldset data-role="controlgroup" data-type="vertical">
+            
+            <legend>
+              Number of Rounds:
+            </legend>
+            <input type="text" data-role="spinbox" data-type="horizontal" name="spinPickRounds" id="spinPickRounds" data-value="1" data-min="1" data-buttonm1="true" data-button1="true" data-button5="false" data-button10="false" data-mini="false" />
+          </fieldset>
+        </div>
+      </div>
+      <div id="FixedFooter4" data-role="footer" class="ui-bar" data-position="fixed" data-tap-toggle="false">
+        <a href="#" id="saveSortedPlayers" data-role="button" data-icon="arrow-r" data-theme="d" style="float: right; margin-right: 27px;">
+          Next
+        </a>
+      </div>
+    </div>
+    
+    
+    <!-- scoring widgets -->
+    <div data-role="page" id="play">
+      <div data-theme="a" data-role="header">
+        <a data-role="button" data-theme="a" href="#promptForBackPlayToPlayerOrder" data-icon="back" data-iconpos="left" class="ui-btn-left">
+          Back
+        </a>
+        <h3>
+          Scoring
+        </h3>
+        
+        <a data-role="button" id="popupTools2" data-icon="bullets" data-theme="a" href='#' data-iconpos="left" class="ui-btn-right">
+          Tools
+        </a>
+      </div>
+      <div class="ui-content">
+        <h3 id="tallyScoresHeader2">
+          Scores
+        </h3>
+        <div class="ui-field-contain">
+          <div data-role="collapsible-set" id="player-scores">
+          </div>
+        </div>
+      </div>
+      <div id="FixedFooter5" data-role="footer" class="ui-bar" data-position="fixed" data-tap-toggle="false">
+        
+        <a href="#" id="btnPauseGame" data-icon="clock">
+          Pause
+        </a>
+        
+        <a href="#" id="calculate-scores" data-role="button" data-icon="check" data-theme="d" style="float: right; margin-right: 27px;">
+          Calculate
+        </a>
+      </div>
+      
+      
+      
+    </div>
+    
+    <!-- scoring widgets EDIT -->
+    <div data-role="page" id="editScores">
+      <div data-theme="a" data-role="header">
+        <a data-role="button" data-theme="a" href="#history-details" data-icon="back" data-iconpos="left" class="ui-btn-left">
+          Back
+        </a>
+        <h3>
+          Edit
+        </h3>
+      </div>
+      <div class="ui-content">
+        <h3 id="tallyScoresHeader3">
+          Scores
+        </h3>
+        <div class="ui-field-contain">
+          <div data-role="collapsible-set" id="player-scores-edit">
+          </div>
+        </div>
+      </div>
+      
+      <div id="FixedFooter6" data-role="footer" class="ui-bar" data-position="fixed" data-tap-toggle="false">
+        <a href="#" id="saveEditScores" data-role="button" data-icon="arror-r" data-theme="b" style="float: right; margin-right: 27px;">
+          Save
+        </a>
+      </div>
+    </div>
+    
+    <!-- tie breaker -->
+    <div data-role="page" id="tie">
+      <div data-theme="a" data-role="header" data-position="fixed">
+        <a data-role="button" data-theme="a" href="#play" data-icon="back" data-iconpos="left" class="ui-btn-left">
+          Back
+        </a>
+        <h3>
+          Tiebreaker
+        </h3>
+      </div>
+      <div class="ui-content">
+        <div class="ui-field-contain" id="tied-players">
+          <!-- insert toggle widgets for each player here. -->
+          <fieldset data-role="controlgroup" data-type="vertical" id="player-tie" class="player-tie">
+            <legend>
+              Select which players will win:
+            </legend>
+          </fieldset>
+        </div>
+        
+        <a data-role="button" href="#" data-theme="d" data-icon="arrow-r" id="saveSelectedWinners">
+          Next
+        </a>
+        
+      </div>
+    </div>
+    
+    <!-- scores -->
+    <div data-role="page" id="results">
+      <div data-theme="a" data-role="header" data-position="fixed">
+        <a data-role="button" data-theme="a" href="#play" data-icon="back" data-iconpos="left" class="ui-btn-left">
+          Back
+        </a>
+        <a data-role="button" data-theme="b" href="#game-details" data-icon="bullets" data-iconpos="left" class="ui-btn-right">
+          Details
+        </a>
+        
+        <h3>
+          Results
+        </h3>
+      </div>
+      <div class="ui-content">
+        <div class="ui-field-contain">
+          <!-- insert scores for each player here. -->
+          <ul data-role="listview" data-divider-theme="b" data-inset="true" id="player-results" data-split-theme="a" data-split-icon="star">
+            <li data-role="list-divider">
+              Results
+            </li>
+          </ul>
+        </div>
+        
+        
+        <h3>
+          Optional Session Data
+        </h3>
+        
+        
+        <div class="ui-field-contain">
+          <label for="textareaNotes">
+            Notes:
+          </label>
+          <textarea name="textareaNotes" id="textareaNotes" placeholder="Session data can be viewed in the History section. Date Played is only necessary for backdated games.">
+          </textarea>
+        </div>
+        <div class="ui-field-contain">
+          <label for="textLocation">
+            Location:
+          </label>
+          <input name="" id="textLocation" placeholder="Type or choose location" value="" type="text">
+        </div>
+        <div class="ui-field-contain">
+          <label for="selLocationAdd">
+            
+          </label>
+          <select id="selLocationAdd" name="selLocationAdd" data-mini="false">
+            <option value="">
+              None
+            </option>
+          </select>
+        </div>
+        <div class="ui-field-contain">
+          <label for="textDuration">
+            Duration (minutes):
+          </label>
+          <input name="" id="textDuration" placeholder="Optional duration in minutes" value="" type="text">
+        </div>
+        
+        <div class="ui-field-contain">
+          
+          
+          <div id="imgResultsContainer">
+              <!--
+            <a id="aResultsImage" href="#" title="Session Photo"><img id="imgResultsImage" height="240" width="320" src="/" alt=""></a>
+            -->
+          </div>
+          <label for="buttonAttachPhoto">
+            Session Photo:
+          </label>
+          <a data-role="button" id="popupCameraSession" class="popupCamera" data-icon="camera" href='#'>
+            Photo
+          </a>
+        </div>
+        
+        
+        
+        
+        <div class="ui-field-contain">
+          <label for="playDate">
+            Date Played:
+          </label>
+          <!--<input name="playDate" id="playDate" type="date" value="" />-->
+          <input name="playDate" id="playDate" type="text" data-role="datebox" data-options='{"mode": "calbox", "useNewStyle":true, "useSetButton":false, "useClearButton":true}'/>
+        </div>
+        
+        <div class="ui-field-contain">
+          <fieldset data-role="controlgroup">
+            <legend>
+              Save Game:
+            </legend>
+            <label>
+              <input type="checkbox" name="gameStats" id="gameStats" checked />
+              Save for history, achievements, stats
+            </label>
+          </fieldset>
+          
+          
+        </div>
+        
+        <div data-role="popup" id="cameraSessionPopupMenu">
+          <ul data-role="listview" class="camera-session-list" id="camera-session-list" data-inset="true" style="min-width:210px;" data-theme="a">
+            <li data-role="list-divider" data-theme="b">
+              Source
+            </li>
+            <li id="cameraNewSession">
+              <a href="#">
+                Camera
+              </a>
+            </li>
+            <li id="cameraExistingSession">
+              <a href="#">
+                Camera Roll
+              </a>
+            </li>
+          </ul>
+        </div>
+        
+        <!--
+<a data-role="button" href="#" id="buttonTestB64Session">
+Test B64
+</a>
+-->
+        
+      </div>
+      <div id="FixedFooter7" data-role="footer" class="ui-bar" data-position="fixed" data-tap-toggle="false">
+        <a href="#" id="buttonSaveScores" data-role="button" data-icon="arrow-r" data-theme="d">
+          Continue
+        </a>
+      </div>
+    </div>
+    
+    <div data-role="page" id="hiddenpage">
+        <div class="ui-content">
+            <img id="hiddenImage">
+        </div>
+    </div>
+    
+    <div data-role="page" id="testresults">
+      <div data-theme="a" data-role="header" data-position="fixed">
+        <a data-role="button" data-theme="a" href="#play" data-icon="back" data-iconpos="left" class="ui-btn-left">
+          Back
+        </a>
+        <a data-role="button" data-theme="b" href="#game-details" data-icon="bullets" data-iconpos="left" class="ui-btn-right">
+          Details
+        </a>
+        
+        <h3>
+          Results
+        </h3>
+      </div>
+      <div class="ui-content">
+        <div class="ui-field-contain">
+          <!-- insert scores for each player here. -->
+          <ul data-role="listview" data-divider-theme="b" data-inset="true" id="test-player-results" data-split-theme="a" data-split-icon="action">
+            <li data-role="list-divider">
+              Results
+            </li>
+          </ul>
+        </div>
+        
+        
+      </div>
+      <div id="FixedFooter8" data-role="footer" class="ui-bar" data-position="fixed" data-tap-toggle="false">
+        <a href="#" id="buttonEndTest" data-role="button" data-icon="arrow-r" data-theme="d">
+          End Test
+        </a>
+      </div>
+    </div>
+    
+    <!-- history details -->
+    <div data-role="page" id="history-details">
+      <div data-theme="a" data-role="header" data-position="fixed">
+        <a href="#history" id="btnBackFromHistoryDetails" data-role="button" data-theme="a" data-icon="back" data-iconpos="left" class="ui-btn-left">
+          Back
+        </a>
+        <h3>
+          Details
+        </h3>
+        
+      </div>
+      <div class="ui-content">
+        <div class="ui-field-contain">
+          
+          <h3 style="display: inline;" id="name-history">
+            Game Name
+          </h3>
+          <p data-inline="true" id="date-history">
+            Date
+          </p>
+        </div>
+        <img id="imgHistoryGameImage" height="80" width="80" src="/" alt="">
+        
+        <div class="ui-field-contain">
+          <!-- insert scores for each player here. -->
+          <ul data-role="listview" data-divider-theme="b" data-split-theme="a" data-split-icon="action" data-inset="true" id="player-history" class="player-history">
+            <li data-role="list-divider">
+              Results
+            </li>
+          </ul>
+        </div>
+        <div class="ui-field-contain">
+          <!-- insert scores for each player here. -->
+          <ul data-role="listview" data-divider-theme="b" data-split-theme="a" data-split-icon="action" data-inset="true" id="award-list-history" class="award-list-history">
+            <li data-role="list-divider">
+              Achievements
+            </li>
+          </ul>
+        </div>
+        <div class="ui-field-contain">
+          
+          <label>
+            Notes:
+          </label>
+          <h5 id="notes-history">
+            &nbsp;
+          </h5>
+        </div>
+        <div class="ui-field-contain">
+          <label>
+            Location:
+          </label>
+          <h5 id="location-history">
+            &nbsp;
+          </h5>
+        </div>
+        <div class="ui-field-contain">
+          <label>
+            Duration (minutes):
+          </label>
+          <h5 id="duration-history">
+            &nbsp;
+          </h5>
+        </div>
+        
+        <div id="historyImageContainer">
+            <!--
+            <a href="#" title="Session Photo" id="aHistoryImage"><img src="/" id="imgHistoryImage" height="240" width="320" style="" alt=""></a>
+            -->
+        </div>
+        
+        <div id="FixedFooter9" data-role="footer" class="ui-bar" data-position="fixed">
+          <a href="#" id="historyBGG" data-role="button" data-icon="forward" data-theme="b" style="float: right; margin-right: 27px;">
+            Post Game to BGG
+          </a>
+        </div>
+        
+      </div>
+    </div>
+    
+    <!-- gallery -->
+    <div data-role="page" id="gallery">
+      <div data-theme="a" data-role="header" data-position="fixed">
+        <a data-role="button" data-theme="a" data-rel="back" data-icon="back" data-iconpos="left" class="ui-btn-left">
+          Back
+        </a>
+        <h3>
+          Gallery
+        </h3>
+        
+      </div>
+      <div class="ui-content">
+        <div class="ui-field-contain">
+          <label for="galChooseGame">
+            Game:
+          </label>
+          <select id="galChooseGame" name="galChooseGame">
+            <option value="-1,0">
+              All
+            </option>
+          </select>
+          <label for="galChoosePlayer">
+            Player:
+          </label>
+          <select id="galChoosePlayer" name="galChoosePlayer">
+            <option value="-1,0">
+              All
+            </option>
+          </select>
+          <label for="galChooseWinner">
+            Winner:
+          </label>
+          <select id="galChooseWinner" name="galChooseWinner">
+            <option value="-1,0">
+              All
+            </option>
+          </select>
+        </div>
+        <div class="ui-field-contain">
+          <a data-role="button" href="#" id="btnShowGal" data-icon="camera" data-iconpos="right" data-theme="d">
+            Show Gallery
+          </a>
+        </div>
+            
+        <div class="ui-field-contain" id="divGalleryNoneFound">
+           <h1>No Images Found</h1>
+        </div>
+            
+            
+        <div class="ui-field-contain" id="galleryContainer">
+            <!--
+            <a href="#" class="swipebox" rel="gallery" title="Session Photo" id="aGallery0"><img src="/" id="imgGallery0" height="240" width="320" style="" alt=""></a>
+            -->
+        </div>
+        
+        <div id="galleryContainerHidden">
+            
+        </div>
+        
+        
+            
+        
+        <div id="divNextGal" class="ui-field-contain">
+          <a data-role="button" data-theme="b" href="#" id="btnNextGal" data-icon="arrow-r" data-iconpos="right">
+            Next Page
+          </a>
+        </div>
+      </div>
+    </div>
+    
+    <!-- score details -->
+    <div data-role="page" id="game-details">
+      <div data-theme="a" data-role="header" data-position="fixed">
+        <a id="buttonBackFromDetails" data-role="button" data-theme="a" href="#" data-icon="back" data-iconpos="left" class="ui-btn-left">
+          Back
+        </a>
+        <h3>
+          Details
+        </h3>
+      </div>
+      <div class="ui-content">
+        <h3 id="tallyScoresHeader1">
+          Scores
+        </h3>
+        <div class="ui-field-contain">
+          <div data-role="collapsible-set" id="score-details-table">
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- achievements this game -->
+    <div data-role="page" id="game-achievements">
+      <div data-theme="a" data-role="header">
+        <h3>
+          Results
+        </h3>
+      </div>
+      <div class="ui-content">
+        <div class="ui-field-contain">
+          <ul data-role="listview" data-divider-theme="b" data-split-theme="a" data-split-icon="action" data-inset="true" id="player-results-2" class="player-results-2">
+            <li data-role="list-divider">
+              Results
+            </li>
+          </ul>
+        </div>
+        <div class="ui-field-contain">
+          <!-- insert scores for each player here. -->
+          <ul data-role="listview" data-divider-theme="b" data-split-theme="a" data-split-icon="action" data-inset="true" id="award-list-session" class="award-list-session">
+            <li data-role="list-divider">
+              Achievements
+            </li>
+          </ul>
+        </div>
+        
+      </div>
+      <div id="FixedFooter10" data-role="footer" class="ui-bar" data-position="fixed" data-tap-toggle="false">
+        <a href="#home" id="resetGames" data-role="button" data-icon="check" data-theme="b" style="float: right; margin-right: 27px;">
+          Home
+        </a>
+      </div>
+    </div>
+    
+    <!-- achievements-->
+    <div data-role="page" id="achievements">
+      <div data-theme="a" data-role="header" data-position="fixed">
+        <a data-role="button" data-theme="a" href="#home" data-icon="home" data-iconpos="left" class="ui-btn-left">
+          Back
+        </a>
+        <h3>
+          Achievements
+        </h3>
+      </div>
+      <div class="ui-content">
+        <div class="ui-field-contain">
+          <label for="awardChooseGame">
+            Game:
+          </label>
+          <select id="awardChooseGame" name="">
+            <option value="-1,0">
+              All
+            </option>
+          </select>
+          <label for="awardChoosePlayer">
+            Player:
+          </label>
+          <select id="awardChoosePlayer" name="">
+            <option value="-1,0">
+              All
+            </option>
+            <option value="0,0">
+              Meta
+            </option>
+          </select>
+          <label for="awardChooseType">
+            Type:
+          </label>
+          <select id="awardChooseType" name="">
+            <option value="-1,0">
+              All
+            </option>
+          </select>
+        </div>
+        <div class="ui-field-contain">
+          <a data-role="button" href="#" id="btnShowAwards" data-icon="check" data-iconpos="right" data-theme="d">
+            Show Achievements
+          </a>
+        </div>
+        <div class="ui-field-contain">
+          <!-- insert scores for each player here. -->
+          <ul data-role="listview" data-divider-theme="b" data-inset="true" id="award-list" class="award-list">
+            <li data-role="list-divider">
+              Achievements
+            </li>
+            <li>
+              Choose filter options above
+            </li>
+          </ul>
+        </div>
+        <div id="divNextAward" class="ui-field-contain">
+          <a data-role="button" data-theme="b" href="#" id="btnNextAward" data-icon="arrow-r" data-iconpos="right">
+            Next Page
+          </a>
+        </div>
+      </div>
+    </div>
+    
+    <!-- history-->
+    <div data-role="page" id="history">
+      <div data-theme="a" data-role="header" data-position="fixed">
+        <a data-role="button" data-theme="a" href="#home" data-icon="home" data-iconpos="left" class="ui-btn-left">
+          Back
+        </a>
+        <h3>
+          History
+        </h3>
+      </div>
+      <div class="ui-content">
+        <div class="ui-field-contain">
+          <label for="histChooseGame">
+            Game:
+          </label>
+          <select id="histChooseGame" name="histChooseGame">
+            <option value="-1,0">
+              All
+            </option>
+          </select>
+          <label for="histChoosePlayer">
+            Player:
+          </label>
+          <select id="histChoosePlayer" name="histChoosePlayer">
+            <option value="-1,0">
+              All
+            </option>
+          </select>
+          <label for="histChooseWinner">
+            Winner:
+          </label>
+          <select id="histChooseWinner" name="histChooseWinner">
+            <option value="-1,0">
+              All
+            </option>
+          </select>
+        </div>
+      <div class="ui-field-contain">
+        <a data-role="button" data-theme="d" href="#" id="btnShowHist" data-icon="check" data-iconpos="right">
+          Show History
+        </a>
+      </div>
+      <div class="ui-field-contain">
+        <!-- insert scores for each player here. -->
+        <ul data-role="listview" data-divider-theme="b" data-inset="true" id="history-list" class="history-list">
+          <li data-role="list-divider">
+            History
+          </li>
+          <li>
+            Choose filter options above
+          </li>
+        </ul>
+      </div>
+      <div id="divNextHistory" class="ui-field-contain">
+        <a data-role="button" data-theme="b" href="#" id="btnNextHist" data-icon="arrow-r" data-iconpos="right">
+          Next Page
+        </a>
+      </div>
+    </div>
+    </div>
+    
+    <!-- history-->
+    <div data-role="page" id="stats">
+      <div data-theme="a" data-role="header" data-position="fixed">
+        <a data-role="button" data-theme="a" href="#home" data-icon="home" data-iconpos="left" class="ui-btn-left">
+          Back
+        </a>
+        <h3>
+          Statistics
+        </h3>
+      </div>
+      <div class="ui-content">
+        <div class="ui-field-contain">
+          <label for="statsChooseGame">
+            Game:
+          </label>
+          <select id="statsChooseGame" name="statsChooseGame">
+            <option value="">
+              All
+            </option>
+          </select>
+          
+          <label for="statsChooseType">
+            Type:
+          </label>
+          <select id="statsChooseType" name="statsChooseType">
+            <option value="player">
+              By Player
+            </option>
+            <option value="color">
+              By Color
+            </option>
+            <option value="faction">
+              By Faction
+            </option>
+            <option value="team">
+              By Team
+            </option>
+            <option value="position">
+              By Position
+            </option>
+          </select>
+          <label for="statsChooseNumPlayers">
+            Number of Players:
+          </label>
+          <select id="statsChooseNumPlayers" name="statsChooseNumPlayers">
+            <option value="">
+              All
+            </option>
+          </select>
+        </div>
+        <div class="ui-field-contain">
+          <a data-role="button" href="#" id="btnShowStats" data-icon="check" data-iconpos="right" data-theme="d">
+            Show Stats
+          </a>
+          <!--
+<a data-role="button" data-theme="d" href="#" id="btnFindOrphans" data-icon="check" data-iconpos="right">
+Find Orphans
+</a>
+-->
+        </div>
+        
+        <div class="ui-field-contain">
+          <div id="pie1">
+          </div>
+          
+        </div>
+        <div class="ui-field-contain">
+          <div id="bar1">
+          </div>
+        </div>
+        <div class="ui-field-contain">
+          <div id="bar2">
+          </div>
+        </div>
+        <div class="ui-field-contain">
+          <div id="bar3">
+          </div>
+        </div>
+        <div class="ui-field-contain" id="clickToShare">
+          <h3 style="text-align:center">
+            Tap any chart to share
+          </h3>
+        </div>
+      </div>
+    </div>
+    
+    <!-- score details -->
+    <div data-role="page" data-dialog="true" id="promptForBackPlayToPlayerOrder">
+      <div class="ui-content">
+        <div class="ui-field-contain">
+          <h3>
+            Going back will erase any scores you have entered.  Are you sure?
+          </h3>
+          <a data-role="button" data-theme="e" href="#playerorder">
+            Erase Scores
+          </a>
+          <a id="btnPauseErase" data-role="button" data-theme="c" href="#">
+            Pause Game
+          </a>
+          <a data-role="button" data-theme="d" href="#play">
+            Cancel
+          </a>
+        </div>
+      </div>
+    </div>
+    
+    <!-- confirm no stats -->
+    <div data-role="page" data-dialog="true" id="promptForNoStats">
+      <div class="ui-content">
+        <div class="ui-field-contain">
+          <p>
+            Are you sure you want to exit without saving these scores to your history, awarding achievements, and providing stats?
+          </p>
+          <a data-role="button" data-theme="e" href="#games">
+            Contine Without Saving
+          </a>
+          <a data-role="button" data-theme="d" href="#results">
+            Cancel
+          </a>
+        </div>
+      </div>
+    </div>
+    
+    
+    <!-- confirm delete player -->
+    <div data-role="page" data-dialog="true" id="promptForDeletePlayer">
+      <div class="ui-content">
+        <div class="ui-field-contain">
+          <p id="deletePlayerName">
+            Player
+          </p>
+          <p>
+            Are you sure you want to delete this player? You cannot undo this action.
+          </p>
+          <a data-role="button" data-theme="e" id="deletePlayerById">
+            Delete Player
+          </a>
+          <a data-role="button" data-theme="d" href="#delete">
+            Cancel
+          </a>
+        </div>
+      </div>
+    </div>
+    
+    <!-- confirm delete game -->
+    <div data-role="page" data-dialog="true" id="promptForDeleteGame">
+      <div class="ui-content">
+        <div class="ui-field-contain">
+          <p id="deleteGameName">
+            Game
+          </p>
+          <p>
+            Are you sure you want to delete this game? You cannot undo this action.
+          </p>
+          <a data-role="button" data-theme="e" id="deleteGameById">
+            Delete Game
+          </a>
+          <a data-role="button" data-theme="d" href="#delete">
+            Cancel
+          </a>
+        </div>
+      </div>
+    </div>
+    
+    <!-- confirm delete photo -->
+    <div data-role="page" data-dialog="true" id="promptForDeletePhoto">
+      <div class="ui-content">
+        <div class="ui-field-contain">
+          <p id="deletePhotoName">
+            Photo
+          </p>
+          <p>
+            Are you sure you want to delete this photo? You cannot undo this action.
+          </p>
+          <a data-role="button" data-theme="e" id="deletePhotoBySessionId">
+            Delete Photo
+          </a>
+          <a data-role="button" data-theme="d" href="#delete">
+            Cancel
+          </a>
+        </div>
+      </div>
+    </div>
+    
+    <!-- confirm delete history -->
+    <div data-role="page" data-dialog="true" id="promptForDeleteHistory">
+      <div class="ui-content">
+        <div class="ui-field-contain">
+          <p id="deleteHistoryName">
+          </p>
+          <p>
+            Are you sure you want to delete this history item? All associated scores, stats, and awards will be deleted. You cannot undo this action.
+          </p>
+          <a data-role="button" data-theme="e" id="deleteHistoryById">
+            Delete History
+          </a>
+          <a data-role="button" data-theme="d" href="#delete">
+            Cancel
+          </a>
+        </div>
+      </div>
+    </div>
+    
+    <!-- import -->
+    <div data-role="page" data-dialog="true" id="promptImportGame">
+      <div class="ui-content">
+        <div class="ui-field-contain">
+          <p>
+            Paste a game definition below to import it. This will overwrite any existing data on the Edit Game page.
+          </p>
+          <textarea id="textareaImportGame"></textarea>
+          <a data-role="button" id="importGame" data-theme="d" data-icon="check">
+            Import Game
+          </a>
+          <a data-role="button" data-theme="b" data-rel="back" data-icon="delete">
+            Cancel
+          </a>
+        </div>
+      </div>
+    </div>
+    
+    <!-- export -->
+    <div data-role="page" data-dialog="true" id="promptExportGame">
+      <div class="ui-content">
+        <div class="ui-field-contain">
+          <p>
+            Copy and paste this text to share your custom game
+          </p>
+          <textarea id="textareaExportGame">
+          </textarea>
+          
+          <a data-role="button" data-theme="b" data-rel="back" data-icon="delete">
+            Close
+          </a>
+        </div>
+      </div>
+    </div>
+    
+    <!-- prompt color / team -->
+    <div data-role="page" data-dialog="true" id="promptTeam">
+      <div data-role="header">
+        <h3>
+          Player Settings
+        </h3>
+      </div>
+      <div class="ui-content">
+        <div class="ui-field-contain">
+          <h3 id="teamPlayerName">
+            &nbsp;
+          </h3>
+          <div class="ui-grid-a">
+            <div class="ui-block-a">
+              <img id="teamPlayerImage" src="img/players/Player1.png" alt="Player Image" height="80" width="80" />
+            </div>
+            <div class="ui-block-b">
+              <img id="imgPlayerColor2" src="img/colors/black0032.png" alt="Player Color" height="80" width="80" />
+            </div>
+          </div>
+        </div>
+        
+        <div class="ui-field-contain">
+          <label for="selPlayerColor2">
+            Color:
+          </label>
+          
+          <select id="selPlayerColor2">
+            
+            <option value="" data-imagesrc="img/colors/0032.png" data-description="">
+              None
+            </option>
+            <option value="black" data-imagesrc="img/colors/black0032.png" data-description="">
+              Black
+            </option>
+            <option value="blue" data-imagesrc="img/colors/blue0032.png" data-description="">
+              Blue
+            </option>
+            <option value="brown" data-imagesrc="img/colors/brown0032.png" data-description="">
+              Brown
+            </option>
+            <option value="gold" data-imagesrc="img/colors/gold0032" data-description="">
+              Gold
+            </option>
+            <option value="gray" data-imagesrc="img/colors/gray0032.png" data-description="">
+              Gray
+            </option>
+            <option value="green" data-imagesrc="img/colors/green0032.png" data-description="">
+              Green
+            </option>
+            <option value="orange" data-imagesrc="img/colors/orange0032.png" data-description="">
+              Orange
+            </option>
+            <option value="pink" data-imagesrc="img/colors/pink0032.png" data-description="">
+              Pink
+            </option>
+            <option value="purple" data-imagesrc="img/colors/purple0032.png" data-description="">
+              Purple
+            </option>
+            <option value="red" data-imagesrc="img/colors/red0032.png" data-description="">
+              Red
+            </option>
+            <option value="silver" data-imagesrc="img/colors/silver0032.png" data-description="">
+              Silver
+            </option>
+            <option value="tan" data-imagesrc="img/colors/tan0032.png" data-description="">
+              Tan
+            </option>
+            <option value="white" data-imagesrc="img/colors/white0032.png" data-description="">
+              White
+            </option>
+            <option value="yellow" data-imagesrc="img/colors/yellow0032.png" data-description="">
+              Yellow
+            </option>
+          </select>
+        </div>
+        <div class="ui-field-contain">
+          <label for="txtFactionAdd">
+            Faction:
+          </label>
+          <input name="txtFactionAdd" id="txtFactionAdd" placeholder="Type or choose existing factions from list" value="" type="text" data-mini="false">
+        </div>
+        <div class="ui-field-contain">
+          <label for="selFactionAdd">
+            
+          </label>
+          <select id="selFactionAdd" name="selFactionAdd" data-mini="false">
+            <option value="">
+              None
+            </option>
+            
+          </select>
+        </div>
+        <div class="ui-field-contain">
+          <label for="txtTeamAdd">
+            Team:
+          </label>
+          <input name="txtTeamAdd" id="txtTeamAdd" placeholder="Type or choose existing teams from list" value="" type="text" data-mini="false">
+        </div>
+        <div class="ui-field-contain">
+          <label for="selTeamAdd">
+            
+          </label>
+          <select id="selTeamAdd" name="selTeamAdd" data-mini="false">
+            <option value="">
+              None
+            </option>
+            <option value="Team 1">
+              Team 1
+            </option>
+            <option value="Team 2">
+              Team 2
+            </option>
+            <option value="Team 3">
+              Team 3
+            </option>
+            <option value="Team 4">
+              Team 4
+            </option>
+            <option value="Team 5">
+              Team 5
+            </option>
+            <option value="Team 6">
+              Team 6
+            </option>
+          </select>
+        </div>
+        <div class="ui-field-contain">
+          <a href="#" id="btnSaveTeams" data-role="button" data-icon="check" data-theme="d">
+            Save
+          </a>
+          <a data-role="button" data-theme="e" data-rel="back" data-icon="delete">
+            Cancel
+          </a>
+        </div>
+      </div>
+    </div>
+    
+    <!-- bggID -->
+    <div data-role="page" data-dialog="true" id="promptBGGID">
+      <div class="ui-content">
+        <div class="ui-field-contain">
+          <ul data-role="listview" class="bgg-id-list" id="bgg-id-list" data-divider-theme="b" data-inset="true">
+            <li data-role="list-divider">
+              Games Found
+            </li>
+          </ul>
+        </div>
+        <div class="ui-field-contain">
+          <a data-role="button" data-theme="e" data-rel="back" data-icon="delete">
+            Cancel
+          </a>
+        </div>
+      </div>
+    </div>
+    
+    <!-- bggID2 -->
+    <div data-role="page" data-dialog="true" id="promptBGGID2">
+      <div class="ui-content">
+        <div class="ui-field-contain">
+          <ul data-role="listview" class="bgg-id-list2" id="bgg-id-list2" data-divider-theme="b" data-inset="true">
+            <li data-role="list-divider">
+              Games Found
+            </li>
+          </ul>
+        </div>
+        <div class="ui-field-contain">
+          <a data-role="button" data-theme="e" data-rel="back" data-icon="delete">
+            Cancel
+          </a>
+        </div>
+      </div>
+    </div>
+    
+    <!-- game Icon -->
+    <div data-role="page" data-dialog="true" id="promptGameIcon">
+      <div class="ui-content">
+        <div class="ui-field-contain">
+          <ul data-role="listview" class="game-icon-list" id="game-icon-list" data-divider-theme="b" data-inset="true">
+            <li data-role="list-divider">
+              Game Icons
+            </li>
+            <li id="1">
+              <a href="#">
+                <img src='img/games/Game1.png' alt='' />
+                <h3>
+                  Cards
+                </h3>
+              </a>
+            </li>
+            <li id="2">
+              <a href="#">
+                <img src='img/games/Game2.png' alt='' />
+                <h3>
+                  Dice
+                </h3>
+              </a>
+            </li>
+            <li id="3">
+              <a href="#">
+                <img src='img/games/Game3.png' alt='' />
+                <h3>
+                  Letters
+                </h3>
+              </a>
+            </li>
+            <li id="4">
+              <a href="#">
+                <img src='img/games/Game4.png' alt='' />
+                <h3>
+                  Hearts
+                </h3>
+              </a>
+            </li>
+            <li id="5">
+              <a href="#">
+                <img src='img/games/Game5.png' alt='' />
+                <h3>
+                  Chess
+                </h3>
+              </a>
+            </li>
+            <li id="6">
+              <a href="#">
+                <img src='img/games/Game6.png' alt='' />
+                <h3>
+                  Meeples
+                </h3>
+              </a>
+            </li>
+            <li id="7">
+              <a href="#">
+                <img src='img/games/Game7.png' alt='' />
+                <h3>
+                  Dominoes
+                </h3>
+              </a>
+            </li>
+          </ul>
+        </div>
+        <div class="ui-field-contain">
+          <a data-role="button" data-theme="e" data-rel="back" data-icon="delete">
+            Cancel
+          </a>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Player Icon -->
+    <div data-role="page" data-dialog="true" id="promptPlayerIcon">
+      <div class="ui-content">
+        <div class="ui-field-contain">
+          <ul data-role="listview" class="player-icon-list" id="player-icon-list" data-divider-theme="b" data-inset="true">
+            <li data-role="list-divider">
+              Player Avatars
+            </li>
+            <li id="playerIcon1">
+              <a href="#">
+                <img src='img/players/Player1.png' alt='' />
+                <h3>
+                  Everyman
+                </h3>
+              </a>
+            </li>
+            <li id="playerIcon2">
+              <a href="#">
+                <img src='img/players/Player2.png' alt='' />
+                <h3>
+                  Alien
+                </h3>
+              </a>
+            </li>
+            <li id="playerIcon3">
+              <a href="#">
+                <img src='img/players/Player3.png' alt='' />
+                <h3>
+                  Draenei
+                </h3>
+              </a>
+            </li>
+            <li id="playerIcon4">
+              <a href="#">
+                <img src='img/players/Player4.png' alt='' />
+                <h3>
+                  Angel
+                </h3>
+              </a>
+            </li>
+            <li id="playerIcon5">
+              <a href="#">
+                <img src='img/players/Player5.png' alt='' />
+                <h3>
+                  Mermaid
+                </h3>
+              </a>
+            </li>
+            <li id="playerIcon6">
+              <a href="#">
+                <img src='img/players/Player6.png' alt='' />
+                <h3>
+                  Astronaut
+                </h3>
+              </a>
+            </li>
+            <li id="playerIcon7">
+              <a href="#">
+                <img src='img/players/Player7.png' alt='' />
+                <h3>
+                  Marilyn
+                </h3>
+              </a>
+            </li>
+            <li id="playerIcon8">
+              <a href="#">
+                <img src='img/players/Player8.png' alt='' />
+                <h3>
+                  Bangs
+                </h3>
+              </a>
+            </li>
+            <li id="playerIcon9">
+              <a href="#">
+                <img src='img/players/Player9.png' alt='' />
+                <h3>
+                  Catwoman
+                </h3>
+              </a>
+            </li>
+            <li id="playerIcon10">
+              <a href="#">
+                <img src='img/players/Player10.png' alt='' />
+                <h3>
+                  Attendant
+                </h3>
+              </a>
+            </li>
+            <li id="playerIcon11">
+              <a href="#">
+                <img src='img/players/Player11.png' alt='' />
+                <h3>
+                  Top Hat
+                </h3>
+              </a>
+            </li>
+            <li id="playerIcon12">
+              <a href="#">
+                <img src='img/players/Player12.png' alt='' />
+                <h3>
+                  Baphomet
+                </h3>
+              </a>
+            </li>
+            <li id="playerIcon13">
+              <a href="#">
+                <img src='img/players/Player13.png' alt='' />
+                <h3>
+                  Doctor
+                </h3>
+              </a>
+            </li>
+            <li id="playerIcon14">
+              <a href="#">
+                <img src='img/players/Player14.png' alt='' />
+                <h3>
+                  Angel
+                </h3>
+              </a>
+            </li>
+            <li id="playerIcon15">
+              <a href="#">
+                <img src='img/players/Player15.png' alt='' />
+                <h3>
+                  Detective
+                </h3>
+              </a>
+            </li>
+            <li id="playerIcon16">
+              <a href="#">
+                <img src='img/players/Player16.png' alt='' />
+                <h3>
+                  King
+                </h3>
+              </a>
+            </li>
+            <li id="playerIcon17">
+              <a href="#">
+                <img src='img/players/Player17.png' alt='' />
+                <h3>
+                  Maid
+                </h3>
+              </a>
+            </li>
+            <li id="playerIcon18">
+              <a href="#">
+                <img src='img/players/Player18.png' alt='' />
+                <h3>
+                  Devilish
+                </h3>
+              </a>
+            </li>
+            <li id="playerIcon19">
+              <a href="#">
+                <img src='img/players/Player19.png' alt='' />
+                <h3>
+                  Ninja
+                </h3>
+              </a>
+            </li>
+            <li id="playerIcon20">
+              <a href="#">
+                <img src='img/players/Player20.png' alt='' />
+                <h3>
+                  Nun
+                </h3>
+              </a>
+            </li>
+            <li id="playerIcon21">
+              <a href="#">
+                <img src='img/players/Player21.png' alt='' />
+                <h3>
+                  Nurse
+                </h3>
+              </a>
+            </li>
+            <li id="playerIcon22">
+              <a href="#">
+                <img src='img/players/Player22.png' alt='' />
+                <h3>
+                  Police
+                </h3>
+              </a>
+            </li>
+            <li id="playerIcon23">
+              <a href="#">
+                <img src='img/players/Player23.png' alt='' />
+                <h3>
+                  Priest
+                </h3>
+              </a>
+            </li>
+            <li id="playerIcon24">
+              <a href="#">
+                <img src='img/players/Player24.png' alt='' />
+                <h3>
+                  Queen
+                </h3>
+              </a>
+            </li>
+            <li id="playerIcon25">
+              <a href="#">
+                <img src='img/players/Player25.png' alt='' />
+                <h3>
+                  Robot
+                </h3>
+              </a>
+            </li>
+            <li id="playerIcon26">
+              <a href="#">
+                <img src='img/players/Player26.png' alt='' />
+                <h3>
+                  Robette
+                </h3>
+              </a>
+            </li>
+            <li id="playerIcon27">
+              <a href="#">
+                <img src='img/players/Player27.png' alt='' />
+                <h3>
+                  Strongman
+                </h3>
+              </a>
+            </li>
+            <li id="playerIcon28">
+              <a href="#">
+                <img src='img/players/Player28.png' alt='' />
+                <h3>
+                  Librarian
+                </h3>
+              </a>
+            </li>
+          </ul>
+        </div>
+        <div class="ui-field-contain">
+          <a data-role="button" data-theme="e" data-rel="back" data-icon="delete">
+            Cancel
+          </a>
+        </div>
+      </div>
+    </div>
+    
+    <!-- game URL -->
+    <div data-role="page" data-dialog="true" id="promptGameURL">
+      <div class="ui-content">
+        <div class="ui-field-contain">
+          <label for="textImageURL">
+            Image URL:
+          </label>
+          <input name="textImageURL" id="textImageURL" placeholder="http://www.website.com/image.png" value="" type="text">
+        </div>
+        <div class="ui-field-contain">
+          <a data-role="button" data-theme="c" id="btnImageFromBGG" data-icon="star">
+            Get from BGG ID
+          </a>
+          <a data-role="button" data-theme="d" id="btnImageURLSave" data-icon="check">
+            Save
+          </a>
+          <a data-role="button" data-theme="e" data-rel="back" data-icon="delete">
+            Cancel
+          </a>
+        </div>
+      </div>
+    </div>
+    
+    <!-- game URL -->
+    <div data-role="page" data-dialog="true" id="promptOnlineGame">
+      <div class="ui-content">
+        <div class="ui-field-contain">
+          <h3 id="onlineGameName">
+            Loading
+          </h3>
+          <p id="onlineGameVersion">
+          </p>
+          <p id="onlineGameVersionNotes">
+          </p>
+        </div>
+        
+        <div class="ui-field-contain">
+          <a data-role="button" href="#" data-theme="d" id="btnInstall" data-icon="check">
+            Install
+          </a>
+          <a data-role="button" data-theme="d" id="btnInstall2" data-icon="check">
+            Install and Play
+          </a>
+          <a data-role="button" data-theme="e" data-rel="back" data-icon="delete">
+            Close
+          </a>
+        </div>
+        <div class="ui-field-contain">
+          <label for="txtOnlineGameFeatures">
+            Features:
+          </label>
+          <textarea name="txtOnlineGameFeatures" id="txtOnlineGameFeatures">
+          </textarea>
+        </div>
+      </div>
+    </div>
+    
+    <!-- player URL -->
+    <div data-role="page" data-dialog="true" id="promptPlayerURL">
+      <div class="ui-content">
+        <div class="ui-field-contain">
+          <label for="textPlayerImageURL">
+            Image URL:
+          </label>
+          <input name="textPlayerImageURL" id="textPlayerImageURL" placeholder="http://www.website.com/image.png" value="" type="text">
+        </div>
+        <div class="ui-field-contain">
+          <a data-role="button" data-theme="d" id="btnPlayerImageURLSave" data-icon="check">
+            Save
+          </a>
+          <a data-role="button" data-theme="e" data-rel="back" data-icon="delete">
+            Cancel
+          </a>
+        </div>
+      </div>
+    </div>
+    
+    <!-- photopopup -->
+    <div data-role="page" data-dialog="true" id="displayPhotoPopup">
+      <div class="ui-content">
+        <div class="ui-field-contain">
+          <img id="popupPhotoImage" class="photopopup" src="/" alt="">
+        </div>
+      </div>
+    </div>
+    
+    
+    
+    <!-- START nailthumb thumbnail resize -->
+    <script src="lib/nailthumb/jquery.nailthumb.1.1.min.js">
+    </script>
+    <link rel="stylesheet" href="lib/nailthumb/jquery.nailthumb.1.1.min.css" />
+    <!-- end nailthumb -->
+    <!-- start simpleDialog for popups -->
+    <link rel="stylesheet" href="lib/simpledialog/jquery.mobile.simpledialog.min.css" />
+    <script type="text/javascript" src="lib/simpledialog/jquery.mobile.simpledialog2.js">
+    </script>
+    <!-- end simpleDialog -->
+    <!-- START Spinbox scoring widget -->
+    <script type="text/javascript" src="js/jqm-spinbox.js">
+    </script>
+    <!-- END Spinbox -->
+    <!-- START jqPlot charts and graphs -->
+    <script type="text/javascript" src="lib/jqplot/jquery.jqplot.min.js">
+    </script>
+    
+    <script type="text/javascript" src="lib/jqplot/fixedImage.js">
+    </script>
+    <script type="text/javascript" src="lib/jqplot/jqplot.pieRenderer.js">
+    </script>
+    <script type="text/javascript" src="lib/jqplot/jqplot.barRenderer.js">
+    </script>
+    <script type="text/javascript" src="lib/jqplot/jqplot.categoryAxisRenderer.min.js">
+    </script>
+    <script type="text/javascript" src="lib/jqplot/jqplot.canvasTextRenderer.min.js">
+    </script>
+    <script type="text/javascript" src="lib/jqplot/jqplot.canvasAxisTickRenderer.min.js">
+    </script>
+    <script type="text/javascript" src="lib/jqplot/jqplot.pointLabels.js">
+    </script>
+    <link rel="stylesheet" href="lib/jqplot/jquery.jqplot.min.css" />
+    <!-- END jqPlot -->
+    <!-- START swipebox photo viewer -->
+    <script src="lib/swipebox/jquery.swipebox.min.js">
+    </script>
+    <link rel="stylesheet" href="lib/swipebox/swipebox.css">
+    <!-- END swipebox -->
+    <!-- START date picker -->
+    <link rel="stylesheet" href="lib/mobipick/css/mobipick.css" />
+    <script src="lib/mobipick/external/xdate.js">
+    </script>
+    <script src="lib/mobipick/external/xdate.i18n.js">
+    </script>
+    <script src="lib/mobipick/js/mobipick.js">
+    </script>
+    <!-- END datepicker -->
+    <!-- START date durationPicker -->
+    <link rel="stylesheet" href="lib/datebox/datebox.css" />
+    <script src="lib/datebox/datebox.js">
+    </script>
+    <!-- end date duration picker -->
+    <script src="InAppBrowser.js">
+    </script>
+    <script src="js/plugins/SocialSharing.js">
+    </script>
+    <!-- START timecircles -->
+    <script type="text/javascript" src="lib/timecircles/TimeCircles.js"></script>
+    <link href="lib/timecircles/TimeCircles.css" rel="stylesheet">
+    <!-- END timecircles -->
+    
+    <!-- START load local javascript last -->
+    
+    <script src="js/downloadfile.js">
+    </script>
+    <script src="js/humane.js">
+    </script>
+    <script src="js/json2xml.js">
+    </script>
+    <script src="js/resizeImage64.js">
+    </script>
+    
+   
+    <!-- END load local javascript -->
+    
+    <script type="text/javascript" src="js/core/device.js">
+    </script>
+    <script type="text/javascript" src="js/core/globals.js">
+    </script>
+    <script type="text/javascript" src="js/objects.js">
+    </script>
+    <script type="text/javascript" src="js/functions.js">
+    </script>
+    <script type="text/javascript" src="js/storage/websql-store.js">
+    </script>
+    <script type="text/javascript" src="js/core/cloudAll.js">
+    </script>
+    <script type="text/javascript" src="js/core/cloudLocal.js">
+    </script>
+    <script type="text/javascript" src="js/core/popup.js">
+    </script>
+    
+    <script type="text/javascript" src="js/core/fileIO.js">
+    </script>
+    
+    <script type="text/javascript" src="js/core/internet.js">
+    </script>
+    <script type="text/javascript" src="js/storage/localstorage.js">
+    </script>
+    <script type="text/javascript" src="js/core/social.js">
+    </script>
+    <script type="text/javascript" src="js/core/toast.js">
+    </script>
+    <script type="text/javascript" src="js/main.js">
+    </script>
+    
+    <!-- start jQuery UI and touchpunch -->
+    <!-- It was causing problems wto load jquery-ui and touch-punch before spinbox and datebox -->
+    <script type="text/javascript" src="lib/jquery-ui/jquery-ui.min.js">
+    </script>
+    <script type="text/javascript" src="lib/touch-punch/jquery.ui.touch-punch.min.js">
+    </script>
+    <!-- It was causing problems wto load jquery-ui and touch-punch before spinbox and datebox -->
+    <!-- (End) Add jQuery UI Touch Punch -->
+    
+    <!--  For FireFoxOS -->
+<script src="cordova.js">
+</script>
+<script src="cordova_plugins.js">
+</script>
+    
+     <!-- for everything else -->
+     
+     <script type="text/javascript" src="js/onDeviceReady.js">
+     </script>
+    
+  </body>
+  
+</html>

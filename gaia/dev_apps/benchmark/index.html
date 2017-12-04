@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+	<head>
+      <meta charset="UTF-8">
+		<title>Benchmarker</title>
+	</head>
+	<body>
+   <h1>SOSP Benchmarks</h1>
+   <div>
+     <button id="clear" type="button">CLEAR</button><br>
+     <h2>Contacts</h2>
+     <!--Input(JSON, optional):<input id="contacts-json" type="text"><br>-->
+     Insert:<button id="contacts-save" type="button">SAVE</button><br>
+     Enum:<button id="contacts-enum" type="button">ENUM</button><br>
+     ReadByName:<button id="contacts-name" type="button">READ</button><br>
+     ReadByCat:<button id="contacts-cat" type="button">READ</button><br>
+     ReadByTel:<button id="contacts-tel" type="button">READ</button><br>
+     Clear:<button id="contacts-clear" type="button">CLEAR</button><br>
+     ALL:<button id="contacts-all" type="button">SAVE</button><br>
+     Result:<p id="contacts-result"></p>
+   </div>
+   <div>
+     <h2>Blobs</h2>
+     <!--Use Transaction:<input id='transactions-check' type='checkbox'><br>
+     Size(bytes):<input id="blobs-size"><br>-->
+     Number:<input id="blobs-number"><br>
+     Save Blobs:<button id="blobs-save-orig" type="button">SAVE OLD</button><br>
+                <button id="blobs-save-new" type="button">SAVE NEW</button><br><br>
+     Save Large Blobs:<button id="blobs-save-orig-big" type="button">SAVE OLD</button><br>
+                      <button id="blobs-save-new-big" type="button">SAVE NEW</button><br><br>
+     Get Blobs:<button id="blobs-get-orig" type="button">Get OLD</button><br>
+               <button id="blobs-get-new" type="button">Get NEW</button><br><br>
+     Raw Blobs:<button id="blobs-save-raw-orig-small" type="button">Save OLD SMALL</button><br>
+               <button id="blobs-save-raw-new-small" type="button">Save NEW SMALL</button><br><br>
+               <button id="blobs-save-raw-orig-large" type="button">Save OLD LARGE</button><br>
+               <button id="blobs-save-raw-new-large" type="button">Save NEW LARGE</button><br><br>
+     Clear:<button id="blobs-clear" type="button">CEAR</button><br>
+     Result:<p id="blobs-result"></p>
+   </div>
+   <div>
+     <h2>IAC</h2>
+     moziac:<button id='moziacbutton' type='button'>moziac</button><br>
+     iac:<button id='iacbutton' type='button'>iac</button><br>
+     Result:<p id="iac-result"></p>
+   </div>
+   <hr size=1>
+   <div>
+    <h2>File Tests</h1>
+    <button id="create-files" type="button">CREATE FILES</button><br>
+    <button id="delete-files" type="button">DELETE FILES</button><br><br>
+    <button id="create-files-db" type="button">CREATE FILESDB</button><br>
+    <button id="delete-files-db" type="button">DELETE FILESDB</button><br><br>
+    <button id="create-files-db-dir" type="button">CREATE FILESDB DIR</button><br>
+    <button id="delete-files-db-dir" type="button">DELETE FILESDB DIR</button><br>
+     Result:<p id="files-result"></p>
+   </div>
+   <script src="js/contacts.js"></script>
+   <script src="js/blobs.js"></script>
+   <script src="js/app.js"></script>
+   <script src="js/metadata.js"></script>
+   <script src="js/files.js"></script>
+   <script src="shared/js/simple_mediadb.js"></script>
+   <script src="shared/js/rdb_mediadb.js"></script>
+   <script src="shared/js/rdbschema.js"></script>
+   <script src="js/moziac.js"></script>
+	</body>
+</html>

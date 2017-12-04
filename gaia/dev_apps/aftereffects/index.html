@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>AfterEffects</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, user-scalable=no" />
+		<meta http-equiv="cache-control" content="no-cache" />
+		
+		<link rel="stylesheet" href="css/vendor/jqmobile_flatui/jquery.mobile.flatui.css" />
+		<link rel="stylesheet" href="css/vendor/reset.css" />
+		<link rel="stylesheet" href="css/style.css" />
+
+    <script defer src="shared/js/rdbschema.js"></script>
+		<script data-main="js/app" src="js/require.js"></script>
+                <script src="js/photo_storage_shim.js"></script>
+                <script src="js/exif.js"></script>
+                <script src="shared/js/rdbschema.js"></script>
+	</head>
+	<body>
+		<div data-role="page" class="page" id="pick-photo-page" data-dom-cache="false">
+			<div data-role="content" id="pick-photo-page-content" class="content">
+				<div class="outer-center disable-select">
+					<div class="inner-center">
+						<h1 id="main-caption">AfterEffects</h1>
+					</div>
+				</div>
+				<div class="clear"></div>
+				<div class="outer-center disable-select">
+					<div class="inner-center">
+						<a id="pick-photo" href="#edit-photo-page" data-transition="slide" data-inline="true">
+							<img src="img/camera.png" />
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<div data-role="page" class="page" id="edit-photo-page" data-dom-cache="false">
+			<!--Header-->
+			<div id="edit-header" class="hidden" data-role="header" data-theme="a" data-position="fixed">
+				<a href="#pick-photo-page" id="home-button" data-transition="slide" data-direction="reverse" data-icon="home" data-iconpos="notext">Cancel</a>
+				<h1>Picked photo</h1>
+				<a href="#select-mode" class="ui-btn-right" data-icon="gear" data-iconpos="notext">Modes</a>
+			</div>
+			<!--Dynamic content-->
+			<div data-role="content" id="content" class="content"></div>
+			<div data-role="content" id="content-more" class="content">
+				<div data-role="fieldcontain" id="slider-holder" class="hidden">
+					<input id="main-slider" type="range" name="slider" value="0" min="0" max="100" data-highlight="true" />
+				</div>
+			</div>
+			<!--Right panel-->
+			<div data-role="panel" id="select-mode" class="hidden" data-position="right" data-theme="a" data-position-fixed="true">	
+				<ul data-role="listview" data-theme="a">
+					<li data-icon="delete" data-theme="a"><a href="#" data-rel="close" data-ajax="false">&nbsp;</a></li>
+					
+					<li data-theme="a" id="panel-effects" class="left-li"><a href="#edit-photo-page#effects" data-ajax="false">Effects</a></li>
+					<li data-theme="a" id="panel-borders" class="left-li"><a  href="#edit-photo-page#borders" data-ajax="false">Frames</a></li>
+					<li data-theme="a" id="panel-contrast" class="left-li"><a  href="#edit-photo-page#contrast" data-ajax="false">Contrast</a></li>
+					<li data-theme="a" id="panel-blur" class="left-li"><a  href="#edit-photo-page#blur" data-ajax="false">Blur</a></li>
+					<li data-theme="a" id="panel-sharpen" class="left-li"><a  href="#edit-photo-page#sharpen" data-ajax="false">Sharpen</a></li>
+					<br>
+					<li data-theme="a" id="panel-imgur" class="left-li"><a href="#edit-photo-page#imgur" data-ajax="false">Social Share</a></li>
+					<li data-theme="a" id="panel-share" class="left-li"><a href="#edit-photo-page#share" data-ajax="false">Simple Share</a></li>
+               <li data-theme="a" id="panel-pass"  class="left-li"><a href="#edit-photo-page#pass"  data-ajax="false">Pass On</a><li>
+					<li data-theme="a" id="panel-downloadimg" class="left-li"><a href="#edit-photo-page#downloadimg" data-ajax="false">Download Photo</a></li>
+				</ul>
+			</div>
+		</div>
+	</body>
+</html>

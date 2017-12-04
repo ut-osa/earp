@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>WebActivities Photo Selector Test</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="./styles/start-page.css">
+    <link rel="stylesheet" type="text/css" href="./styles/app.css">
+    <script>
+      function startActivity() {
+        var activity = new MozActivity({
+                                       // The name of the activity the app wants to delegate the action
+                                       name: "pick",
+                                       
+                                       // Data required by the activity. Each application acting as an activity handler
+                                       // can have it's own requirement for the activity. If the data does not fulfill
+                                       // all the requirement of any activity handler, the error event will be sent
+                                       // otherwise, the event sent depend on the activity handler itself.
+                                       data: {
+                                         type: "image/*",
+                                       },
+                                       provider: {
+                                         name: ["com.facebook.photo.app",]
+                                       },
+                                       });
+                                       
+        activity.onsuccess = function() {
+          var msg = "Activity successfuly handled!";
+          console.log(msg);
+          document.getElementById("status").innerHTML = msg;
+          document.getElementById("status").style.color = "black";
+          
+          var img = document.getElementById("user-img");
+          img.src = window.URL.createObjectURL(this.result.blob);
+          img.style.display = "inline";
+        }
+    
+        activity.onerror = function() {
+          var msg = "The activity encouter an error: " + JSON.stringify(this.error);
+          console.log(msg);
+          document.getElementById("status").innerHTML = msg;
+          document.getElementById("status").style.color = "red";
+          
+          var img = document.getElementById("user-img");
+          img.style.display = "none";
+        }
+      }
+    </script>
+  </head>
+  <body>
+    <!--<iframe src="http://cs.utexas.edu/~georgiev/tests/facebook/index.php" mozbrowser>-->
+
+    <div id="button-wrapper">
+      <button id="start-activity-button" type="button" onclick="startActivity();">Choose Image</button>
+    </div>
+    <div id="status"></div>
+    <img id="user-img" style="width: 100%"/>
+  </body>
+</html>

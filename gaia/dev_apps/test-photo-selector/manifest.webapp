@@ -1,0 +1,28 @@
+{
+  "version": "0.1",
+  "name": "Photo Selector Test",
+  "description": "WMD",
+  "launch_path": "/index.html",
+  "icons": {
+    "16": "/app-template/app-icons/icon-16.png",
+    "48": "/app-template/app-icons/icon-48.png",
+    "128": "/app-template/app-icons/icon-128.png"
+  },
+  "developer": {
+    "name": "WMD",
+    "url": "https://www.utexas.edu/"
+  },
+  "locales": {
+    "en": {
+      "description": "Photo Selector Test",
+      "developer": {
+        "url": "https://www.utexas.edu/"
+      }
+    }
+  },
+  "permissions": {
+    "browser": {},
+    "embed-apps": {}
+  },
+  "default_locale": "en"
+}

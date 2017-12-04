@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Photo Gallery test</title>
+<meta charset=UTF-8">
+</head>
+<body>
+
+<p id="demo"> RDB test</p>
+
+<button type="button" id="connectButton"> connect</button>
+<button type="button" id="revokeButton"> revoke</button>
+<button type="button" id="queryButton">query</button><br>
+<button type="button" id="testButton">query</button><br>
+
+<script src="shared/js/rdbschema.js"></script>
+<hr>
+<div>
+  <button type="button" id="listAlbumsButton"> list albums</button>
+  <button type="button" id="newAlbumButton">new albums</button>
+<div id="albumList">
+</div>
+</div>
+
+<hr>
+<div>
+  <button id="newPhoto" type="button">new photo</button><br>
+  <button id="searchButton" type="button">search tag in album</button>
+  <input id="searchTag" type="text"></input>
+  <hr>
+  <table id="photoList", border="1">
+    <th>name</th><th>tags</th>
+  </table>
+</div>
+
+<p id="resSpace"> </p>
+
+<img id="imgSpace"> </img>
+
+<script src="js/gallery.js"></script>
+</body>
+</html>

@@ -1,0 +1,50 @@
+{
+  "version": "1.1",
+  "name": "Drive Note",
+	"type": "certified",
+  "description": "Modified version of Quicknote (developed by the developer listed here)",
+  "launch_path": "/index.html",
+  "icons": {
+    "16": "/images/icons/icon_16.png",
+    "30": "/images/icons/icon_30.png",
+    "32": "/images/icons/icon_32.png",
+    "48": "/images/icons/icon_48.png",
+    "60": "/images/icons/icon_60.png",
+    "90": "/images/icons/icon_90.png",
+    "128": "/images/icons/icon_128.png",
+    "256": "/images/icons/icon_256.png"
+  },
+  "developer": {
+    "name": "Kenneth",
+    "url": "http://developer24hours.blogspot.ca"
+  },
+  "installs_allowed_from": ["*"],
+  "default_locale": "en",
+  "orientation": ["portrait"],
+  "locales": {
+    "es": {
+      "name": "Nota Rápida",
+      "description": "Nota rápida está construido con la simplicidad en mente. Guardar la nota y nota búsqueda por título con facilidad. Puede enviar notas por correo electrónico. Funciona completamente fuera de línea. Soporta Inglés, español, portugués, polaco, alemán, griego, húngaro. Palabras clave: Libreta, nota, cuaderno, bloc, notas, lista de compras, lista de tareas, Todo, para hacer la lista, hacer, 2do, de tareas, de compras, fabricante de la lista, calendario, tareas, notas, editor de texto, Nota, Post-it, notas, libreta, cojín de nota, nota de widget, pegajoso, editor, hacer las cosas, diario, impresionante"
+    },
+    "pt": {
+      "name": "Nota rápida",
+      "description": "Nota rápida é construído com a simplicidade em mente. Facilmente salvar nota e nota de pesquisa por título. Você pode enviar notas por e-mail. Funciona totalmente offline. Suporta Inglês, Espanhol, Português, polaco, alemão, grego, húngaro. Palavras-chave: bloco de notas, nota, caderno, bloco de notas, notas, lista de compras, lista de tarefas, Todo, para fazer a lista, para fazer, 2do, To-fazer, compras, lista de maker, calendário, tarefas, Memo, editor de texto, nota pegajosa, Post-it, notas, bloco de notas, bloco de notas, widget memorando, pegajoso, editor, fazer as coisas, revista, impressionante"
+    },
+    "pl": {
+      "name": "Notatki",
+      "description": "Notatki é construído com a simplicidade em mente. Facilmente salvar nota e nota de pesquisa por título. Você pode enviar notas por e-mail. Funciona totalmente offline. Suporta Inglês, Espanhol, Português, polaco, alemão, grego, húngaro. Palavras-chave: bloco de notas, nota, caderno, bloco de notas, notas, lista de compras, lista de tarefas, Todo, para fazer a lista, para fazer, 2do, To-fazer, compras, lista de maker, calendário, tarefas, Memo, editor de texto, nota pegajosa, Post-it, notas, bloco de notas, bloco de notas, widget memorando, pegajoso, editor, fazer as coisas, revista, impressionante"
+    },
+    "de": {
+      "name": "Aufzeichnungen",
+      "description": "Aufzeichnungen wird mit Einfachheit im Verstand errichtet. Einfaches Speichern beachten und die Suche nach Titel beachten. Sie können Notizen per E-Mail senden. Works komplett offline. Unterstützt Englisch, Spanisch, Portugiesisch, Polnisch, Deutsch, Griechisch, Ungarisch. Keywords: Notizblock, beachten, Notizbuch, Notizblock, Notizen, Einkaufszettel, Todo-Liste, Todo, To-do-Liste, das zu tun, 2do, To-do, Shopping, Liste maker, Kalender, Aufgaben, Notizen, Text-Editor, Haftnotiz, Post-It, Notizen, Notizbuch, Notizblock, Memo-Widget, klebrig, editor, Dinge zu erledigen, journal, fantastisch"
+    },
+    "el": {
+      "name": "Σημειώσεις",
+      "description": "Σημειώσεις είναι χτισμένο με γνώμονα την απλότητα. Εύκολα αποθηκεύσετε σημείωμα και σημείωμα αναζήτηση με τον τίτλο. Μπορείτε να στείλετε τις σημειώσεις μέσω e-mail. Λειτουργεί εντελώς offline. Υποστηρίζει Αγγλικά, Ισπανικά, Πορτογαλικά, Πολωνικά, Γερμανικά, Ελληνικά, Ουγγρικά. Λέξεις-κλειδιά: Σημειωματάριο, σημείωση, σημειωματάριο, σημειωματάριο, σημειώσεις, λίστες αγορών, Todo λίστα Todo, να κάνουμε λίστα, να το κάνετε, 2DO, To-do, Ψώνια, maker κατάλογο, ημερολόγιο, εργασία, Memo, επεξεργαστή κειμένου, Sticky Note, Δημοσίευση αυτό, σημειώσεις, σημειωματάριο, σημειωματάριο, widget σημείωμα, κολλώδη, editor, να γίνουν τα πράγματα, περιοδικό, φοβερό"
+    },
+    "hu": {
+      "name": "jegyzetek",
+      "description": "jegyzetek épült egyszerűséget szem előtt tartva. Könnyen menteni Jegyzet keresés Megjegyzés cím szerint. Küldhet jegyzeteit e-mailben. Működik teljesen offline. Támogatja az angol, spanyol, portugál, lengyel, német, görög, magyar. Kulcsszavak: Notepad, jegyzet, jegyzetfüzet, jegyzettömb, jegyzetek, Shopping List, Todo list, Todo, teendők, teendők, 2A, teendők, vásárlás, lista készítő, Naptár, Feladatok, Memo, szövegszerkesztő, Sticky Note, tegye azt, jegyzetek, jegyzettömb, jegyzettömb, emlékeztető widget ragacsos, szerkesztő, egyre dolgokat, folyóirat, félelmetes"
+    }
+  }
+}

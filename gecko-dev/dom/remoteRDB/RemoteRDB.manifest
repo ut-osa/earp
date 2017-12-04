@@ -1,0 +1,5 @@
+component {72b5ee28-81d8-4af8-90b3-ae935396cc66} RemoteRDB.js
+contract @mozilla.org/rRDB;1 {72b5ee28-81d8-4af8-90b3-ae935396cc66}
+
+component {72b5ff28-82d8-4af8-90b3-ae935396cc66} RemoteRDB.js
+contract @mozilla.org/rRDBcursor;1 {72b5ff28-82d8-4af8-90b3-ae935396cc66}

@@ -1,0 +1,12 @@
+#!/bin/bash
+
+archive=$1
+dest=$2
+
+if [ -z $dest ]
+then
+   dest=${GAIA_REPO:?"specify the root of the gaia repo"}
+fi
+
+realDest=$(./`dirname $0`/export2gaia $archive) && \
+./`dirname $0`/extractManifest $archive $realDest/manifest.webapp

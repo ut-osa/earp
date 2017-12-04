@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Email Photo Viewer</title>
+    <meta charset="UTF-8">
+  </head>
+  <body>
+    <script>
+      var rdb;
+
+      /**
+       * Hook into the wmd-mail db.
+       */
+      function attachToDatabase() {
+        rdb = navigator.getRDB("app-wmd-mail.gaiamobile.org/wmd-mail");
+        rdb.onsuccess = function(event) {
+          log("Successfully connected to the database!");
+        }
+        rdb.onerror = function() {
+          log("Failed to connect to the database!");
+        }
+      }
+
+      /**
+       * Creates an image out of an image blob.
+       */
+      function blobToImg(imageBlob) {
+        var urlCreator = window.URL || window.webkitURL;
+        var imageUrl = urlCreator.createObjectURL(imageBlob);
+
+        var newImg = document.createElement("img");
+        newImg.setAttribute("src", imageUrl);
+        document.getElementById("imgs").appendChild(newImg);
+      }
+ 
+      function getImageBlobsFromDB() {
+        var timePeriodInMs = parseInt(document.getElementById("time-period").value) * 24 * 60 * 60 * 1000;
+        log("Search for images received within " + timePeriodInMs + " ms");
+
+        var now = new Date();
+        var epochNow = now.getTime();
+        var since = epochNow - timePeriodInMs;
+
+        var where = {type: "and", term1: {type: "=", mime: "image/jpeg"}, term2: {type: ">", date: since}};
+        var cursor = rdb.query(["attachments"], ["BLOB"], where, null);
+        cursor.onsuccess = function(event) {
+          while (cursor.next()) {
+            var blob = cursor.row.BLOB;
+            blobToImg(blob);
+            log("Image successfully retrieved from the database.");
+          }	
+	  cursor.reset();
+        }
+        cursor.onerror = function() {
+            log("Failed to retrieve images from the database" + JSON.stringify(this.error));
+        }
+      }
+
+      /**
+       * Appends a message to the console.
+       */
+      function log(msg) {
+        var log = document.getElementById("console");
+        var old = log.innerHTML;
+        log.innerHTML = msg + "<br />" + old;
+      }
+    </script>
+    <button type="button" onclick="attachToDatabase();">Attach To Database</button><br />
+    Get all images stored in the past <input type="text" id="time-period"> days. <br />
+    <button type="button" onclick="getImageBlobsFromDB();">Get Image BLOBs From DB</button>
+    
+    <div id="console"></div>
+
+    <img id="test-image"/>
+    <div id="imgs"></div>
+  </body>
+</html>

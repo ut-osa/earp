@@ -1,0 +1,17 @@
+apps/*
+outoftree_apps/*
+dev_apps/benchmark
+dev_apps/aftereffects
+dev_apps/checkinfox
+dev_apps/apitest
+dev_apps/test-photo-selector
+dev_apps/uitest
+dev_apps/rdb_gallery
+dev_apps/fb-photos
+dev_apps/elgg_dispatcher
+dev_apps/elgg_client
+dev_apps/wmd-mail
+dev_apps/drivenote
+dev_apps/email-photo-viewer
+dev_apps/piacserver
+dev_apps/piacclient

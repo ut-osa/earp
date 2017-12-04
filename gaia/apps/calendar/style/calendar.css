@@ -1,0 +1,54 @@
+* {
+  -moz-box-sizing: border-box;
+}
+html {
+  font-size: 10px;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  line-height: 100%;
+  overflow: hidden;
+  background-color: #000;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+section {
+  /* unscrew up heights */
+  font-size: 100%;
+  padding: 0;
+  margin: 0;
+}
+
+section {
+  width: 100%;
+}
+
+ol,
+menu li,
+ol li {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+
+html, body {
+  padding: 0;
+  margin: 0;
+}
+
+
+.ltr {
+  text-align: left;
+}
+
+.rtl {
+  text-align: right;
+}

@@ -1,0 +1,51 @@
+{ 
+    "launch_path": "/index.html",
+    "installs_allowed_from": [
+        "https://marketplace.firefox.com"
+    ],
+    "version":"1.4.5",
+    "name":"ScoreGeek",
+    "description": "Calculate boardgame scores, achievements and statistics",
+    "pkgName":"com.rebrandsoftware.scoregeek",
+    "icons": {
+        "16": "/icons/firefoxos/016.png",
+        "32": "/icons/firefoxos/032.png",
+        "48": "/icons/firefoxos/048.png",
+        "60": "/icons/firefoxos/060.png",
+        "128":"/icons/firefoxos/128.png",
+        "512":"/icons/firefoxos/512.png"
+    },
+    "developer": {
+    "name": "Rebrand Software, LLC",
+    "url": "http://www.rebrandsoftware.com"
+    },
+    "chrome": { "navigation": false },
+    "default_locale": "en",
+    "fullscreen": "true",
+    "permissions": {
+      "browser": {
+            "description": "Enables the app to implement a browser in an iframe."
+        },
+      "rdbs":{
+        "sys/contacts": {
+           "description":"Required to add players from contacts",
+           "access":"readwrite",
+           "view":["fname", "lname", "email", "cellphone"]
+        }
+      },
+      "camera": {
+        "description":"Required to take player and game photos"
+      },
+      "device-storage:pictures":{ 
+        "access": "readwrite",
+        "description":"Required to save session photos"
+      },
+      "storage": {
+        "description":"Required to store game data"
+      },
+      "systemXHR": {
+        "description":"Required to contact game plugin server, post games to BoardGameGeek, backup to cloud"
+      } 
+    },
+    "type": "privileged"
+}

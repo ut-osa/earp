@@ -1,0 +1,9 @@
+{
+  "external": true,
+  "etag": "\"09fe3ce7bef0f34725ff60bb1146f724da1581691bb7fa09fbafa0ef8db6a3c5\"",
+  "installOrigin": "https://marketplace.firefox.com",
+  "manifestURL": "https://marketplace.firefox.com/packaged.webapp",
+  "packageEtag": "\"49401d24e9d7b2e9e9d51be1759771febc6dbffe99f1290418614bcb05d841a8\"",
+  "removable": false,
+  "type": "privileged"
+}

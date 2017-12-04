@@ -1,0 +1,1034 @@
+// vim: set filetype=javascript tabstop=2 shiftwidth=2:
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/Mdebug('get objects callback');
+ */
+var DEBUG = false;
+function debug(s) { dump("-*- ContactManager: " + s + "\n"); }
+
+const Cc = Components.classes;
+const Ci = Components.interfaces;
+const Cu = Components.utils;
+
+const VIRGIN = 'virgin', INIT = 'init', READY = 'ready'; //states
+
+Cu.import("resource://gre/modules/XPCOMUtils.jsm");
+Cu.import("resource://gre/modules/Services.jsm");
+Cu.import("resource://gre/modules/DOMRequestHelper.jsm");
+Cu.import("resource://gre/modules/rdbschema.jsm");
+
+
+XPCOMUtils.defineLazyServiceGetter(Services, "DOMRequest",
+                                   "@mozilla.org/dom/dom-request-service;1",
+                                   "nsIDOMRequestService");
+
+XPCOMUtils.defineLazyServiceGetter(this, "cpmm",
+                                   "@mozilla.org/childprocessmessagemanager;1",
+                                   "nsIMessageSender");
+
+const CONTACTS_SENDMORE_MINIMUM = 5;
+
+// We need this to create a copy of the mozContact object in ContactManager.save
+// Keep in sync with the interfaces.
+const PROPERTIES = [
+  "name", "honorificPrefix", "givenName", "additionalName", "familyName",
+  "phoneticGivenName", "phoneticFamilyName",
+  "honorificSuffix", "nickname", "photo", "category", "org", "jobTitle",
+  "bday", "note", "anniversary", "sex", "genderIdentity", "key", "adr", "email",
+  "url", "impp", "tel"
+];
+
+const BLOBS = ["photo"];
+const LISTS = [
+  "name", "honorificPrefix", "givenName", "additionalName", "familyName",
+  "phoneticGivenName", "phoneticFamilyName",
+  "honorificSuffix", "nickname", "photo", "category", "org", "jobTitle",
+  "note", "key", "adr", "email",
+  "url", "impp", "tel"
+];
+const DATES = ["anniversary", "bday"];
+const SUBOBJECTLISTS = ["adr", "email", "url", "impp", "tel", "category"];
+
+const DBNAME = 'sys/contacts';
+// types
+const TEXT='TEXT', BLOB='TEXT', BOOL='TEXT', PROP='prop', DATE='TEXT', 
+      CAP='cap';
+
+const SCHEMA = {
+   contact: {id: TEXT, name: TEXT, honorificPrefix: TEXT, givenName: TEXT,
+              additionalName: TEXT, familyName: TEXT, phoneticGivenName: TEXT,
+              phoneticFamilyName: TEXT, honorificSuffix: TEXT, nickname: TEXT,
+              photo: BLOB, org: TEXT, jobTitle: TEXT, note: TEXT, key: TEXT,
+              sex: TEXT, genderIdentity: TEXT, bday: DATE, anniversary: DATE,
+              familyNameSearch: TEXT, givenNameSearch: TEXT, nameSearch: TEXT,
+              phoneticFamilyNameSearch: TEXT, phoneticGivenNameSearch: TEXT,
+              acl: true},
+
+   category: {name: TEXT, contact:CAP, acl: true},
+
+   adr:      {type: TEXT, streetAddress: TEXT, locality: TEXT, region: TEXT,
+              postalCode: TEXT, countryName: TEXT, pref: BOOL, contact: PROP},
+
+   email:    {type: TEXT, value: TEXT, pref: BOOL, search: TEXT, contact: PROP},
+   
+   url:      {type: TEXT, value: TEXT, pref: BOOL, contact: PROP},
+
+   impp:     {type: TEXT, value: TEXT, pref: BOOL, contact: PROP},
+   
+   tel:      {type: TEXT, value: TEXT, pref: BOOL, 
+              carrier: TEXT, search: TEXT, parsed: TEXT, contact: PROP},
+};
+
+let mozContactInitWarned = false;
+
+function Contact() { }
+
+Contact.prototype = {
+  __init: function(aProp) {
+    for (let prop in aProp) {
+      this[prop] = aProp[prop];
+    }
+  },
+
+  init: function(aProp) {
+    // init is deprecated, warn once in the this._window.console if it's used
+    if (!mozContactInitWarned) {
+      mozContactInitWarned = true;
+      Cu.reportError("mozContact.init is DEPRECATED. Use the mozContact constructor instead. " +
+                     "See https://developer.mozilla.org/docs/WebAPI/Contacts for details.");
+    }
+    for (let prop of PROPERTIES) {
+      this[prop] = aProp[prop];
+    }
+  },
+
+  setMetadata: function(aId, aPublished, aUpdated) {
+    this.id = aId;
+    if (aPublished) {
+      this.published = aPublished;
+    }
+    if (aUpdated) {
+      this.updated = aUpdated;
+    }
+  },
+
+  classID: Components.ID("{72a5ee28-81d8-4af8-90b3-ae935396cc66}"),
+  contractID: "@mozilla.org/contact;1",
+  QueryInterface: XPCOMUtils.generateQI([Ci.nsISupports]),
+};
+
+function ContactManager() { }
+
+ContactManager.prototype = {
+  __proto__: DOMRequestIpcHelper.prototype,
+  hasListenPermission: false,
+  _cachedContacts: [] ,
+
+  set oncontactchange(aHandler) {
+    this.__DOM_IMPL__.setEventHandler("oncontactchange", aHandler);
+  },
+
+  get oncontactchange() {
+    return this.__DOM_IMPL__.getEventHandler("oncontactchange");
+  },
+
+  _convertContact: function(aContact) {
+    let newContact = new this._window.mozContact(aContact.properties);
+    newContact.setMetadata(aContact.id, aContact.published, aContact.updated);
+    return newContact;
+  },
+
+  _convertContacts: function(aContacts) {
+    let contacts = new this._window.Array();
+    for (let i in aContacts) {
+      contacts.push(this._convertContact(aContacts[i]));
+    }
+    return contacts;
+  },
+
+  _fireSuccessOrDone: function(aCursor, aResult) {
+    if (aResult == null) {
+      Services.DOMRequest.fireDone(aCursor);
+    } else {
+      Services.DOMRequest.fireSuccess(aCursor, aResult);
+    }
+  },
+
+  _pushArray: function(aArr1, aArr2) {
+    aArr1.push.apply(aArr1, aArr2);
+  },
+
+  receiveMessage: function(aMessage) {
+    if (DEBUG) debug("receiveMessage: " + aMessage.name);
+    let msg = aMessage.json;
+    let contacts = msg.contacts;
+
+    let req;
+    switch (aMessage.name) {
+      case "Contacts:Find:Return:OK":
+        req = this.getRequest(msg.requestID);
+        if (req) {
+          let result = this._convertContacts(contacts);
+          Services.DOMRequest.fireSuccess(req.request, result);
+        } else {
+          if (DEBUG) debug("no request stored!" + msg.requestID);
+        }
+        break;
+      case "Contacts:GetAll:Next":
+        let data = this.getRequest(msg.cursorId);
+        if (!data) {
+          break;
+        }
+        let result = contacts ? this._convertContacts(contacts) : [null];
+        if (data.waitingForNext) {
+          if (DEBUG) debug("cursor waiting for contact, sending");
+          data.waitingForNext = false;
+          let contact = result.shift();
+          this._pushArray(data.cachedContacts, result);
+          this.nextTick(this._fireSuccessOrDone.bind(this, data.cursor, contact));
+          if (!contact) {
+            this.removeRequest(msg.cursorId);
+          }
+        } else {
+          if (DEBUG) debug("cursor not waiting, saving");
+          this._pushArray(data.cachedContacts, result);
+        }
+        break;
+      case "Contact:Save:Return:OK":
+        // If a cached contact was saved and a new contact ID was returned, update the contact's ID
+        if (this._cachedContacts[msg.requestID]) {
+          if (msg.contactID) {
+            this._cachedContacts[msg.requestID].id = msg.contactID;
+          }
+          delete this._cachedContacts[msg.requestID];
+        }
+      case "Contacts:Clear:Return:OK":
+      case "Contact:Remove:Return:OK":
+        req = this.getRequest(msg.requestID);
+        if (req)
+          Services.DOMRequest.fireSuccess(req.request, null);
+        break;
+      case "Contacts:Find:Return:KO":
+      case "Contact:Save:Return:KO":
+      case "Contact:Remove:Return:KO":
+      case "Contacts:Clear:Return:KO":
+      case "Contacts:GetRevision:Return:KO":
+      case "Contacts:Count:Return:KO":
+        req = this.getRequest(msg.requestID);
+        if (req) {
+          if (req.request) {
+            req = req.request;
+          }
+          Services.DOMRequest.fireError(req, msg.errorMsg);
+        }
+        break;
+      case "Contacts:GetAll:Return:KO":
+        req = this.getRequest(msg.requestID);
+        if (req) {
+          Services.DOMRequest.fireError(req.cursor, msg.errorMsg);
+        }
+        break;
+      case "Contact:Changed":
+        // Fire oncontactchange event
+        if (DEBUG) debug("Contacts:ContactChanged: " + msg.contactID + ", " + msg.reason);
+        let event = new this._window.MozContactChangeEvent("contactchange", {
+          contactID: msg.contactID,
+          reason: msg.reason
+        });
+        this.dispatchEvent(event);
+        break;
+      case "Contacts:Revision":
+        if (DEBUG) debug("new revision: " + msg.revision);
+        req = this.getRequest(msg.requestID);
+        if (req) {
+          Services.DOMRequest.fireSuccess(req.request, msg.revision);
+        }
+        break;
+      case "Contacts:Count":
+        if (DEBUG) debug("count: " + msg.count);
+        req = this.getRequest(msg.requestID);
+        if (req) {
+          Services.DOMRequest.fireSuccess(req.request, msg.count);
+        }
+        break;
+      default:
+        if (DEBUG) debug("Wrong message: " + aMessage.name);
+    }
+    this.removeRequest(msg.requestID);
+  },
+
+  dispatchEvent: function(event) {
+    if (this.hasListenPermission) {
+      this.__DOM_IMPL__.dispatchEvent(event);
+    }
+  },
+
+  askPermission: function (aAccess, aRequest, aAllowCallback, aCancelCallback) {
+    if (DEBUG) debug("askPermission for contacts");
+
+    let access;
+    switch(aAccess) {
+      case "create":
+        access = "create";
+        break;
+      case "update":
+      case "remove":
+        access = "write";
+        break;
+      case "find":
+      case "listen":
+      case "revision":
+      case "count":
+        access = "read";
+        break;
+      default:
+        access = "unknown";
+      }
+
+    // Shortcut for ALLOW_ACTION so we avoid a parent roundtrip
+    let principal = this._window.document.nodePrincipal;
+    let type = "contacts-" + access;
+    let permValue =
+      Services.perms.testExactPermissionFromPrincipal(principal, type);
+    DEBUG && debug("Existing permission " + permValue);
+    if (permValue == Ci.nsIPermissionManager.ALLOW_ACTION) {
+      if (aAllowCallback) {
+        aAllowCallback();
+      }
+      return;
+    } else if (permValue == Ci.nsIPermissionManager.DENY_ACTION ||
+               permValue == Ci.nsIPermissionManager.UNKNOWN_ACTION) {
+      if (aCancelCallback) {
+        aCancelCallback("PERMISSION_DENIED");
+      }
+      return;
+    }
+
+    // Create an array with a single nsIContentPermissionType element.
+    let type = {
+      type: "contacts",
+      access: access,
+      options: [],
+      QueryInterface: XPCOMUtils.generateQI([Ci.nsIContentPermissionType])
+    };
+    let typeArray = Cc["@mozilla.org/array;1"].createInstance(Ci.nsIMutableArray);
+    typeArray.appendElement(type, false);
+
+    // create a nsIContentPermissionRequest
+    let request = {
+      types: typeArray,
+      principal: principal,
+      QueryInterface: XPCOMUtils.generateQI([Ci.nsIContentPermissionRequest]),
+      allow: function() {
+        aAllowCallback && aAllowCallback();
+        DEBUG && debug("Permission granted. Access " + access +"\n");
+      },
+      cancel: function() {
+        aCancelCallback && aCancelCallback("PERMISSION_DENIED");
+        DEBUG && debug("Permission denied. Access " + access +"\n");
+      },
+      window: this._window
+    };
+
+    // Using askPermission from nsIDOMWindowUtils that takes care of the
+    // remoting if needed.
+    let windowUtils = this._window.QueryInterface(Ci.nsIInterfaceRequestor)
+                          .getInterface(Ci.nsIDOMWindowUtils);
+    windowUtils.askPermission(request);
+  },
+
+  build_indexes: function(cb){
+    var self = this;
+    var indexes = [
+                   {name: 'fkidxCat2',table: 'category', column: 'CAP_contact'},
+                   {name: 'fkidxAdr', table: 'adr', column: 'PROP_contact'},
+                   {name: 'fkidxEmail', table: 'email', column: 'PROP_contact'},
+                   {name: 'fkidxUrl', table: 'url', column: 'PROP_contact'},
+                   {name: 'fkidxImpp', table: 'impp', column: 'PROP_contact'},
+                   {name: 'fkidxTel', table: 'tel', column: 'PROP_contact'}];
+    //familyName
+    indexes.push({name: 'familyNameidx',
+                  table: 'contact', 
+                  column: 'familyName'});
+    //givenName
+    indexes.push({name: 'givenNameidx',
+                  table:'contact',
+                  column: 'givenName'});
+    //name
+    indexes.push({name: 'nameidx',
+                  table:'contact',
+                  column: 'name'});
+    //familyNameLowerCase 
+    indexes.push({name: 'familyNameLoweridx',
+                  table: 'contact', 
+                  column: 'familyNameSearch'});
+    //givenNameLowerCase
+    indexes.push({name: 'givenNameLoweridx',
+                  table:'contact',
+                  column: 'givenNameSearch'});
+    //nameLowerCase 
+    indexes.push({name: 'nameLoweridx',
+                  table:'contact',
+                  column: 'nameSearch'});
+    //telLowercase
+    indexes.push({name: 'telLower',
+                  table: 'tel',
+                  column: 'search'});
+    //emailLowerCase
+    indexes.push({name: 'emailLoweridx',
+                  table: 'email',
+                  column: 'search'});
+    //tel
+    indexes.push({name: 'telidx',
+                  table: 'tel',
+                  column: 'value'});
+    //category
+    indexes.push({name: 'categoryidx',
+                  table: 'category',
+                  column: 'name'});
+    //email
+    indexes.push({name: 'emailidx',
+                  table: 'email',
+                  column: 'value'});
+    //telMatch
+    indexes.push({name: 'telParseidx',
+                  table: 'tel',
+                  column: 'parsed'});
+    //phoneticFamilyName
+    indexes.push({name: 'phoneticFamilyNameidx',
+                  table:'contact',
+                  column: 'phoneticFamilyName'});
+    //phoneticGivenName
+    indexes.push({name: 'phoneticGivenNameidx',
+                  table:'contact',
+                  column: 'phoneticGivenName'});
+    //phoneticFamilyNameLowerCase
+    indexes.push({name: 'phoneticFamilyNameLoweridx',
+                  table: 'contact',
+                  column: 'phoneticFamilyNameSearch'});
+    //phoneticGivenNameLowerCase
+    indexes.push({name: 'phoneticGivenNameLoweridx',
+                  table:'contact',
+                  column: 'phoneticGivenNameSearch'});
+
+    var total = indexes.length;
+    var count = 0;
+    var success = function(){
+      if(++count === total)
+        cb(true);
+    }
+    var failure = function(cur, event){
+      cb(false, cur);
+    }
+    for(var index of indexes){
+      var req = self.rdb.execRaw("CREATE INDEX IF NOT EXISTS "+index.name+" ON "
+                                 +index.table+"("+index.column+")", null)
+      req.onsuccess = success;
+      req.onerror = failure.bind(req, index);
+    }
+  },
+  
+  /*
+   * Ensures Schema is properly initialized before use
+   * (does so by utilizing withDesc which does this anyway)
+   */
+  withSchema: function(cb) {
+    if(DEBUG) debug("withSchema");
+     var self = this;
+     switch(self.state){
+       case INIT: // someone already started this need to wait
+         // don't panic
+         self._window.setTimeout(function(){self.withSchema(cb);}, 0);
+         return;
+       case READY:
+         if(cb) cb(self.schema);
+         return;
+     }
+     if(self.state !== VIRGIN){
+       // ok now we panic
+       // I'm 99% sure that this object is single threaded
+       // this is the case that say's I'm wrong
+       throw new Error("Invalid Manager State!");
+     }
+     self.state = INIT;
+     self.rdb = self._window.navigator.getRDB(DBNAME);
+     self.rdb.onsuccess = function(event){
+       self.rdb.requestOrder = false;
+       self.schema.createSchema(self.rdb, function(res){
+         self.build_indexes(function(good, error){
+           if(good){
+             self.rdb_desc = self.rdb.getDesc();
+             self.state = READY;
+             if(cb) cb(self.schema);
+           }
+           else{
+             throw new Error('problem building index:' + JSON.stringify(error));
+           }
+         });
+       });
+     };
+  },
+
+  _fireChangeEvent: function(contactID, reason){
+    let event = new this._window.MozContactChangeEvent("contactchange", {
+                           contactID: contactID,
+                           reason: reason});
+    this.dispatchEvent(event);
+  },
+
+  save: function save(aContact) {
+    if(DEBUG) debug("save: " + JSON.stringify(aContact));
+    var self = this;
+    // We have to do a deep copy of the contact manually here because
+    // nsFrameMessageManager doesn't know how to create a structured clone of a
+    // mozContact object.
+    try {
+      for (let field of PROPERTIES) {
+        // This hack makes sure modifications to the sequence attributes
+        // get validated.
+        aContact[field] = aContact[field];
+        //newContact.properties[field] = aContact[field];
+      }
+    } catch (e) {
+      // And then make sure we throw a proper error message
+      // (no internal file and line #)
+      throw new self._window.DOMError(e.name, e.message);
+    }
+    var getClass = {}.toString;
+
+    let contact = {}, categories, ardrs, emails, urls, impps, tels;
+    for( let field in aContact){
+      // non list properties
+      if(SCHEMA.contact[field] && aContact[field]){
+        switch(getClass.call(aContact[field])){
+          case '[object Date]':
+            contact[field] = aContact[field].toString();
+            break;
+          case '[object Array]':
+            contact[field] = aContact[field][0];
+            break;
+          case '[object String]':
+            contact[field] = aContact[field];
+            break;
+          default:
+            throw new Error("What the hell kind of type is this? " +
+                            getClass.call(aContact[field]));
+        }
+      }
+    }
+    if(contact.bday)
+      contact.bday = contact.bday.toString();
+    if(contact.anniversary)
+      contact.bday = contact.anniversary.toString();
+    
+    let sanatize = function(objs){
+      if(!objs) return null;
+      let ret = [];
+      let tmp;
+      for(let obj of objs){
+        tmp = {};
+        for(let field in obj){
+          if(field === 'type')
+            tmp[field] = obj[field][0];
+          else if(field === 'pref')
+            tmp[field] = (obj[field] ? 'true' : 'false');
+          else 
+            tmp[field] = obj[field];
+        }
+        ret.push(tmp);
+      }
+      return ret;
+    };
+
+    let categories = aContact.category || [];
+    let adrs       = sanatize(aContact.adr) || [];
+    let emails     = sanatize(aContact.email) || [];
+    let urls       = sanatize(aContact.url) || [];
+    let impps      = sanatize(aContact.impps) || [];
+    let tels       = sanatize(aContact.tel) || [];
+
+    let request = self.createRequest();
+    let requestID = self.getRequestId({request: request});
+
+    let reason;
+    if (aContact.id == "undefined") {
+      // for example {25c00f01-90e5-c545-b4d4-21E2ddbab9e0} becomes
+      // 25c00f0190e5c545b4d421E2ddbab9e0
+      aContact.id = self._getRandomId().replace(/[{}-]/g, "");
+      // Cache the contact so that its ID may be updated later if necessary
+      self._cachedContacts[requestID] = aContact;
+      reason = "create";
+      } else {
+      reason = "update";
+    }
+
+    contact.id = aContact.id;
+
+    contact.familyNameSearch         = (contact.familyName &&
+                                       contact.familyName.toLowerCase())
+                                       || null;
+    contact.givenNameSearch          = (contact.givenName &&
+                                       contact.givenName.toLowerCase())
+                                       || null;
+
+    contact.nameSearch               = (contact.name &&
+                                       contact.name.toLowerCase())
+                                       || null;
+
+    contact.phoneticFamilyNameSearch = (contact.phoneticFamilyName &&
+                                       contact.phoneticFamilyName.toLowerCase())
+                                       || null;
+
+    contact.phoneticGivenNameSearch  = (contact.phoneticGivenName &&
+                                       contact.phoneticGivenName.toLowerCase())
+                                       || null;
+
+    emails.forEach(function(o){o.search = (o.value && o.value.toLowerCase())
+                                       || null;});
+    tels.forEach(function(o){o.search = (o.value && o.value.toLowerCase())
+                                       || null;
+                             o.parsed = o.value || null;});
+                                                   
+    let treeObj = {tab: "contact", obj: contact,
+                   props: [].concat(
+                    adrs.map(function(o){return {tab:"adr", obj:o};}),
+                    emails.map(function(o){return {tab:"email", obj:o};}),
+                    urls.map(function(o){return {tab:"url", obj:o};}),
+                    impps.map(function(o){return {tab:"impp", obj:o};}),
+                    tels.map(function(o){return {tab:"tel", obj:o};})/*,
+                    categories.map(function(o){
+                      return {tab:"category", obj:{name: o}};})*/
+                   )};
+    if(DEBUG) debug(JSON.stringify(treeObj));
+    
+
+    let allowCallback = function() {
+      self.withSchema(function (schema){
+        self.rdb_desc.startTx();
+        var onerror = function(){
+          self.rdb_desc.abortTx();
+          Services.DOMRequest.fireError(request, "store Object");
+        }
+        schema.storeTree(self.rdb_desc, treeObj, function(res){
+          if(! res.succeeded){
+            onerror();
+            return;
+          }
+          if(categories.length > 0){
+            var rreq = self.rdb_desc.query(['contact'],
+                                           schema.tabs['contact'].cols,
+                                           {type:'=', id:contact.id}, null);
+            rreq.onsuccess = function(){
+              if(!rreq.next()){
+                 onerror();
+                 return;
+              }
+              var token = rreq.getToken();
+              rreq.reset();
+              var count = 0;
+              for(var cat of categories){
+                var ins_req = self.rdb_desc.insert('category', {name:cat},
+                                                   ['CAP_contact'], [token]);
+                ins_req.onsuccess = function(){
+                  if(++count >= categories.length){
+                    self.rdb_desc.commitTx();
+                    Services.DOMRequest.fireSuccess(request, null);
+                    self._fireChangeEvent(contact.id, reason);
+                  }
+                }
+                ins_req.onerror = onerror;
+              }
+            }
+            rreq.onerror = onerror;
+          }
+          else{
+            self.rdb_desc.commitTx();
+            Services.DOMRequest.fireSuccess(request, null);
+            self._fireChangeEvent(contact.id, reason);
+          }
+        });
+      });
+    };
+
+    let cancelCallback = function(reason) {
+      Services.DOMRequest.fireErrorAsync(request, reason);
+    };
+
+    this.askPermission(reason, request, allowCallback, cancelCallback);
+    return request;
+  },
+
+  _filterOps_to_where: function(options){
+     if(!options || !options.filterBy || options.filterBy.length <1)
+        return null;
+     let match_str;
+     let operator = " = ";
+     switch(options.filterOp){
+       case "match": // TODO lookup how to trasform this filter
+       case "startsWith":
+          //throw new Error(options.filterOp + " not supproted");
+       default:
+          match_str = options.filterValue;
+     }
+     let obj = null, term;
+     for(let col of options.filterBy){
+        term = { type: '=' };
+        term[col] = match_str;
+        if(obj)
+           obj = { type: "OR", term1: obj, term2: term};
+        else
+           obj = term;
+     }
+     if(DEBUG) debug("query: " + JSON.stringify(obj));
+     return obj;
+  },
+
+  /* 
+   * commonly mapped to an array of objects extrated from the db
+   * to construct contact objects usable on the browser side
+   * e.g. recieved_objects.map(this._inflate);
+   */
+  _inflate: function(dbVal, index, array){
+    var self = this;
+    // XXX may have to handle the cases with 
+    // specially named columns here
+    var getClass = {}.toString; // aint javascript grad?/s
+    let out = {};
+    // ordering here is important because we have some blobs that
+    // are also lists
+    PROPERTIES.map(function(p){dbVal[p] && (out[p] = dbVal[p]);});
+    DATES.map(function(p){out[p] && (out[p] = new Date(out[p]));});
+    BLOBS.map(function(p){out[p] && (out[p] = new Blob([out[p]]));});
+    LISTS.map(function(p){
+      if(out[p] && getClass.call(out[p]) !== '[object Array]')
+        out[p] = [out[p]];
+    });
+    SUBOBJECTLISTS.map(function(p){
+      if(!out[p] || out[p].length === 0)
+        out[p] = undefined;
+      else{
+        out[p].map(function(q){
+          q.type = [q.type];
+          q.pref = (q.pref === 'true');
+        });
+      }
+    });
+    if(out.category){
+      let tmp = out.category;
+      out.category = [];
+      tmp.map(function(cat){out.category.push(cat.name);});
+    }
+    if(DEBUG) debug('inflated: ' + JSON.stringify(out));
+
+    var ret = new self._window.mozContact(out);
+    ret.id = dbVal.id; // the constructor wont set the id even if you ask it
+                       // nicely!
+    return ret;
+  },
+
+  _trans_where: function(where){
+    var self = this;
+    var tables = ['contact'];
+    switch(where.type){
+      case '=':
+        for(var prop of SUBOBJECTLISTS){
+          if(!where[prop]) continue;
+          tables.push(prop);
+          if(prop === 'category'){
+            where[prop+'__name'] = where[prop];
+          }
+          else{
+            where[prop+'__search'] = where[prop];
+          }
+          delete where[prop];
+        }
+        return [tables,where];
+        break;
+      case 'AND':
+      case 'OR':
+        throw new Error("AND & OR not supported yet");
+        break;
+      default:
+        self._window.console.log("poorly formed where:", JSON.stringify(where));
+    }
+  },
+
+  _get_contacts_common: function(where, good_cb, bad_cb){
+    var self = this;
+    // do some where translation
+    var [tabs,pathWhere] = where ? self._trans_where(where) : [['contact'],null];
+    if(DEBUG) debug(JSON.stringify(tabs)+' '+JSON.stringify(pathWhere));
+    self.withSchema(function(schema){
+      schema.queryPath(self.rdb_desc, tabs, pathWhere, null, function(res){
+        if(res.succeeded){
+          if(res.res.length <= 0){
+            if(DEBUG) debug('returned from query path with no responses...\n');
+            if(good_cb) good_cb([]);
+            return;
+          }
+          let tmp = [];
+          let count = res.res.length;
+          var success = function(fillRes){
+            if(fillRes.succeeded){
+              tmp.push(fillRes.res);
+              if(--count <= 0)
+                if(good_cb) good_cb(tmp.map(self._inflate.bind(self)));
+            }
+            else{
+              if(bad_cb) bad_cb(); // could propagate error info here
+            }
+          };
+          for(let obj of res.res){
+            if(tabs.length > 1)
+              obj = obj.contact;
+            success({succeeded: true, res: obj});
+            //schema.fillObject(obj, true, success);
+          }
+        }
+        else{
+          if(bad_cb) bad_cb();
+        }
+      });
+    });
+  },
+
+  find: function(aOptions) {
+    var self = this;
+    if (DEBUG) debug("find! " + JSON.stringify(aOptions));
+    let request = this.createRequest();
+
+    let allowCallback = function() {
+      var good = function(contacts){
+        if(DEBUG) debug("find good CB: " + JSON.stringify(contacts));
+        Services.DOMRequest.fireSuccess(request, contacts);
+      };
+      var bad = function(errorMessage){
+        errorMessage = errorMessage || "Encounterd error in contacts search";
+        Services.DOMRequest.fireError(request, errorMessage);
+      };
+      self._get_contacts_common(self._filterOps_to_where(aOptions), good, bad);
+    };
+
+    let cancelCallback = function(reason) {
+      Services.DOMRequest.fireErrorAsync(request, reason);
+    };
+
+    this.askPermission("find", request, allowCallback, cancelCallback);
+    return request;
+  },
+
+  createCursor: function CM_createCursor(aRequest) {
+    let data = {
+      cursor: Services.DOMRequest.createCursor(this._window, function() {
+        this.handleContinue(id);
+      }.bind(this)),
+      cachedContacts: [],
+      waitingForNext: true,
+    };
+    let id = this.getRequestId(data);
+    if (DEBUG) debug("saved cursor id: " + id);
+    return [id, data.cursor];
+  },
+
+  getAll: function CM_getAll(aOptions) {
+    var self = this;
+    this._window.console.log("getAll");
+    if (DEBUG) debug("getAll: " + JSON.stringify(aOptions));
+    
+    let [cursorId, cursor] = this.createCursor();
+    let allowCallback = function() {
+      let good = function(contacts){
+        let data = self.getRequest(cursorId);
+        data.cachedContacts = contacts;
+        data.cachedContacts.push(null); // null terminated
+        self.handleContinue(cursorId);
+      };
+      let bad = function(errorMessage){
+        errorMessage = errorMessage || "encounterd error reading contacts";
+        Services.DOMRequest.fireError(cursor, errorMessage);
+      }; 
+      self.withSchema(function(schema){
+        schema.enumForest(self.rdb_desc, 'contact', false, null, function(res){
+          if(res.succeeded){
+            good(res.res.map(self._inflate.bind(self)));
+          }
+          else
+            bad('get forest fail');
+        });
+      });
+
+      //self._get_contacts_common(null, good, bad);
+    };
+
+    let cancelCallback = function(reason) {
+      Services.DOMRequest.fireErrorAsync(cursor, reason);
+    };
+
+    this.askPermission("find", cursor, allowCallback, cancelCallback);
+    return cursor;
+  },
+
+  nextTick: function nextTick(aCallback) {
+    Services.tm.currentThread.dispatch(aCallback, Ci.nsIThread.DISPATCH_NORMAL);
+  },
+
+  handleContinue: function CM_handleContinue(aCursorId) {
+    if (DEBUG) debug("handleContinue: " + aCursorId);
+    let data = this.getRequest(aCursorId);
+    if (data.cachedContacts.length > 0) {
+     if (DEBUG) debug("contact in cache");
+     let contact = data.cachedContacts.shift();
+     this.nextTick(this._fireSuccessOrDone.bind(this, data.cursor, contact));
+     if (!contact) {
+       this.removeRequest(aCursorId);
+     }// else if (data.cachedContacts.length === CONTACTS_SENDMORE_MINIMUM) {
+      // cpmm.sendAsyncMessage("Contacts:GetAll:SendNow", { cursorId: aCursorId });
+     //}
+    } else {
+      if (DEBUG) debug("waiting for contact");
+      data.waitingForNext = true;
+    }
+  },
+
+  remove: function removeContact(aRecordOrId) {
+    var self = this;
+    this._window.console.log("remove");
+    let request = this.createRequest();
+    let id;
+    if (typeof aRecordOrId === "string") {
+      id = aRecordOrId;
+    } else if (!aRecordOrId || !aRecordOrId.id) {
+      Services.DOMRequest.fireErrorAsync(request, true);
+      return request;
+    } else {
+      id = aRecordOrId.id;
+    }
+
+    let allowCallback = function() {
+      self.withSchema(function(schema){ // just ensures the db was loaded
+        let req = self.rdb_desc.delete("contact", {type:'=', id: id});
+        req.onsuccess = function(event){
+          Services.DOMRequest.fireSuccessAsync(request, null);
+          self._fireChangeEvent(id, 'remove');
+        }
+        req.onerror = function(event){
+          Services.DOMRequest.fireErrorAsync(request, "Problem with removal");
+        }
+      });
+    };
+
+    let cancelCallback = function(reason) {
+      Services.DOMRequest.fireErrorAsync(request, reason);
+    };
+
+    this.askPermission("remove", request, allowCallback, cancelCallback);
+    return request;
+  },
+
+  clear: function() {
+    var self = this;
+    if (DEBUG) debug("clear");
+    let request = this.createRequest();
+    let options = {};
+
+    let allowCallback = function() {
+      self.withSchema(function(schema){
+        var req = self.rdb_desc.delete("contact", null);
+        req.onsuccess = function(event){
+            Services.DOMRequest.fireSuccess(request, null);
+        };
+        req.onerror = function(event){
+            Services.DOMRequest.fireError(request, "");
+        };
+      });
+    }
+
+    let cancelCallback = function(reason) {
+      Services.DOMRequest.fireErrorAsync(request, reason);
+    };
+
+    this.askPermission("remove", request, allowCallback, cancelCallback);
+    return request;
+  },
+
+  getRevision: function() {
+    this._window.console.log("getRevision");
+    let request = this.createRequest();
+
+    let allowCallback = function() {
+      let rdb = this._window.navigator.getRDB("contacts");
+      rdb.onsuccess = function(event){
+            Services.DOMRequest.fireSuccess(request, null);
+         // update or save
+         //this._window.console.log("connection success!!!");
+      }.bind(this);
+      rdb.onerror = function(event){
+            Services.DOMRequest.fireError(request, "Problem Saving Contact");
+         //this._window.console.log("connection failure...");
+      }.bind(this);  
+    }.bind(this);
+
+    let cancelCallback = function(reason) {
+      Services.DOMRequest.fireErrorAsync(request, reason);
+    };
+
+    this.askPermission("revision", request, allowCallback, cancelCallback);
+    return request;
+  },
+
+  getCount: function() {
+
+    let request = this.createRequest();
+    this._window.console.log("getCount");
+    let allowCallback = function() {
+      let req = this.rdb.query(["mt"], ["COUNT (*)"], null, null, null);
+      req.onsuccess = function(event){
+         if(req.next())
+            request.result = req.getByIndex(0);
+         req.reset();
+      }.bind(this);
+      req.onerror = function(event){
+         Services.DOMRequest.fireError(request, "Problem counting Contacts");
+      }.bind(this);  
+    }.bind(this);
+
+    let cancelCallback = function(reason) {
+      Services.DOMRequest.fireErrorAsync(request, reason);
+    };
+
+    this.askPermission("count", request, allowCallback, cancelCallback);
+    return request;
+  },
+
+  init: function(aWindow) {
+    // DOMRequestIpcHelper.initHelper sets this._window
+    this.initDOMRequestHelper(aWindow, ["Contacts:Find:Return:OK", "Contacts:Find:Return:KO",
+                              "Contacts:Clear:Return:OK", "Contacts:Clear:Return:KO",
+                              "Contact:Save:Return:OK", "Contact:Save:Return:KO",
+                              "Contact:Remove:Return:OK", "Contact:Remove:Return:KO",
+                              "Contact:Changed",
+                              "Contacts:GetAll:Next", "Contacts:GetAll:Return:KO",
+                              "Contacts:Count",
+                              "Contacts:Revision", "Contacts:GetRevision:Return:KO",]);
+
+    this.schema = new RDBSchema(SCHEMA);
+    this.state = VIRGIN;
+
+    let allowCallback = function() {
+      // XXX
+      cpmm.sendAsyncMessage("Contacts:RegisterForMessages");
+      this.hasListenPermission = true;
+    }.bind(this);
+    this.askPermission("listen", null, allowCallback);
+  },
+
+  classID: Components.ID("{8beb3a66-d70a-4111-b216-b8e995ad3aff}"),
+  contractID: "@mozilla.org/contactManager;1",
+  QueryInterface: XPCOMUtils.generateQI([Ci.nsISupportsWeakReference,
+                                         Ci.nsIObserver,
+                                         Ci.nsIDOMGlobalPropertyInitializer]),
+};
+
+this.NSGetFactory = XPCOMUtils.generateNSGetFactory([
+  Contact, ContactManager
+]);

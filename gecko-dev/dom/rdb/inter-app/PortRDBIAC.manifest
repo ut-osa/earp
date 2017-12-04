@@ -1,0 +1,14 @@
+component {799dbb85-54d4-11e5-8267-7831c1c34f92} PortRDBIAC.js
+contract @mozilla.org/PortRDBIACManager;1 {799dbb85-54d4-11e5-8267-7831c1c34f92}
+
+component {6fbef8f3-54cd-11e5-a7dc-7831c1c34f92} PortRDBIAC.js
+contract @mozilla.org/PortRDBIAC;1 {6fbef8f3-54cd-11e5-a7dc-7831c1c34f92}
+
+component {3240b805-54e8-11e5-bbfd-7831c1c34f92} PortRDBIAC.js
+contract @mozilla.org/PortRDBIACRequest;1 {3240b805-54e8-11e5-bbfd-7831c1c34f92}
+
+component {d7564dc5-54fc-11e5-a44d-7831c1c34f92} PortRDBIAS.js
+contract @mozilla.org/PortRDBIASManager;1 {d7564dc5-54fc-11e5-a44d-7831c1c34f92}
+
+component {a0223ce1-5500-11e5-ad71-7831c1c34f92} PortRDBIAS.js
+contract @mozilla.org/PortRDBIAS;1 {a0223ce1-5500-11e5-ad71-7831c1c34f92}

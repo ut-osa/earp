@@ -1,0 +1,32 @@
+<html>
+  <head>
+    <meta charset="utf-8">
+	
+
+	<meta http-equiv="cache-control" content="max-age=0" />
+	<meta http-equiv="cache-control" content="no-cache" />
+	<meta http-equiv="expires" content="0" />
+	<meta http-equiv="expires" content="Tue, 01 Jan 1980 1:00:00 GMT" />
+	<meta http-equiv="pragma" content="no-cache" />
+
+
+    <title>Elgg Dispatcher</title>
+
+	<link rel="stylesheet" href="css/style.css">
+  </head>
+
+  <body>
+	<script src="shared/js/rdbiac.js"></script>
+	<script src="shared/js/rdbschema.js"></script>
+    <script src="js/elgg_dispatch.js"></script>
+	<div id="timing"></div>
+	<button id="Insert" onclick="InsertPosting()">Insert post</button>
+	<button id="Delete" onclick="DeletePosting()">Delete post</button>
+	<br>
+	<input type="text" id="post_text" maxlength=128 size=32><br><br>
+	<button id="Dispatch" onclick="DispatchPosting()">Dispatch post</button><br>
+	<br><br>
+	<div id="contents">none</div>
+	<div id="img_contents">none</div>
+  </body>
+</html>

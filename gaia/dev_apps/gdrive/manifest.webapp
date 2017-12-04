@@ -1,0 +1,27 @@
+{
+  "name": "GDrive",
+	"type": "certified",
+  "description": "Makes google drive functions available over IPC",
+  "launch_path": "/~thunt/gdrive/index.html",
+  "developer": {
+    "name": "thunt",
+    "url": "https://github.com/mozilla-b2g/gaia"
+  },
+  "locales": {
+    "en-US": {
+      "name": "GDrive",
+      "description": "Dispatcher app for google drive"
+    }
+  },
+  "default_locale": "en-US",
+  "icons": {
+    "128": "https://www.cs.utexas.edu/~thunt/gdrive/img/gdrive.png"
+  },
+  "connections": {
+    "https-www.cs.utexas.edu/GDrive": {
+      "handler_path": "/~thunt/gdrive/index.html",
+      "description": "GDrive",
+      "rules": {}
+    }
+  }
+}

@@ -1,0 +1,35 @@
+{
+	"name": "Benchmarker",
+	"version": "0.1",
+	"type": "certified",
+	"description": "Runs benchmarks for \\sys apis",
+	"developer": {
+        "name": "Tyler Hunt",
+        "url": "https://cs.utexas.edu/~thunt"
+    },
+	"launch_path": "/index.html",
+	"icons": {
+        "16": "/img/icons/icon-16.png",
+		"32": "/img/icons/icon-32.png",
+        "48": "/img/icons/icon-48.png",
+		"60": "/img/icons/icon-60.png",
+		"90": "/img/icons/icon-90.png",
+		"120": "/img/icons/icon-120.png",
+        "128": "/img/icons/icon-128.png",
+		"256": "/img/icons/icon-256.png"
+    },
+	"default_locale": "en",
+	"orientation": ["portrait"],
+	"permissions": {
+		"device-storage:sdcard": {
+			"access": "readwrite",
+			"description" : "To test, what else?"
+		},
+		"device-storage:pictures": {
+			"access": "readwrite",
+			"description" : "To test, what else?"
+		},
+      "contacts":{ "access": "readwrite" },
+      "storage":{"description":"avoid quota exceded"}
+    }
+}

@@ -1,0 +1,23 @@
+Contacts Scenario
+---------------------
+A social networking app has the ability to locate friends of the user
+using the same service by accessign the user's contacts.
+
+The user wants to use this functionality, but does not want the app to have
+access to all the information in the system's contacts store.
+---------------------
+This app was originally called ScoreGeek, The app requires Read/Write
+access to the users contacts to allow the user to easilly connect with
+her friends on a board game website.
+
+API Usage
+---------------------
+The new app utilizes two levels of our api.
+
+1. Access restriction based on views of the database
+   -Limitted to certain columns by the app's manifest
+   -Limitted further by a where clause input by the user when the
+    app is first run
+
+2. Restricts others access by limiting newly created contacts to be
+   Private to this app

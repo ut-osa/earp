@@ -1,0 +1,41 @@
+.align_center {
+	text-align: center;
+}
+
+.result_panel {
+	font-size: 4em;
+}
+
+.result_unit {
+	font-size: 1.1em;
+	font-style: italic;
+	color: #bbbbbb;
+}
+
+a.button_style {
+	border: none;
+	background: none;
+	color: #0077cc;
+}
+
+a.button_style:hover {
+	background: none;
+	color: #333333;
+}
+
+.grid_unit_wrapper {
+	padding-left: 5px;
+	padding-right: 5px;
+}
+
+.time_neg_margin {
+	margin-top: -20px;
+}
+
+.input_label {
+	padding-top: 17px;
+}
+
+div.ui-input-text {
+	background: white;
+}

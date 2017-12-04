@@ -1,0 +1,60 @@
+/* Font declarations: Firefox OS base font (Feura Sans) */
+@font-face {
+	font-family: 'Feura Sans';
+	src: url('../fonts/FeuraSans-Regular.woff') format('woff')
+		,url('../fonts/FeuraSans-Regular.ttf') format('ttf');
+	font-weight: normal;
+	font-style: normal;
+}
+@font-face {
+	font-family: 'Feura Sans';
+	src: url('../fonts/FeuraSans-Light.woff') format('woff')
+		,url('../fonts/FeuraSans-Light.ttf') format('ttf');
+	font-weight: 300;
+	font-style: normal;
+}
+@font-face {
+	font-family: 'Feura Sans';
+	src: url('../fonts/FeuraSans-Medium.woff') format('woff')
+		,url('../fonts/FeuraSans-Medium.ttf') format('ttf');
+	font-weight: 500;
+	font-style: normal;
+}
+
+
+/* Reset */
+ul {
+	margin: 0;	padding: 0;
+	list-style: none;
+}
+
+h1 { font-size: 1.66rem; }
+h2 { font-size: 1.4rem;	}
+h3 { font-size: 1.2rem; }
+h4 { font-size: 1.1rem; }
+
+
+/* Basics */
+html, body {
+	width: 100%;
+	height: 100%;
+	padding: 0;
+	margin: 0;
+
+	font: normal 9px "Feura Sans", sans-serif;
+	font-size: 2.8vmin; /* ~9px @ 320px vmin */
+	background: #fff;
+}
+
+html{
+	overflow: hidden;
+}
+
+body {
+	position: relative;
+	font-size: 1.6rem;
+}
+
+[hidden] {
+	display: none !important;
+}

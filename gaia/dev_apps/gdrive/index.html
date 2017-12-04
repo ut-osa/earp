@@ -1,0 +1,34 @@
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1">
+    <meta charset="utf-8">
+    <title>GDrive</title>
+
+    <script type="text/javascript"
+            src="https://www.cs.utexas.edu/~thunt/gdrive/js/rdbiac.js"></script>
+    <script type="text/javascript"
+            src="https://www.cs.utexas.edu/~thunt/gdrive/js/ipc_stub.js"></script>
+    <script type="text/javascript"
+            src="https://apis.google.com/js/client.js?onload=handleClientLoad"></script>
+   <script>
+       function install(){
+          window.navigator.mozApps.install('https://www.cs.utexas.edu/~thunt/gdrive/manifest.webapp');
+       }
+    </script>
+  </head>
+
+  <body>
+   <center>
+   <img src="img/gdrive.png"><br>
+	<button id="install" onclick="install()">Install(FirefoxOS)</button><br>
+   <button onclick="getAll(true)">GetAll</button>
+   <button onclick="modAll()">ModAll</button>
+   <button onclick="createTen()">CreateText</button>
+   <button onclick="getPics()">GetPics</button>
+   <br>
+   <p id="time"></p>
+   <br>
+   <div id="results">Nothing Yet</div>
+   </center>
+  </body>
+</html>

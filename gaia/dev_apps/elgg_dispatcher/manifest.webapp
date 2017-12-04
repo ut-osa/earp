@@ -1,0 +1,30 @@
+{
+  "name": "Elgg Dispatcher",
+  "description": "Elgg dispatcher",
+  "launch_path": "/index.html",
+  "developer": {
+    "name": "The Gaia Team",
+    "url": "https://github.com/mozilla-b2g/gaia"
+  },
+  "locales": {
+    "en-US": {
+      "name": "Elgg Dispatcher",
+      "description": "Dispatcher app for elgg wire postings"
+    }
+  },
+  "default_locale": "en-US",
+  "permissions": {
+	"systemXHR" : {
+	}
+  },
+  "icons": {
+    "128": "/style/icons/dispatcher.png"
+  },
+  "connections": {
+    "app-elgg_dispatcher.gaiamobile.org/ElggDispatching": {
+      "handler_path": "/index.html",
+      "description": "Elgg",
+      "rules": {}
+    }
+  }
+}

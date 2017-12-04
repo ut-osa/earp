@@ -1,0 +1,31 @@
+/* -*- Mode: idl; tab-width: 2; indent-tabs-mode: nil; c-basic-offset: 2 -*- */
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+#include "nsITelephonyService.idl"
+
+%{C++
+#define GONK_TELEPHONY_SERVICE_CONTRACTID \
+        "@mozilla.org/telephony/gonktelephonyservice;1"
+%}
+
+[scriptable, uuid(068d7bf2-1773-48ef-95f8-bd835115fed7)]
+interface nsIGonkTelephonyService : nsITelephonyService
+{
+  void notifyAudioStateChanged(in unsigned long clientId, in short state);
+
+  void notifyCallDisconnected(in unsigned long clientId, in jsval call);
+
+  void notifyCallRing();
+
+  void notifyCallStateChanged(in unsigned long clientId, in jsval call,
+                              [optional] in boolean skipStateConversion);
+
+  void notifyCdmaCallWaiting(in unsigned long clientId, in jsval waitingCall);
+
+  void notifySupplementaryService(in unsigned long clientId, in long callIndex,
+                                  in AString notification);
+
+  void notifyConferenceCallStateChanged(in short state);
+};

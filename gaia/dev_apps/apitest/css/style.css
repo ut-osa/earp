@@ -1,0 +1,182 @@
+@font-face {
+	font-family: mainFont;
+	src: url('fonts/AnchorSteamNF.ttf');
+}
+
+html * {
+	
+}
+
+body {
+	/*background-color: #111;*/
+	width: 100%;
+}
+
+a {
+	outline : none;
+}
+
+a img {
+	outline : none;
+}
+
+a, u  {
+	text-decoration: none;
+}
+
+img {
+	border : 0;
+	border-style: none;
+}
+
+.ui-btn-active-override {
+	border: 1px solid 		#1abc9c /*{global-active-border}*/;
+	background: 			#1abc9c /*{global-active-background-color}*/;
+	font-weight: bold;
+	color: 					#ffffff /*{global-active-color}*/;
+	cursor: pointer;
+	text-decoration: none;
+	font-family: Lato, sans-serif
+}
+.ui-btn-active-override:visited,
+.ui-btn-active-override:hover,
+.ui-btn-active-override a.ui-link-inherit {
+  color:  #ffffff /*{global-active-color}*/;
+}
+.ui-btn-active-override.ui-slider-bg {
+  background: #1abc9c;
+}
+
+.left-li .ui-li, .ui-li.ui-field-contain {
+	text-align: right;
+}
+
+.left-li.ui-btn-icon-right .ui-icon {
+	left: 5px;
+}
+
+.left-li.ui-li-has-arrow .ui-btn-inner a.ui-link-inherit {
+	padding-right: 10px;
+}
+
+.ui-panel-content-wrap, .ui-page, .page, .content{
+	background: #333;
+	margin: 0;
+	padding: 0;
+	overflow: hidden;
+}
+
+.ui-btn-inner {
+	font-size: 17px;
+}
+
+.ui-btn-up-a, .ui-btn-up-b, .ui-btn-up-c, .ui-btn-up-d, .ui-btn-up-e, .ui-btn-up-f, .ui-btn-up-g {
+	font-weight: normal;
+}
+
+.disable-select {
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+
+.center {
+   margin-left: auto;
+   margin-right: auto;
+}
+
+.hidden {
+	display: none;
+}
+
+.showed-inline {
+	display: inline;
+}
+
+.clear {
+    clear: both;
+}
+
+div.outer-center {
+	float: right;
+	right: 50%;
+	position: relative;
+}
+
+div.inner-center {
+	float: right;
+    right: -50%;
+    position: relative;
+}
+
+#main-caption {
+	font-family: mainFont;
+}
+
+#main-caption {
+	margin-top: 1em;
+	margin-bottom: 1em;
+	font-size: 4em;
+	color: rgba(0,168,255,0.5);
+	text-shadow: 0.1em 0.1em 0 rgba(0,0,0,0.5);
+}
+
+#picked-photo {
+	position: absolute;
+}
+
+#device {
+	width: 320px;
+	height: 480px;
+	background-color: red;
+}
+
+.center-cropped {
+	float: left;
+    background-position: center center;
+    background-repeat: no-repeat;
+}​
+
+canvas {
+}
+
+.canvas-holder {
+	display: inline-block;
+	float: left;
+	
+	line-height: 1px;
+	
+	margin-top: 1px;
+	margin-right: 1px;
+}
+
+.canvas-holder {
+	display: inline-block;
+	float: left;
+	line-height: 1px;
+}
+
+.canvas-holder.canvas-holder5 {
+	margin-top: 5px;
+	margin-right: 5px;
+}
+
+.canvas-holder.canvas-holder20 {
+	margin-top: 20px;
+	margin-right: 20px;
+}
+
+.ui-disabled-override {
+	background-color: #555;
+	opacity: .7;
+	zoom: 1;
+}
+.ui-disabled-override,
+.ui-disabled-override a {
+	cursor: default !important;
+	pointer-events: none;
+}
+.ui-disabled-override .ui-btn-hidden { display: none; }
+.ui-disabled-override { z-index: 1; }

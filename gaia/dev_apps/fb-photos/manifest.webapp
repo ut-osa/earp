@@ -1,0 +1,29 @@
+{
+  "version": "0.1",
+  "name": "Facebook Photos",
+  "description": "Facebook Photos Test App",
+  "launch_path": "/index.html",
+  "icons": {
+    "16": "/app-icons/icon-16.png",
+    "48": "/app-icons/icon-48.png",
+    "128": "/app-icons/icon-128.png"
+  },
+  "developer": {
+    "name": "Facebook Photos Test App",
+    "url": "https://www.utexas.edu/~georgiev/tests/facebook/"
+  },
+  "locales": {
+    "en": {
+      "description": "Facebook Photos Test App",
+      "developer": {
+        "url": "https://www.utexas.edu/~georgiev/tests/facebook/index.php"
+      }
+    }
+  },
+  "permissions": {
+    "browser": {},
+    "embed-apps": {},
+    "systemXHR":{}
+  },
+  "default_locale": "en"
+}

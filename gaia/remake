@@ -1,0 +1,3 @@
+#!/bin/bash
+
+rm -rf profile && NO_LOCK_SCREEN=1 make DESKTOP_SHIMS=1 NOFTU=1

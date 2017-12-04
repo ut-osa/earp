@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Facebook Photos Test App: Get User's Uploaded Images</title>
+    <meta charset="UTF-8">
+  </head>
+  <body>
+    <script>
+      var rdb;
+      var photos = new Array();
+
+      // This is called with the results from FB.getLoginStatus().
+      function statusChangeCallback(response) {
+        // The response object is returned with a status field that lets the
+        // app know the current login status of the person.
+        if (response.status === 'connected') {
+          getRemoteImageURLs();
+        } else { // if (response.status === 'not_authorized') {
+          log('Please log into this app.');
+          var uri = encodeURI('https://www.cs.utexas.edu/~georgiev/tests/facebook/index.php');
+          top.location = encodeURI("https://www.facebook.com/dialog/oauth?client_id=1412447272383012&redirect_uri="+uri+"&response_type=token");
+        }
+       // } else {
+       //   log('Please log into Facebook.');
+       // }
+      }
+
+      // This function is called when someone finishes with the Login
+      // Button.  See the onlogin handler attached to it in the sample
+      // code below.
+      function checkLoginState() {
+        FB.getLoginStatus(function(response) {
+          statusChangeCallback(response);
+        });
+      }
+
+      window.fbAsyncInit = function() {
+        FB.init({
+          appId      : '1412447272383012',
+          cookie     : true,  // enable cookies to allow the server to access 
+                              // the session
+          xfbml      : true,  // parse social plugins on this page
+          version    : 'v2.1' // use version 2.1
+        });
+
+        // Now that we've initialized the JavaScript SDK, we call 
+        // FB.getLoginStatus().  This function gets the state of the
+        // person visiting this page and can return one of three states to
+        // the callback you provide.  They can be:
+        //
+        // 1. Logged into your app ('connected')
+        // 2. Logged into Facebook, but not your app ('not_authorized')
+        // 3. Not logged into Facebook and can't tell if they are logged into
+        //    your app or not.
+        //
+        // These three cases are handled in the callback function.
+        FB.getLoginStatus(function(response) {
+          statusChangeCallback(response);
+        });
+      };
+
+      // Load the SDK asynchronously
+      (function(d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) return;
+        js = d.createElement(s); js.id = id;
+        //js.src = "//connect.facebook.net/en_US/sdk.js";
+        js.src = "./scripts/sdk.js";
+        fjs.parentNode.insertBefore(js, fjs);
+      }(document, 'script', 'facebook-jssdk'));
+
+      function getRemoteImageURLs() {
+        FB.api('/me', function(response) {
+          log("Successful login for: " + response.name);
+        });
+
+        // Get the URLs of all photos uploaded by the user.
+        FB.api('/me/photos/uploaded', function(response) {
+          var imgs = response.data;
+          for(var i = 0; i < imgs.length; i++) {
+            photos[photos.length] = imgs[i].images[0].source;
+          }
+
+          log("Number of remote images found: " + photos.length);
+        });
+      }
+
+      /**
+       * Created an fb database, if it does not exist.
+       * Connects to the fb database.
+       */
+      function createIfNotExistAndConnect() {
+        rdb = navigator.getRDB("fb");
+        rdb.onsuccess = function(event) {
+          log("Successfully connected to the database!");
+          createPhotoTable();
+        }
+
+        rdb.onerror = function() {
+          log("Failed to connect to the database!");
+        }
+      }
+
+  /**
+   * Creates a photos table under the fb database.
+   */
+  function createPhotoTable() {
+    var req = rdb.createTable("photos", ["BLOB", "name"], ["FILEBLOB", "TEXT"], null);
+    req.onsuccess = function(event) {
+      log("Photos table created!");
+    }
+   
+    req.onerror = function () {
+      log("Failed to create the photos table: " + JSON.stringify(this.error));
+    }
+  }
+
+  /*
+   * Retrieves the image's blob from the image's URL.
+   */
+  function fetchAndSaveImgBlob(url) {
+    var blob = null;
+    var xhr = new XMLHttpRequest(); 
+    xhr.open("GET", url); 
+    xhr.responseType = "arraybuffer";
+    xhr.onload = function() {
+      var blob = convertArrayBufferToBlob(xhr.response);
+      insertImgBlobIntoDB(blob);
+    }
+    xhr.send();
+  }
+
+  /*
+   * Creates an image out of an image buffer.
+   */
+  function bufferToTestImg(imageBuffer) {
+    var urlCreator = window.URL || window.webkitURL;
+    var blob = convertArrayBufferToBlob(imageBuffer);
+    var imageUrl = urlCreator.createObjectURL(blob);
+    var img = document.getElementById("test-image");;
+    img.src = imageUrl;
+  }
+
+  /**
+   * Creates an image out of an image blob.
+   */
+  function blobToTestImg(imageBlob) {
+    var urlCreator = window.URL || window.webkitURL;
+    var imageUrl = urlCreator.createObjectURL(imageBlob);
+    var img = document.getElementById("test-image");;
+    img.src = imageUrl;
+  }
+  
+  /**
+   * Converts an array buffer to an image blob.
+   */
+  function convertArrayBufferToBlob(imageBuffer) {
+    var arrayBufferView = new Uint8Array(imageBuffer);
+    var blob = new Blob( [ arrayBufferView ], { type: "image/jpg" } );
+    return blob;
+  }
+
+  /**
+   * Inserts an image blob into the database.
+   */
+  function insertImgBlobIntoDB(imgBlob) {
+    var obj = {BLOB : imgBlob, name : "test-image.jpg"};
+    var req = rdb.insert("photos", obj);
+    req.onsuccess = function(event) {
+      log("Image successfully inserted into the database.");
+    }
+    
+    req.onerror = function(event) {
+      log("Failed to insert the image into the database: " + JSON.stringify(event));
+    }
+  }
+
+  function testImageBlobFromDB() {
+    var cursor = rdb.query(["photos"], ["BLOB"], null, null);
+    cursor.onsuccess = function(event) {
+      if (cursor.next()) {
+        var blob = cursor.row.BLOB;
+        blobToTestImg(blob);
+        log("Image successfully retrieved from the database.");
+      }	
+    }
+  }
+
+  function testRemoteImageInsertion() {
+    if(photos.length == 0) {
+      log("No photos available!");
+      return;
+    }
+
+    var url = photos[0];
+    fetchAndSaveImgBlob(url);
+  }
+
+  /**
+   * Appends a message to the console.
+   */
+  function log(msg) {
+    var log = document.getElementById("console");
+    var old = log.innerHTML;
+    log.innerHTML = msg + "<br />" + old;
+  }
+    </script>
+
+    <fb:login-button scope="user_photos,read_stream,public_profile,email,read_friendlists,user_friends" onlogin="checkLoginState();"></fb:login-button>
+
+    <br />
+    <button type="button" onclick="createIfNotExistAndConnect();">Connect/Create Database</button>
+    <button type="button" onclick="testRemoteImageInsertion();">Test Remote Image Insertion</button>
+    <button type="button" onclick="testImageBlobFromDB();">Test Get Image BLOB From DB</button>
+    <div id="console"></div>
+
+    <img id="test-image"/>
+  </body>
+</html>

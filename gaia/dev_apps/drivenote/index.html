@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+
+    <title></title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width">
+
+    <!-- Place favicon.ico in the root directory -->
+
+    <link rel="stylesheet" href="css/app.css">
+    <link rel="stylesheet" href="css/brown.min.css" />
+    <link rel="stylesheet" href="css/jquery.mobile.structure-1.3.2.min.css" />
+    <link rel="stylesheet" href="css/cssgrids-min.css" />
+    <link rel="stylesheet" href="css/jqm-icon-pack-2.0-original.css" />
+    <link rel="resource" type="application/l10n" href="locales/locales.ini" />
+    <script src="js/lib/jquery-1.9.1.min.js"></script>
+    <script src="js/lib/jquery.mobile-1.3.2.min.js"></script>
+    <script src="js/lib/async_storage.js"></script>
+    <script defer src="js/lib/l10n.js" charset="utf-8"></script>
+    <script src="js/app.js"></script>
+  </head>
+  <body>
+  	<div data-role="page" id="main" data-theme="a">
+        <div data-role="panel" id="left_panel">
+            <ul data-role="listview">
+                <li data-icon="delete" data-rel="close"><a href="#"><span data-l10n-id="close">Close</span></a></li>
+                <li data-role="list-divider"><span data-l10n-id="menu">Menu</span></li>
+                <li data-icon="plus"><a class="add_item"><span  data-l10n-id="add_note">Add Note</span></a></li>
+                <li data-icon="info2"><a href="#about" data-rel="dialog"><span  data-l10n-id="about">About</span></a></li>
+            </ul>
+        </div>
+
+        <div data-role="header">
+            <a href="#left_panel" data-icon="menu" data-iconpos="notext">Quick Note</a>
+            <h1 data-l10n-id="appname">Quick Note</h1>
+            <a id="add_item" class="add_item" data-icon="plus" data-iconpos="notext">Add</a>
+        </div><!-- /header -->
+ 
+        <div data-role="content">
+            <div style="margin-top: 15px;">
+                <ul data-role="listview" id="items_list" data-inset="true" data-theme="b" data-filter="true" data-filter-placeholder="">
+                </ul>
+                <a id="add_note" class="add_item" data-role="button" data-icon="plus" ><span data-l10n-id="add_note">Add a note</span></a>
+            </div>
+            <button id="getAll" type="button">GetAll</button>
+            <button id="modAll" type="button">ModAll</button><br>
+            <button id="create10" type="button">create10</button><br>
+            <p id="time"></p>
+            <div id="benchres"></div>
+        </div><!-- /content -->
+    </div><!-- /page main-->
+
+    <div data-role="page" id="view_item" data-theme="a">
+ 
+        <div data-role="header">
+            <a href="#main" data-icon="back" data-rel="back" data-iconpos="notext">Back</a>
+            <h1 data-l10n-id="appname">Quick Note</h1>
+            <a href="#" id="action_edit" class="action_edit" data-icon="edit" data-iconpos="notext">Edit</a>
+        </div><!-- /header -->
+ 
+        <div data-role="content">
+            <h2 id="item_name"></h2>
+            <div id="item_note"></div>
+        </div><!-- /content -->
+
+        <div data-role="footer" data-position="fixed" style="padding: 5px 0;">
+            <a class="action_edit" style="margin-left: 5px;"href="#" data-icon="edit" data-l10n-id="edit">edit</a>
+            <a id="action_email" href="#" data-icon="email">email</a>
+            <a id="action_delete" data-theme="c" style="margin-right: 5px;float: right;" href="#" data-icon="trash" data-l10n-id="delete">delete</a>
+        </div><!-- /footer -->
+    </div><!-- /page edit_item-->
+
+    <div data-role="page" id="edit_item" data-theme="a">
+ 
+        <div data-role="header">
+            <a href="#main" data-icon="delete" data-rel="back" data-iconpos="notext" data-l10n-id="cancel">Cancel</a>
+            <h1 id="edit_item_title" data-l10n-id="edit">Edit</h1>
+            <a href="#main" data-icon="check" id="save_item" data-iconpos="notext" data-l10n-id="save">Save</a>
+        </div><!-- /header -->
+ 
+        <div data-role="content">
+            <div data-role="fieldcontain">
+                <label for="item_input" data-l10n-id="title">Title:</label>
+                <input type="text" name="item_input" id="item_input" value="" style="background: white;" />
+            </div>
+            <div data-role="fieldcontain">
+                <label for="note_input" data-l10n-id="note">Note:</label>
+                <textarea name="note_input" id="note_input" style="height: 150px;"></textarea>
+            </div>
+            <input type="hidden" id="item_id_input" value=""/>
+        </div><!-- /content -->
+    </div><!-- /page edit_item-->
+
+    <div data-role="page" id="about">
+ 
+        <div data-role="header">
+            <h1 data-l10n-id="about">About</h1>
+        </div><!-- /header -->
+ 
+        <div data-role="content">
+            <p data-l10n-id="thank_you">
+            Thank you for using Quick Note. 
+            </p>
+            <p><span data-l10n-id="contact_support">
+            Contact support:</span> <a href="mailto:clevre.developer@gmail.com?subject=Quick%20Note%20Support%20Request">clevre.developer@gmail.com</a>
+            </p>
+        </div><!-- /content -->
+    </div><!-- /page about -->
+    <script src="js/analytics.js"></script>
+  </body>
+</html>
