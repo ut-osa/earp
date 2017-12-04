@@ -7,8 +7,8 @@ The prototype is based on Mozilla's (now unsupported)
 [FirefoxOS](https://developer.mozilla.org/en-US/docs/Archive/B2G_OS/Introduction).
 
 Original repositories can be found here:
-  * [Gecko-dev](https://github.com/mozilla/gecko-dev)
-  * [Gaia](https://github.com/mozilla/gaia)
+  * [Gecko-dev](https://github.com/mozilla-b2g/gecko-b2g)
+  * [Gaia](https://github.com/mozilla-b2g/gaia)
 
 ---
 Disclaimer: This project has had very little recent activity. Code is provided
